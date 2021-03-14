@@ -1,6 +1,9 @@
-package github.pitbox46.oddpower.common;
+package github.pitbox46.oddpower.setup;
 
 import github.pitbox46.oddpower.OddPower;
+import github.pitbox46.oddpower.common.DummyGeneratorItem;
+import github.pitbox46.oddpower.common.ForgeEventHandlers;
+import github.pitbox46.oddpower.common.ModEventHandlers;
 import github.pitbox46.oddpower.entities.DummyGeneratorEntity;
 import github.pitbox46.oddpower.entities.DummyGeneratorRenderer;
 import net.minecraft.entity.EntityClassification;
@@ -25,11 +28,12 @@ public class Registration {
     private static final DeferredRegister<EntityType<?>> ENTITY_TYPE = DeferredRegister.create(ForgeRegistries.ENTITIES, OddPower.MOD_ID);
     private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, OddPower.MOD_ID);
 
-    public static void register() {
+    public static void init() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         ENTITY_TYPE.register(modEventBus);
         ITEMS.register(modEventBus);
-        MinecraftForge.EVENT_BUS.register(new ModifiedMinecraftEvents());
+        MinecraftForge.EVENT_BUS.register(new ForgeEventHandlers());
+        modEventBus.register(new ModEventHandlers());
 
         LOGGER.debug("Hello from OddPower Registration");
     }
@@ -40,9 +44,4 @@ public class Registration {
             .build("dummy_generator"));
     public static final RegistryObject<DummyGeneratorItem> DUMMY_GENERATOR_ITEM = ITEMS.register("dummy_generator",
             () -> new DummyGeneratorItem(new Item.Properties().group(ItemGroup.COMBAT)));
-
-    @OnlyIn(Dist.CLIENT)
-    public static void initModels() {
-        RenderingRegistry.registerEntityRenderingHandler(Registration.DUMMY_GENERATOR.get(), DummyGeneratorRenderer::new);
-    }
 }

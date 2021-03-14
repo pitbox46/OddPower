@@ -1,6 +1,7 @@
 package github.pitbox46.oddpower.common;
 
 import github.pitbox46.oddpower.entities.DummyGeneratorEntity;
+import github.pitbox46.oddpower.setup.Registration;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.player.PlayerEntity;

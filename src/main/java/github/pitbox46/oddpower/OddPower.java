@@ -1,6 +1,7 @@
 package github.pitbox46.oddpower;
 
-import github.pitbox46.oddpower.common.Registration;
+import github.pitbox46.oddpower.setup.ClientSetup;
+import github.pitbox46.oddpower.setup.Registration;
 import net.minecraft.block.Block;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
@@ -24,7 +25,8 @@ public class OddPower
     private static final Logger LOGGER = LogManager.getLogger();
 
     public OddPower() {
-        Registration.register();
+        Registration.init();
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientSetup::init);
         // Register the setup method for modloading
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
         // Register the enqueueIMC method for modloading
@@ -39,7 +41,7 @@ public class OddPower
     }
 
     private void setup(final FMLCommonSetupEvent event) {
-        // some preinit code
+
     }
 
     private void doClientStuff(final FMLClientSetupEvent event) {
