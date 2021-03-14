@@ -7,6 +7,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+import javax.annotation.Nullable;
+
 @OnlyIn(Dist.CLIENT)
 public class DummyGeneratorRenderer extends LivingRenderer<DummyGeneratorEntity, DummyGeneratorModel> {
 
@@ -16,6 +18,7 @@ public class DummyGeneratorRenderer extends LivingRenderer<DummyGeneratorEntity,
         super(renderManagerIn, new DummyGeneratorModel(1.0f), 1.0f);
     }
 
+    @Nullable
     @Override
     public ResourceLocation getEntityTexture(DummyGeneratorEntity entity) {
         return TEXTURE;

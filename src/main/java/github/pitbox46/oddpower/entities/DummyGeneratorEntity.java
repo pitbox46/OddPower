@@ -9,7 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.HandSide;
 import net.minecraft.world.World;
 
-public class DummyGeneratorEntity extends LivingEntity {
+public class DummyGeneratorEntity extends MobEntity {
     public DummyGeneratorEntity(World worldIn, double posX, double posY, double posZ) {
         this(Registration.DUMMY_GENERATOR.get(), worldIn);
         this.setPosition(posX, posY, posZ);
@@ -22,9 +22,10 @@ public class DummyGeneratorEntity extends LivingEntity {
 
     public static AttributeModifierMap.MutableAttribute registerAttributes() {
          return LivingEntity.registerAttributes().createMutableAttribute(Attributes.MAX_HEALTH, 20.0D)
-                .createMutableAttribute(Attributes.ATTACK_DAMAGE, 0.0D)
-                .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.0D)
-                .createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 1.0D);
+                 .createMutableAttribute(Attributes.ATTACK_DAMAGE, 0.0D)
+                 .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.0D)
+                 .createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 1.0D)
+                 .createMutableAttribute(Attributes.FOLLOW_RANGE, 0.0D);
     }
 
 //    @Override
@@ -143,29 +144,4 @@ public class DummyGeneratorEntity extends LivingEntity {
 //            return true;//?
 //        }
 //    }
-
-    @Override
-    public Iterable<ItemStack> getArmorInventoryList() {
-        return null;
-    }
-
-    @Override
-    public ItemStack getItemStackFromSlot(EquipmentSlotType slotIn) {
-        return null;
-    }
-
-    @Override
-    public void setItemStackToSlot(EquipmentSlotType slotIn, ItemStack stack) {
-
-    }
-
-    @Override
-    public HandSide getPrimaryHand() {
-        return null;
-    }
-
-    @Override
-    public boolean isImmuneToFire() {
-        return true;
-    }
 }
