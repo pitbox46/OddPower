@@ -1,6 +1,6 @@
 package github.pitbox46.oddpower.common;
 
-import github.pitbox46.oddpower.entities.DummyGeneratorEntity;
+import github.pitbox46.oddpower.entities.DummyEntity;
 import github.pitbox46.oddpower.setup.Registration;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SpawnReason;
@@ -43,7 +43,7 @@ public class DummyGeneratorItem extends Item {
             }) && world.getEntitiesWithinAABBExcludingEntity((Entity)null, axisalignedbb).isEmpty()) {
                 if (world instanceof ServerWorld) {
                     ServerWorld serverworld = (ServerWorld)world;
-                    DummyGeneratorEntity dummyGeneratorEntity = Registration.DUMMY_GENERATOR.get().create(serverworld, itemstack.getTag(), (ITextComponent)null, context.getPlayer(), blockpos, SpawnReason.SPAWN_EGG, true, true);
+                    DummyEntity dummyGeneratorEntity = Registration.DUMMY_GENERATOR.get().create(serverworld, itemstack.getTag(), (ITextComponent)null, context.getPlayer(), blockpos, SpawnReason.SPAWN_EGG, true, true);
                     if (dummyGeneratorEntity == null) {
                         return ActionResultType.FAIL;
                     }

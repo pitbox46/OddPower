@@ -4,18 +4,14 @@ import github.pitbox46.oddpower.OddPower;
 import github.pitbox46.oddpower.common.DummyGeneratorItem;
 import github.pitbox46.oddpower.common.ForgeEventHandlers;
 import github.pitbox46.oddpower.common.ModEventHandlers;
-import github.pitbox46.oddpower.entities.DummyGeneratorEntity;
-import github.pitbox46.oddpower.entities.DummyGeneratorRenderer;
+import github.pitbox46.oddpower.entities.DummyEntity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.RegistryObject;
-import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -38,8 +34,8 @@ public class Registration {
         LOGGER.debug("Hello from OddPower Registration");
     }
 
-    public static final RegistryObject<EntityType<DummyGeneratorEntity>> DUMMY_GENERATOR = ENTITY_TYPE.register("dummy_generator",
-            () -> EntityType.Builder.<DummyGeneratorEntity>create(DummyGeneratorEntity::new, EntityClassification.MISC)
+    public static final RegistryObject<EntityType<DummyEntity>> DUMMY_GENERATOR = ENTITY_TYPE.register("dummy_generator",
+            () -> EntityType.Builder.<DummyEntity>create(DummyEntity::new, EntityClassification.MISC)
             .size(0.5F, 1.975F).trackingRange(10)
             .build("dummy_generator"));
     public static final RegistryObject<DummyGeneratorItem> DUMMY_GENERATOR_ITEM = ITEMS.register("dummy_generator",

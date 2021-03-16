@@ -1,10 +1,9 @@
 package github.pitbox46.oddpower.common;
 
-import github.pitbox46.oddpower.entities.DummyGeneratorEntity;
+import github.pitbox46.oddpower.entities.DummyEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.monster.MonsterEntity;
-import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import org.apache.logging.log4j.LogManager;
@@ -17,7 +16,7 @@ public class ForgeEventHandlers {
     public void onEntityJoinWorldEvent(EntityJoinWorldEvent entityJoinEvent){
         Entity entity = entityJoinEvent.getEntity();
         if (entity instanceof MonsterEntity) {
-            ((MonsterEntity) entity).targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(((MonsterEntity) entity), DummyGeneratorEntity.class, true));
+            ((MonsterEntity) entity).targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(((MonsterEntity) entity), DummyEntity.class, true));
         }
     }
 }
