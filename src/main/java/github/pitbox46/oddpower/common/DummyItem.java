@@ -2,13 +2,11 @@ package github.pitbox46.oddpower.common;
 
 import github.pitbox46.oddpower.entities.DummyEntity;
 import github.pitbox46.oddpower.setup.Registration;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUseContext;
+import net.minecraft.item.*;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.SoundCategory;
@@ -21,11 +19,20 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
-public class DummyGeneratorItem extends Item {
-    public DummyGeneratorItem(Properties properties) {
-        super(properties);
+import javax.annotation.Nullable;
+import java.util.List;
+
+public class DummyItem extends Item {
+    public DummyItem() {
+        super(new Item.Properties().group(ItemGroup.COMBAT));
     }
 
+    @Override
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+        super.addInformation(stack, worldIn, tooltip, flagIn);
+    }
+
+    //Todo make entity's yaw based on player's looking direction rather than random
     @Override
     public ActionResultType onItemUse(ItemUseContext context) {
         Direction direction = context.getFace();
@@ -37,13 +44,13 @@ public class DummyGeneratorItem extends Item {
             BlockPos blockpos = blockitemusecontext.getPos();
             ItemStack itemstack = context.getItem();
             Vector3d vector3d = Vector3d.copyCenteredHorizontally(blockpos);
-            AxisAlignedBB axisalignedbb = Registration.DUMMY_GENERATOR.get().getSize().func_242285_a(vector3d.getX(), vector3d.getY(), vector3d.getZ());
+            AxisAlignedBB axisalignedbb = Registration.DUMMY.get().getSize().func_242285_a(vector3d.getX(), vector3d.getY(), vector3d.getZ());
             if (world.hasNoCollisions((Entity)null, axisalignedbb, (entity) -> {
                 return true;
             }) && world.getEntitiesWithinAABBExcludingEntity((Entity)null, axisalignedbb).isEmpty()) {
                 if (world instanceof ServerWorld) {
                     ServerWorld serverworld = (ServerWorld)world;
-                    DummyEntity dummyGeneratorEntity = Registration.DUMMY_GENERATOR.get().create(serverworld, itemstack.getTag(), (ITextComponent)null, context.getPlayer(), blockpos, SpawnReason.SPAWN_EGG, true, true);
+                    DummyEntity dummyGeneratorEntity = Registration.DUMMY.get().create(serverworld, itemstack.getTag(), (ITextComponent)null, context.getPlayer(), blockpos, SpawnReason.SPAWN_EGG, true, true);
                     if (dummyGeneratorEntity == null) {
                         return ActionResultType.FAIL;
                     }

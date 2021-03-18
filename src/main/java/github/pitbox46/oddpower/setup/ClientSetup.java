@@ -10,6 +10,6 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 @Mod.EventBusSubscriber(modid = OddPower.MOD_ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ClientSetup {
     public static void init(final FMLClientSetupEvent clientSetupEvent) {
-        RenderingRegistry.registerEntityRenderingHandler(Registration.DUMMY_GENERATOR.get(), DummyRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(Registration.DUMMY.get(), DummyRenderer::new);
     }
 }
