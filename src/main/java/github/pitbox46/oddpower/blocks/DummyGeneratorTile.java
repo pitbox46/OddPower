@@ -1,27 +1,24 @@
 package github.pitbox46.oddpower.blocks;
 
 import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Multimap;
 import github.pitbox46.oddpower.entities.DummyEntity;
 import github.pitbox46.oddpower.setup.Registration;
 import github.pitbox46.oddpower.tools.OddPowerEnergy;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.Direction;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
-import net.minecraftforge.items.ItemStackHandler;
-import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -55,17 +52,24 @@ public class DummyGeneratorTile extends TileEntity implements ITickableTileEntit
         if(world.isRemote) {
             return;
         }
+        BlockState blockState = world.getBlockState(pos);
         //First condition checks to see if the method should be called on this tick
         if(tickQueue.containsEntry(world.getGameTime(), 'a') && world instanceof ServerWorld) {
             spawnNewDummy();
             tickQueue.remove(world.getGameTime(), 'a');
+            world.setBlockState(pos, blockState.with(BlockStateProperties.POWERED, false),
+                    Constants.BlockFlags.NOTIFY_NEIGHBORS + Constants.BlockFlags.BLOCK_UPDATE);
         }
+
         sendOutPower();
     }
 
     public void dummyDies(){
         energyStorage.addEnergy(1000);
-        if(!tickQueue.containsValue('a')) { //Prevents mutltiple dummies from being queued at once
+        BlockState blockState = world.getBlockState(pos);
+        world.setBlockState(pos, blockState.with(BlockStateProperties.POWERED, true),
+                Constants.BlockFlags.NOTIFY_NEIGHBORS + Constants.BlockFlags.BLOCK_UPDATE);
+        if(!tickQueue.containsValue('a')) { //Prevents multiple dummies from being queued at once
             tickQueue.put(world.getGameTime() + 20, 'a');
         }
     }

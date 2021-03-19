@@ -2,11 +2,11 @@ package github.pitbox46.oddpower.setup;
 
 import github.pitbox46.oddpower.OddPower;
 import github.pitbox46.oddpower.blocks.DummyGenerator;
+import github.pitbox46.oddpower.blocks.DummyGeneratorTile;
 import github.pitbox46.oddpower.common.DummyItem;
 import github.pitbox46.oddpower.common.ForgeEventHandlers;
 import github.pitbox46.oddpower.common.ModEventHandlers;
 import github.pitbox46.oddpower.entities.DummyEntity;
-import github.pitbox46.oddpower.blocks.DummyGeneratorTile;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
@@ -54,6 +54,6 @@ public class Registration {
 
     public static final RegistryObject<EntityType<DummyEntity>> DUMMY = ENTITIES.register("dummy",
             () -> EntityType.Builder.<DummyEntity>create(DummyEntity::new, EntityClassification.MISC)
-                    .size(0.5F, 1.975F).trackingRange(10).build("dummy"));
+                    .size(0.5F, 2.0F).trackingRange(10).build("dummy"));
     public static final RegistryObject<DummyItem> DUMMY_ITEM = ITEMS.register("dummy", DummyItem::new);
 }

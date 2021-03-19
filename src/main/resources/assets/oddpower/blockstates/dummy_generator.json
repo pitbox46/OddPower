@@ -1,0 +1,6 @@
+{
+  "variants": {
+    "powered=false": { "model": "oddpower:block/dummy_generator" },
+    "powered=true": { "model": "oddpower:block/dummy_generator_powered" }
+  }
+}

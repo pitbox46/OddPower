@@ -2,12 +2,14 @@ package github.pitbox46.oddpower.entities;
 
 import github.pitbox46.oddpower.blocks.DummyGeneratorTile;
 import github.pitbox46.oddpower.setup.Registration;
-import net.minecraft.entity.*;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class DummyEntity extends MobEntity {

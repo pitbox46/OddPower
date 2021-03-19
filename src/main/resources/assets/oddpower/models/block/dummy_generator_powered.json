@@ -1,0 +1,12 @@
+{
+	"parent": "block/cube",
+	"textures": {
+		"up": "oddpower:block/dummy_generator/up_revive",
+		"down": "oddpower:block/dummy_generator/down",
+		"north": "oddpower:block/dummy_generator/side",
+		"east": "oddpower:block/dummy_generator/side",
+		"south": "oddpower:block/dummy_generator/side",
+		"west": "oddpower:block/dummy_generator/side",
+		"particle": "oddpower:block/dummy_generator/side"
+	}
+}

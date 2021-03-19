@@ -12,7 +12,7 @@ import javax.annotation.Nullable;
 @OnlyIn(Dist.CLIENT)
 public class DummyRenderer extends BipedRenderer<DummyEntity, DummyModel> {
 
-    private static final ResourceLocation TEXTURE = new ResourceLocation(OddPower.MOD_ID, "textures/entity/dummy_generator.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(OddPower.MOD_ID, "textures/entity/dummy.png");
 
     public DummyRenderer(EntityRendererManager renderManagerIn) {
         super(renderManagerIn, new DummyModel(0.5f, 0f, 64, 64), 0.5f);

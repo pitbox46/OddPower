@@ -1,4 +1,5 @@
 {
   "item.oddpower.dummy": "Dummy",
+  "entity.oddpower.dummy": "Dummy",
   "block.oddpower.dummy_generator": "Dummy Generator"
 }
