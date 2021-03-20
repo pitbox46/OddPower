@@ -15,7 +15,7 @@ public class DummyRenderer extends BipedRenderer<DummyEntity, DummyModel> {
     private static final ResourceLocation TEXTURE = new ResourceLocation(OddPower.MOD_ID, "textures/entity/dummy.png");
 
     public DummyRenderer(EntityRendererManager renderManagerIn) {
-        super(renderManagerIn, new DummyModel(0.5f, 0f, 64, 64), 0.5f);
+        super(renderManagerIn, new DummyModel(0.5f, 0f, 64, 32), 0.5f);
     }
 
     @Nullable
