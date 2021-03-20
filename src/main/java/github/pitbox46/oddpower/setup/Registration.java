@@ -3,10 +3,13 @@ package github.pitbox46.oddpower.setup;
 import github.pitbox46.oddpower.OddPower;
 import github.pitbox46.oddpower.blocks.DummyGenerator;
 import github.pitbox46.oddpower.blocks.DummyGeneratorTile;
+import github.pitbox46.oddpower.blocks.ExplosionGenerator;
+import github.pitbox46.oddpower.blocks.ExplosionGeneratorTile;
 import github.pitbox46.oddpower.common.DummyItem;
 import github.pitbox46.oddpower.common.ForgeEventHandlers;
 import github.pitbox46.oddpower.common.ModEventHandlers;
 import github.pitbox46.oddpower.entities.DummyEntity;
+import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
@@ -51,6 +54,12 @@ public class Registration {
             () -> TileEntityType.Builder.create(DummyGeneratorTile::new, DUMMY_GENERATOR.get()).build(null));
     public static final RegistryObject<BlockItem> DUMMY_GENERATOR_ITEM = ITEMS.register("dummy_generator",
             () -> new BlockItem(DUMMY_GENERATOR.get(), new Item.Properties().group(ItemGroup.COMBAT)));
+
+    public static final RegistryObject<ExplosionGenerator> EXPLOSION_GENERATOR = BLOCKS.register("explosion_generator", ExplosionGenerator::new);
+    public static final RegistryObject<TileEntityType<ExplosionGeneratorTile>> EXPLOSION_GENERATOR_TILE = TILE_ENTITIES.register("explosion_generator_tile",
+            () -> TileEntityType.Builder.create(ExplosionGeneratorTile::new, EXPLOSION_GENERATOR.get()).build(null));
+    public static final RegistryObject<BlockItem> EXPLOSION_GENERATOR_ITEM = ITEMS.register("explosion_generator",
+            () -> new BlockItem(EXPLOSION_GENERATOR.get(), new Item.Properties().group(ItemGroup.COMBAT)));
 
     public static final RegistryObject<EntityType<DummyEntity>> DUMMY = ENTITIES.register("dummy",
             () -> EntityType.Builder.<DummyEntity>create(DummyEntity::new, EntityClassification.MISC)

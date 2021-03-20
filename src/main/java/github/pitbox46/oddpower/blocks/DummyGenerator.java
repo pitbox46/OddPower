@@ -14,10 +14,7 @@ import static net.minecraft.state.properties.BlockStateProperties.POWERED;
 
 public class DummyGenerator extends Block {
     public DummyGenerator() {
-        super(Properties.create(Material.IRON)
-                .sound(SoundType.METAL)
-                .hardnessAndResistance(2.0f)
-        );
+        super(Properties.create(Material.IRON).sound(SoundType.METAL).hardnessAndResistance(2.0f));
         this.setDefaultState(this.getStateContainer().getBaseState().with(POWERED, false));
     }
 
@@ -36,6 +33,4 @@ public class DummyGenerator extends Block {
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
         builder.add(POWERED);
     }
-
-
 }

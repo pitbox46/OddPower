@@ -1,21 +1,14 @@
 package github.pitbox46.oddpower.blocks;
 
 import com.google.common.collect.ArrayListMultimap;
-import github.pitbox46.oddpower.entities.DummyEntity;
 import github.pitbox46.oddpower.setup.Registration;
 import github.pitbox46.oddpower.tools.OddPowerEnergy;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.SpawnReason;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
@@ -24,7 +17,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class DummyGeneratorTile extends TileEntity implements ITickableTileEntity {
+public class ExplosionGeneratorTile extends TileEntity implements ITickableTileEntity {
     private OddPowerEnergy energyStorage = createEnergy();
     private LazyOptional<IEnergyStorage> energy = LazyOptional.of(() -> energyStorage);
 
@@ -34,11 +27,11 @@ public class DummyGeneratorTile extends TileEntity implements ITickableTileEntit
      */
     protected ArrayListMultimap<Long, Character> tickQueue = ArrayListMultimap.create();
 
-    private static final int MAX_TRANSFER = 1000;
+    private static final int ENERGY_CREATED = 1000;
     private static final int CAPACITY = 64000;
 
-    public DummyGeneratorTile() {
-        super(Registration.DUMMY_GENERATOR_TILE.get());
+    public ExplosionGeneratorTile() {
+        super(Registration.EXPLOSION_GENERATOR_TILE.get());
     }
 
     @Override
@@ -52,37 +45,7 @@ public class DummyGeneratorTile extends TileEntity implements ITickableTileEntit
         if(world.isRemote) {
             return;
         }
-        BlockState blockState = world.getBlockState(pos);
-        //First condition checks to see if the method should be called on this tick
-        if(tickQueue.containsEntry(world.getGameTime(), 'a') && world instanceof ServerWorld) {
-            spawnNewDummy();
-            tickQueue.remove(world.getGameTime(), 'a');
-            world.setBlockState(pos, blockState.with(BlockStateProperties.POWERED, false),
-                    Constants.BlockFlags.NOTIFY_NEIGHBORS + Constants.BlockFlags.BLOCK_UPDATE);
-        }
-
         sendOutPower();
-    }
-
-    public void dummyDies(){
-        energyStorage.addEnergy(1000);
-        BlockState blockState = world.getBlockState(pos);
-        world.setBlockState(pos, blockState.with(BlockStateProperties.POWERED, true),
-                Constants.BlockFlags.NOTIFY_NEIGHBORS + Constants.BlockFlags.BLOCK_UPDATE);
-        if(!tickQueue.containsValue('a')) { //Prevents multiple dummies from being queued at once
-            tickQueue.put(world.getGameTime() + 20, 'a');
-        }
-    }
-
-    protected void spawnNewDummy(){
-        ServerWorld serverworld = (ServerWorld)world;
-        DummyEntity dummyEntity = Registration.DUMMY.get().create(serverworld, null, null, null, getPos(), SpawnReason.DISPENSER, true, true);
-        serverworld.func_242417_l(dummyEntity);
-        dummyEntity.setLocationAndAngles(dummyEntity.getPosX(), dummyEntity.getPosY(), dummyEntity.getPosZ(), 0.0F, 0.0F);
-        dummyEntity.rotationYawHead = dummyEntity.rotationYaw;
-        dummyEntity.renderYawOffset = dummyEntity.rotationYaw;
-        world.addEntity(dummyEntity);
-        world.playSound(null, dummyEntity.getPosX(), dummyEntity.getPosY(), dummyEntity.getPosZ(), SoundEvents.ENTITY_ARMOR_STAND_PLACE, SoundCategory.BLOCKS, 0.75F, 0.8F);
     }
 
     private void sendOutPower() {
@@ -93,7 +56,7 @@ public class DummyGeneratorTile extends TileEntity implements ITickableTileEntit
                 if (te != null) {
                     boolean doContinue = te.getCapability(CapabilityEnergy.ENERGY, direction).map(handler -> {
                                 if (handler.canReceive()) {
-                                    int received = handler.receiveEnergy(Math.min(capacity.get(), MAX_TRANSFER), false);
+                                    int received = handler.receiveEnergy(Math.min(capacity.get(), ENERGY_CREATED), false);
                                     capacity.addAndGet(-received);
                                     energyStorage.consumeEnergy(received);
                                     markDirty();
@@ -123,8 +86,8 @@ public class DummyGeneratorTile extends TileEntity implements ITickableTileEntit
         return super.write(tag);
     }
 
-    private OddPowerEnergy createEnergy() {
-        return new OddPowerEnergy(CAPACITY, MAX_TRANSFER) {
+    public OddPowerEnergy createEnergy() {
+        return new OddPowerEnergy(CAPACITY, ENERGY_CREATED) {
             @Override
             protected void onEnergyChanged() {
                 markDirty();

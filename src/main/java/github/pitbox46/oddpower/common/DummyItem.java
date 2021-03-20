@@ -32,7 +32,6 @@ public class DummyItem extends Item {
         super.addInformation(stack, worldIn, tooltip, flagIn);
     }
 
-    //Todo make entity's yaw based on player's looking direction rather than random
     @Override
     public ActionResultType onItemUse(ItemUseContext context) {
         Direction direction = context.getFace();
@@ -50,14 +49,16 @@ public class DummyItem extends Item {
             }) && world.getEntitiesWithinAABBExcludingEntity((Entity)null, axisalignedbb).isEmpty()) {
                 if (world instanceof ServerWorld) {
                     ServerWorld serverworld = (ServerWorld)world;
-                    DummyEntity dummyEntity = Registration.DUMMY.get().create(serverworld, itemstack.getTag(), (ITextComponent)null, context.getPlayer(), blockpos, SpawnReason.SPAWN_EGG, true, true);
+                    DummyEntity dummyEntity = Registration.DUMMY.get().create(serverworld, itemstack.getTag(), null, context.getPlayer(), blockpos, SpawnReason.SPAWN_EGG, true, true);
                     if (dummyEntity == null) {
                         return ActionResultType.FAIL;
                     }
 
                     serverworld.func_242417_l(dummyEntity);
-                    float f = (float)MathHelper.floor((MathHelper.wrapDegrees(context.getPlacementYaw() - 180.0F) + 22.5F) / 45.0F) * 45.0F;
+                    float f = (float)(Math.round(context.getPlacementYaw()/45) * 45 + 180);
                     dummyEntity.setLocationAndAngles(dummyEntity.getPosX(), dummyEntity.getPosY(), dummyEntity.getPosZ(), f, 0.0F);
+                    dummyEntity.rotationYawHead = dummyEntity.rotationYaw;
+                    dummyEntity.renderYawOffset = dummyEntity.rotationYaw;
                     world.addEntity(dummyEntity);
                     world.playSound((PlayerEntity)null, dummyEntity.getPosX(), dummyEntity.getPosY(), dummyEntity.getPosZ(), SoundEvents.ENTITY_ARMOR_STAND_PLACE, SoundCategory.BLOCKS, 0.75F, 0.8F);
                 }
