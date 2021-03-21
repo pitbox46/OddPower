@@ -29,7 +29,8 @@ public class DummyEntity extends MobEntity {
     }
 
     public static AttributeModifierMap.MutableAttribute registerAttributes() {
-         return LivingEntity.registerAttributes().createMutableAttribute(Attributes.MAX_HEALTH, 20.0D)
+         return LivingEntity.registerAttributes()
+                 .createMutableAttribute(Attributes.MAX_HEALTH, 20.0D)
                  .createMutableAttribute(Attributes.ATTACK_DAMAGE, 0.0D)
                  .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.0D)
                  .createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 1.0D)
@@ -61,9 +62,9 @@ public class DummyEntity extends MobEntity {
 
     @Override
     public ActionResultType applyPlayerInteraction(PlayerEntity player, Vector3d vec, Hand hand) {
-        if(player.isSneaking() && player.inventory.getCurrentItem() == ItemStack.EMPTY) {
+        if(!world.isRemote() && player.isSneaking() && player.getHeldItem(hand) == ItemStack.EMPTY) {
             remove();
-            player.inventory.storeItemStack(new ItemStack(Registration.DUMMY_ITEM.get(), 1));
+            player.setHeldItem(Hand.MAIN_HAND, new ItemStack(Registration.DUMMY_ITEM.get(), 1));
             return ActionResultType.SUCCESS;
         }
         return ActionResultType.PASS;
