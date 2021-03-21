@@ -2,6 +2,7 @@ package github.pitbox46.oddpower.entities;
 
 import github.pitbox46.oddpower.blocks.DummyGeneratorTile;
 import github.pitbox46.oddpower.setup.Registration;
+import net.minecraft.block.material.PushReaction;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -18,6 +19,7 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 
 public class DummyEntity extends MobEntity {
+    //Todo: Make sure that this doesn't actually do anything so it can be removed
     public DummyEntity(World worldIn, double posX, double posY, double posZ) {
         this(Registration.DUMMY.get(), worldIn);
         this.setPosition(posX, posY, posZ);
@@ -49,13 +51,14 @@ public class DummyEntity extends MobEntity {
 
     @Override
     protected void collideWithEntity(Entity entityIn) {
+        //Do nothing on collision
     }
 
     @Override
     public void onDeath(DamageSource cause) {
         TileEntity tileEntity = world.getTileEntity(getPosition().down());
         if(tileEntity instanceof DummyGeneratorTile){
-            ((DummyGeneratorTile) tileEntity).generatePower();
+            ((DummyGeneratorTile) tileEntity).generatePower(1000);
         }
         super.onDeath(cause);
     }

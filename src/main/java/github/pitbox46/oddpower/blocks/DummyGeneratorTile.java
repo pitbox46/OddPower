@@ -40,7 +40,6 @@ public class DummyGeneratorTile extends TileEntity implements ITickableTileEntit
 
     private static final int MAX_TRANSFER = 1000;
     private static final int CAPACITY = 64000;
-    private static final int GENERATE = 1000;
 
     public DummyGeneratorTile() {
         super(Registration.DUMMY_GENERATOR_TILE.get());
@@ -69,9 +68,9 @@ public class DummyGeneratorTile extends TileEntity implements ITickableTileEntit
         sendOutPower();
     }
 
-    public void generatePower(){
-        LOGGER.debug("{} energy created at ({}, {}, {})", Integer.toString(GENERATE), Integer.toString(getPos().getX()), Integer.toString(getPos().getY()), Integer.toString(getPos().getZ()));
-        energyStorage.addEnergy(GENERATE);
+    public void generatePower(int power){
+        LOGGER.debug("{} energy created at ({}, {}, {})", Integer.toString(power), Integer.toString(getPos().getX()), Integer.toString(getPos().getY()), Integer.toString(getPos().getZ()));
+        energyStorage.addEnergy(power);
         BlockState blockState = world.getBlockState(pos);
         world.setBlockState(pos, blockState.with(BlockStateProperties.POWERED, true),
                 Constants.BlockFlags.NOTIFY_NEIGHBORS + Constants.BlockFlags.BLOCK_UPDATE);

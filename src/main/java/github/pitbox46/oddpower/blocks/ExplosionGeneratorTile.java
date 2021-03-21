@@ -8,10 +8,12 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
+import net.minecraftforge.event.world.ExplosionEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -33,7 +35,8 @@ public class ExplosionGeneratorTile extends TileEntity implements ITickableTileE
 
     private static final int MAX_TRANSFER = 1000;
     private static final int CAPACITY = 64000;
-    private static final int GENERATE = 1000;
+    private static final int COOLDOWN = 80;
+    private long previousGeneration;
 
     public ExplosionGeneratorTile() {
         super(Registration.EXPLOSION_GENERATOR_TILE.get());
@@ -79,9 +82,24 @@ public class ExplosionGeneratorTile extends TileEntity implements ITickableTileE
         }
     }
 
-    public void generatePower(){
-        LOGGER.debug("{} energy created at ({}, {}, {})", Integer.toString(GENERATE), Integer.toString(getPos().getX()), Integer.toString(getPos().getY()), Integer.toString(getPos().getZ()));
-        energyStorage.addEnergy(GENERATE);
+    /**
+     * Called on explosion event. Nullifies damage and generates energy if the generator hasn't been active for COOLDOWN ticks
+     */
+    public boolean onExplosion(ExplosionEvent.Detonate detonateEvent) {
+        if(world.getGameTime() - previousGeneration >= COOLDOWN) {
+            int power = detonateEvent.getAffectedBlocks().size() * 20;
+            generatePower(power);
+            detonateEvent.getAffectedBlocks().clear();
+            detonateEvent.getAffectedEntities().clear();
+            previousGeneration = world.getGameTime();
+            return true;
+        }
+        return false;
+    }
+
+    public void generatePower(int power){
+        LOGGER.debug("{} energy created at ({}, {}, {})", Integer.toString(power), Integer.toString(getPos().getX()), Integer.toString(getPos().getY()), Integer.toString(getPos().getZ()));
+        energyStorage.addEnergy(power);
     }
 
     @Override

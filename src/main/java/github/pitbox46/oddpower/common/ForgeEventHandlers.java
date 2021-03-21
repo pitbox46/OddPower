@@ -28,16 +28,15 @@ public class ForgeEventHandlers {
     }
 
     /**
-     * If there is an explosion generator nearby, the explosion effect is nullified and energy is created
+     * If there is an explosion generator nearby, the explosion effect is nullified and energy is created based on big the explosion is
      */
     @SubscribeEvent
     public void onExplosionEvent(ExplosionEvent.Detonate detonateEvent){
         for(BlockPos pos: detonateEvent.getAffectedBlocks()){
             if(detonateEvent.getWorld().getTileEntity(pos) instanceof ExplosionGeneratorTile){
-                ((ExplosionGeneratorTile) detonateEvent.getWorld().getTileEntity(pos)).generatePower();
-                detonateEvent.getAffectedBlocks().clear();
-                detonateEvent.getAffectedEntities().clear();
-                break;
+                if(((ExplosionGeneratorTile) detonateEvent.getWorld().getTileEntity(pos)).onExplosion(detonateEvent)){
+                    break;
+                }
             }
         }
     }
