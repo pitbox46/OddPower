@@ -8,8 +8,13 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.Hand;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 
 public class DummyEntity extends MobEntity {
@@ -49,8 +54,18 @@ public class DummyEntity extends MobEntity {
     public void onDeath(DamageSource cause) {
         TileEntity tileEntity = world.getTileEntity(getPosition().down());
         if(tileEntity instanceof DummyGeneratorTile){
-            ((DummyGeneratorTile) tileEntity).dummyDies();
+            ((DummyGeneratorTile) tileEntity).generatePower();
         }
         super.onDeath(cause);
+    }
+
+    @Override
+    public ActionResultType applyPlayerInteraction(PlayerEntity player, Vector3d vec, Hand hand) {
+        if(player.isSneaking() && player.inventory.getCurrentItem() == ItemStack.EMPTY) {
+            remove();
+            player.inventory.storeItemStack(new ItemStack(Registration.DUMMY_ITEM.get(), 1));
+            return ActionResultType.SUCCESS;
+        }
+        return ActionResultType.PASS;
     }
 }

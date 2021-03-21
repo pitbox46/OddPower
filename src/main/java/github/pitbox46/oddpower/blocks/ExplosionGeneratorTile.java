@@ -12,12 +12,16 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class ExplosionGeneratorTile extends TileEntity implements ITickableTileEntity {
+    private static final Logger LOGGER = LogManager.getLogger();
+
     private OddPowerEnergy energyStorage = createEnergy();
     private LazyOptional<IEnergyStorage> energy = LazyOptional.of(() -> energyStorage);
 
@@ -27,8 +31,9 @@ public class ExplosionGeneratorTile extends TileEntity implements ITickableTileE
      */
     protected ArrayListMultimap<Long, Character> tickQueue = ArrayListMultimap.create();
 
-    private static final int ENERGY_CREATED = 1000;
+    private static final int MAX_TRANSFER = 1000;
     private static final int CAPACITY = 64000;
+    private static final int GENERATE = 1000;
 
     public ExplosionGeneratorTile() {
         super(Registration.EXPLOSION_GENERATOR_TILE.get());
@@ -56,7 +61,7 @@ public class ExplosionGeneratorTile extends TileEntity implements ITickableTileE
                 if (te != null) {
                     boolean doContinue = te.getCapability(CapabilityEnergy.ENERGY, direction).map(handler -> {
                                 if (handler.canReceive()) {
-                                    int received = handler.receiveEnergy(Math.min(capacity.get(), ENERGY_CREATED), false);
+                                    int received = handler.receiveEnergy(Math.min(capacity.get(), MAX_TRANSFER), false);
                                     capacity.addAndGet(-received);
                                     energyStorage.consumeEnergy(received);
                                     markDirty();
@@ -74,6 +79,11 @@ public class ExplosionGeneratorTile extends TileEntity implements ITickableTileE
         }
     }
 
+    public void generatePower(){
+        LOGGER.debug("{} energy created at ({}, {}, {})", Integer.toString(GENERATE), Integer.toString(getPos().getX()), Integer.toString(getPos().getY()), Integer.toString(getPos().getZ()));
+        energyStorage.addEnergy(GENERATE);
+    }
+
     @Override
     public void read(BlockState state, CompoundNBT tag) {
         energyStorage.deserializeNBT(tag.getCompound("energy"));
@@ -87,7 +97,7 @@ public class ExplosionGeneratorTile extends TileEntity implements ITickableTileE
     }
 
     public OddPowerEnergy createEnergy() {
-        return new OddPowerEnergy(CAPACITY, ENERGY_CREATED) {
+        return new OddPowerEnergy(CAPACITY, MAX_TRANSFER) {
             @Override
             protected void onEnergyChanged() {
                 markDirty();

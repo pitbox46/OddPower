@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "oddpower",
+  "pattern": [
+    "xxx",
+    "x#x",
+    "x%x"
+  ],
+  "key": {
+    "x": {
+      "item": "minecraft:diamond"
+    },
+    "#": {
+      "item": "minecraft:armor_stand"
+    },
+    "%": {
+      "tag": "forge:dyes/yellow"
+    }
+  },
+  "result": {
+    "item": "oddpower:dummy"
+  }
+}

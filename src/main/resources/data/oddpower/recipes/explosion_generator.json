@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "oddpower",
+  "pattern": [
+    "txt",
+    "x#x",
+    "txt"
+  ],
+  "key": {
+    "x": {
+      "item": "minecraft:iron_ingot"
+    },
+    "#": {
+      "item": "minecraft:redstone_block"
+    },
+    "t": {
+      "item": "minecraft:tnt"
+    }
+  },
+  "result": {
+    "item": "oddpower:explosion_generator"
+  }
+}

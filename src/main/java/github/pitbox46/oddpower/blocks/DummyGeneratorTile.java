@@ -19,12 +19,16 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class DummyGeneratorTile extends TileEntity implements ITickableTileEntity {
+    private static final Logger LOGGER = LogManager.getLogger();
+
     private OddPowerEnergy energyStorage = createEnergy();
     private LazyOptional<IEnergyStorage> energy = LazyOptional.of(() -> energyStorage);
 
@@ -36,6 +40,7 @@ public class DummyGeneratorTile extends TileEntity implements ITickableTileEntit
 
     private static final int MAX_TRANSFER = 1000;
     private static final int CAPACITY = 64000;
+    private static final int GENERATE = 1000;
 
     public DummyGeneratorTile() {
         super(Registration.DUMMY_GENERATOR_TILE.get());
@@ -64,8 +69,9 @@ public class DummyGeneratorTile extends TileEntity implements ITickableTileEntit
         sendOutPower();
     }
 
-    public void dummyDies(){
-        energyStorage.addEnergy(1000);
+    public void generatePower(){
+        LOGGER.debug("{} energy created at ({}, {}, {})", Integer.toString(GENERATE), Integer.toString(getPos().getX()), Integer.toString(getPos().getY()), Integer.toString(getPos().getZ()));
+        energyStorage.addEnergy(GENERATE);
         BlockState blockState = world.getBlockState(pos);
         world.setBlockState(pos, blockState.with(BlockStateProperties.POWERED, true),
                 Constants.BlockFlags.NOTIFY_NEIGHBORS + Constants.BlockFlags.BLOCK_UPDATE);
@@ -81,7 +87,7 @@ public class DummyGeneratorTile extends TileEntity implements ITickableTileEntit
         dummyEntity.setLocationAndAngles(dummyEntity.getPosX(), dummyEntity.getPosY(), dummyEntity.getPosZ(), 0.0F, 0.0F);
         dummyEntity.rotationYawHead = dummyEntity.rotationYaw;
         dummyEntity.renderYawOffset = dummyEntity.rotationYaw;
-        world.addEntity(dummyEntity);
+        //world.addEntity(dummyEntity);
         world.playSound(null, dummyEntity.getPosX(), dummyEntity.getPosY(), dummyEntity.getPosZ(), SoundEvents.ENTITY_ARMOR_STAND_PLACE, SoundCategory.BLOCKS, 0.75F, 0.8F);
     }
 

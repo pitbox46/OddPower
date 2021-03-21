@@ -1,0 +1,32 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "oddpower",
+  "pattern": [
+    "axb",
+    "x#x",
+    "cxd"
+  ],
+  "key": {
+    "x": {
+      "item": "minecraft:iron_ingot"
+    },
+    "#": {
+      "item": "minecraft:redstone_block"
+    },
+    "a": {
+      "item": "minecraft:rotten_flesh"
+    },
+    "b": {
+      "item": "minecraft:bone"
+    },
+    "c": {
+      "item": "minecraft:gun_powder"
+    },
+    "d": {
+      "item": "minecraft:string"
+    }
+  },
+  "result": {
+    "item": "oddpower:dummy_generator"
+  }
+}

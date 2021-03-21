@@ -59,7 +59,7 @@ public class DummyItem extends Item {
                     dummyEntity.setLocationAndAngles(dummyEntity.getPosX(), dummyEntity.getPosY(), dummyEntity.getPosZ(), f, 0.0F);
                     dummyEntity.rotationYawHead = dummyEntity.rotationYaw;
                     dummyEntity.renderYawOffset = dummyEntity.rotationYaw;
-                    world.addEntity(dummyEntity);
+                    //world.addEntity(dummyEntity);
                     world.playSound((PlayerEntity)null, dummyEntity.getPosX(), dummyEntity.getPosY(), dummyEntity.getPosZ(), SoundEvents.ENTITY_ARMOR_STAND_PLACE, SoundCategory.BLOCKS, 0.75F, 0.8F);
                 }
 
