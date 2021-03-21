@@ -1,4 +1,4 @@
-#Odd Power
+#OddPower
 
 Odd power is meant to be a simple mod that adds a handful of non-conventional ways to generate Minecraft power. 
 
