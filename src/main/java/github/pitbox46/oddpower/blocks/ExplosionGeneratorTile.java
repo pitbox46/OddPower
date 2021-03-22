@@ -1,6 +1,5 @@
 package github.pitbox46.oddpower.blocks;
 
-import com.google.common.collect.ArrayListMultimap;
 import github.pitbox46.oddpower.setup.Registration;
 import github.pitbox46.oddpower.tools.OddPowerEnergy;
 import net.minecraft.block.BlockState;
@@ -8,7 +7,6 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
@@ -26,12 +24,6 @@ public class ExplosionGeneratorTile extends TileEntity implements ITickableTileE
 
     private OddPowerEnergy energyStorage = createEnergy();
     private LazyOptional<IEnergyStorage> energy = LazyOptional.of(() -> energyStorage);
-
-    /**
-     * This mutlimap represents an array of actions (Character) that correspond with a given tick (Long).
-     * Allows for easy scheduling based on ticks.
-     */
-    protected ArrayListMultimap<Long, Character> tickQueue = ArrayListMultimap.create();
 
     private static final int MAX_TRANSFER = 1000;
     private static final int CAPACITY = 64000;
@@ -84,6 +76,8 @@ public class ExplosionGeneratorTile extends TileEntity implements ITickableTileE
 
     /**
      * Called on explosion event. Nullifies damage and generates energy if the generator hasn't been active for COOLDOWN ticks
+     *
+     * @return Boolean based on if the generator can generate power
      */
     public boolean onExplosion(ExplosionEvent.Detonate detonateEvent) {
         if(world.getGameTime() - previousGeneration >= COOLDOWN) {
@@ -98,8 +92,9 @@ public class ExplosionGeneratorTile extends TileEntity implements ITickableTileE
     }
 
     public void generatePower(int power){
-        LOGGER.debug("{} energy created at ({}, {}, {})", Integer.toString(power), Integer.toString(getPos().getX()), Integer.toString(getPos().getY()), Integer.toString(getPos().getZ()));
-        energyStorage.addEnergy(power);
+        int remainingCapacity = energyStorage.getMaxEnergyStored() - energyStorage.getEnergyStored();
+        energyStorage.addEnergy(Math.min(power, remainingCapacity));
+        LOGGER.debug("{} energy created at ({}, {}, {})", Integer.toString(Math.min(power, remainingCapacity)), Integer.toString(getPos().getX()), Integer.toString(getPos().getY()), Integer.toString(getPos().getZ()));
     }
 
     @Override
@@ -119,6 +114,11 @@ public class ExplosionGeneratorTile extends TileEntity implements ITickableTileE
             @Override
             protected void onEnergyChanged() {
                 markDirty();
+            }
+
+            @Override
+            public boolean canReceive() {
+                return false;
             }
         };
     }

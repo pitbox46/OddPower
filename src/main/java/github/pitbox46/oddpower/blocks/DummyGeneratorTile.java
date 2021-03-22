@@ -69,14 +69,15 @@ public class DummyGeneratorTile extends TileEntity implements ITickableTileEntit
     }
 
     public void generatePower(int power){
-        LOGGER.debug("{} energy created at ({}, {}, {})", Integer.toString(power), Integer.toString(getPos().getX()), Integer.toString(getPos().getY()), Integer.toString(getPos().getZ()));
-        energyStorage.addEnergy(power);
+        int remainingCapacity = energyStorage.getMaxEnergyStored() - energyStorage.getEnergyStored();
+        energyStorage.addEnergy(Math.min(power, remainingCapacity));
         BlockState blockState = world.getBlockState(pos);
         world.setBlockState(pos, blockState.with(BlockStateProperties.POWERED, true),
                 Constants.BlockFlags.NOTIFY_NEIGHBORS + Constants.BlockFlags.BLOCK_UPDATE);
         if(!tickQueue.containsValue('a')) { //Prevents multiple dummies from being queued at once
             tickQueue.put(world.getGameTime() + 20, 'a');
         }
+        LOGGER.debug("{} energy created at ({}, {}, {})", Integer.toString(Math.min(power, remainingCapacity)), Integer.toString(getPos().getX()), Integer.toString(getPos().getY()), Integer.toString(getPos().getZ()));
     }
 
     protected void spawnNewDummy(){
@@ -133,6 +134,11 @@ public class DummyGeneratorTile extends TileEntity implements ITickableTileEntit
             @Override
             protected void onEnergyChanged() {
                 markDirty();
+            }
+
+            @Override
+            public boolean canReceive() {
+                return false;
             }
         };
     }
