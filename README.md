@@ -6,3 +6,5 @@ Current features include:
 - Dummy that mobs attack
 - Dummy Generator that creates power every time the dummy above it dies
 - Explosion Generator that creates power when an explosion occurs (has a cooldown)
+
+[Curseforge Page](https://www.curseforge.com/minecraft/mc-mods/odd-power)
