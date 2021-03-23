@@ -15,7 +15,6 @@ apply plugin: 'maven-publish'
 
 repositories {
     maven { //JEI
-        //name = "Progwm16 maven"
         url = "https://dvs1.progwml6.com/files/maven/"
     }
     maven { // The One Probe
@@ -24,8 +23,8 @@ repositories {
     }
 }
 
-version = '1.0'
-group = 'com.yourname.oddpower' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+version = '1.16.5-1.0.1'
+group = 'github.pitbox46.oddpower' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'oddpower'
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.

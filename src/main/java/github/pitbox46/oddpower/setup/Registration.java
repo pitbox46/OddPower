@@ -26,6 +26,8 @@ import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import static net.minecraft.state.properties.BlockStateProperties.POWERED;
+
 public class Registration {
     private static final Logger LOGGER = LogManager.getLogger();
 
