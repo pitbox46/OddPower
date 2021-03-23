@@ -12,10 +12,12 @@ import javax.annotation.Nullable;
 
 import static net.minecraft.state.properties.BlockStateProperties.POWERED;
 
+import net.minecraft.block.AbstractBlock.Properties;
+
 public class DummyGenerator extends Block {
     public DummyGenerator() {
-        super(Properties.create(Material.IRON).sound(SoundType.METAL).hardnessAndResistance(2.0f));
-        this.setDefaultState(this.getStateContainer().getBaseState().with(POWERED, false));
+        super(Properties.of(Material.METAL).sound(SoundType.METAL).strength(2.0f));
+        this.registerDefaultState(this.getStateDefinition().any().setValue(POWERED, false));
     }
 
     @Override
@@ -30,7 +32,7 @@ public class DummyGenerator extends Block {
     }
 
     @Override
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
         builder.add(POWERED);
     }
 }

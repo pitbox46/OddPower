@@ -35,14 +35,14 @@ public class ExplosionGeneratorTile extends TileEntity implements ITickableTileE
     }
 
     @Override
-    public void remove() {
-        super.remove();
+    public void setRemoved() {
+        super.setRemoved();
         energy.invalidate();
     }
 
     @Override
     public void tick() {
-        if(world.isRemote) {
+        if(level.isClientSide) {
             return;
         }
         sendOutPower();
@@ -52,14 +52,14 @@ public class ExplosionGeneratorTile extends TileEntity implements ITickableTileE
         AtomicInteger capacity = new AtomicInteger(energyStorage.getEnergyStored());
         if (capacity.get() > 0) {
             for (Direction direction : Direction.values()) {
-                TileEntity te = world.getTileEntity(pos.offset(direction));
+                TileEntity te = level.getBlockEntity(worldPosition.relative(direction));
                 if (te != null) {
                     boolean doContinue = te.getCapability(CapabilityEnergy.ENERGY, direction).map(handler -> {
                                 if (handler.canReceive()) {
                                     int received = handler.receiveEnergy(Math.min(capacity.get(), MAX_TRANSFER), false);
                                     capacity.addAndGet(-received);
                                     energyStorage.consumeEnergy(received);
-                                    markDirty();
+                                    setChanged();
                                     return capacity.get() > 0;
                                 } else {
                                     return true;
@@ -80,12 +80,12 @@ public class ExplosionGeneratorTile extends TileEntity implements ITickableTileE
      * @return Boolean based on if the generator can generate power
      */
     public boolean onExplosion(ExplosionEvent.Detonate detonateEvent) {
-        if(world.getGameTime() - previousGeneration >= COOLDOWN) {
+        if(level.getGameTime() - previousGeneration >= COOLDOWN) {
             int power = detonateEvent.getAffectedBlocks().size() * 20;
             generatePower(power);
             detonateEvent.getAffectedBlocks().clear();
             detonateEvent.getAffectedEntities().clear();
-            previousGeneration = world.getGameTime();
+            previousGeneration = level.getGameTime();
             return true;
         }
         return false;
@@ -94,26 +94,26 @@ public class ExplosionGeneratorTile extends TileEntity implements ITickableTileE
     public void generatePower(int power){
         int remainingCapacity = energyStorage.getMaxEnergyStored() - energyStorage.getEnergyStored();
         energyStorage.addEnergy(Math.min(power, remainingCapacity));
-        LOGGER.debug("{} energy created at ({}, {}, {})", Integer.toString(Math.min(power, remainingCapacity)), Integer.toString(getPos().getX()), Integer.toString(getPos().getY()), Integer.toString(getPos().getZ()));
+        LOGGER.debug("{} energy created at ({}, {}, {})", Integer.toString(Math.min(power, remainingCapacity)), Integer.toString(getBlockPos().getX()), Integer.toString(getBlockPos().getY()), Integer.toString(getBlockPos().getZ()));
     }
 
     @Override
-    public void read(BlockState state, CompoundNBT tag) {
+    public void load(BlockState state, CompoundNBT tag) {
         energyStorage.deserializeNBT(tag.getCompound("energy"));
-        super.read(state, tag);
+        super.load(state, tag);
     }
 
     @Override
-    public CompoundNBT write(CompoundNBT tag) {
+    public CompoundNBT save(CompoundNBT tag) {
         tag.put("energy", energyStorage.serializeNBT());
-        return super.write(tag);
+        return super.save(tag);
     }
 
     public OddPowerEnergy createEnergy() {
         return new OddPowerEnergy(CAPACITY, MAX_TRANSFER) {
             @Override
             protected void onEnergyChanged() {
-                markDirty();
+                setChanged();
             }
 
             @Override

@@ -46,22 +46,22 @@ public class DummyGeneratorTile extends TileEntity implements ITickableTileEntit
     }
 
     @Override
-    public void remove() {
-        super.remove();
+    public void setRemoved() {
+        super.setRemoved();
         energy.invalidate();
     }
 
     @Override
     public void tick() {
-        if(world.isRemote) {
+        if(level.isClientSide) {
             return;
         }
-        BlockState blockState = world.getBlockState(pos);
+        BlockState blockState = level.getBlockState(worldPosition);
         //First condition checks to see if the method should be called on this tick
-        if(tickQueue.containsEntry(world.getGameTime(), 'a') && world instanceof ServerWorld) {
+        if(tickQueue.containsEntry(level.getGameTime(), 'a') && level instanceof ServerWorld) {
             spawnNewDummy();
-            tickQueue.remove(world.getGameTime(), 'a');
-            world.setBlockState(pos, blockState.with(BlockStateProperties.POWERED, false),
+            tickQueue.remove(level.getGameTime(), 'a');
+            level.setBlock(worldPosition, blockState.setValue(BlockStateProperties.POWERED, false),
                     Constants.BlockFlags.NOTIFY_NEIGHBORS + Constants.BlockFlags.BLOCK_UPDATE);
         }
 
@@ -71,38 +71,38 @@ public class DummyGeneratorTile extends TileEntity implements ITickableTileEntit
     public void generatePower(int power){
         int remainingCapacity = energyStorage.getMaxEnergyStored() - energyStorage.getEnergyStored();
         energyStorage.addEnergy(Math.min(power, remainingCapacity));
-        BlockState blockState = world.getBlockState(pos);
-        world.setBlockState(pos, blockState.with(BlockStateProperties.POWERED, true),
+        BlockState blockState = level.getBlockState(worldPosition);
+        level.setBlock(worldPosition, blockState.setValue(BlockStateProperties.POWERED, true),
                 Constants.BlockFlags.NOTIFY_NEIGHBORS + Constants.BlockFlags.BLOCK_UPDATE);
         if(!tickQueue.containsValue('a')) { //Prevents multiple dummies from being queued at once
-            tickQueue.put(world.getGameTime() + 20, 'a');
+            tickQueue.put(level.getGameTime() + 20, 'a');
         }
-        LOGGER.debug("{} energy created at ({}, {}, {})", Integer.toString(Math.min(power, remainingCapacity)), Integer.toString(getPos().getX()), Integer.toString(getPos().getY()), Integer.toString(getPos().getZ()));
+        LOGGER.debug("{} energy created at ({}, {}, {})", Integer.toString(Math.min(power, remainingCapacity)), Integer.toString(getBlockPos().getX()), Integer.toString(getBlockPos().getY()), Integer.toString(getBlockPos().getZ()));
     }
 
     protected void spawnNewDummy(){
-        ServerWorld serverworld = (ServerWorld)world;
-        DummyEntity dummyEntity = Registration.DUMMY.get().create(serverworld, null, null, null, getPos(), SpawnReason.DISPENSER, true, true);
-        serverworld.func_242417_l(dummyEntity);
-        dummyEntity.setLocationAndAngles(dummyEntity.getPosX(), dummyEntity.getPosY(), dummyEntity.getPosZ(), 0.0F, 0.0F);
-        dummyEntity.rotationYawHead = dummyEntity.rotationYaw;
-        dummyEntity.renderYawOffset = dummyEntity.rotationYaw;
+        ServerWorld serverworld = (ServerWorld)level;
+        DummyEntity dummyEntity = Registration.DUMMY.get().create(serverworld, null, null, null, getBlockPos(), SpawnReason.DISPENSER, true, true);
+        serverworld.addFreshEntityWithPassengers(dummyEntity);
+        dummyEntity.moveTo(dummyEntity.getX(), dummyEntity.getY(), dummyEntity.getZ(), 0.0F, 0.0F);
+        dummyEntity.yHeadRot = dummyEntity.yRot;
+        dummyEntity.yBodyRot = dummyEntity.yRot;
         //world.addEntity(dummyEntity);
-        world.playSound(null, dummyEntity.getPosX(), dummyEntity.getPosY(), dummyEntity.getPosZ(), SoundEvents.ENTITY_ARMOR_STAND_PLACE, SoundCategory.BLOCKS, 0.75F, 0.8F);
+        level.playSound(null, dummyEntity.getX(), dummyEntity.getY(), dummyEntity.getZ(), SoundEvents.ARMOR_STAND_PLACE, SoundCategory.BLOCKS, 0.75F, 0.8F);
     }
 
     private void sendOutPower() {
         AtomicInteger capacity = new AtomicInteger(energyStorage.getEnergyStored());
         if (capacity.get() > 0) {
             for (Direction direction : Direction.values()) {
-                TileEntity te = world.getTileEntity(pos.offset(direction));
+                TileEntity te = level.getBlockEntity(worldPosition.relative(direction));
                 if (te != null) {
                     boolean doContinue = te.getCapability(CapabilityEnergy.ENERGY, direction).map(handler -> {
                                 if (handler.canReceive()) {
                                     int received = handler.receiveEnergy(Math.min(capacity.get(), MAX_TRANSFER), false);
                                     capacity.addAndGet(-received);
                                     energyStorage.consumeEnergy(received);
-                                    markDirty();
+                                    setChanged();
                                     return capacity.get() > 0;
                                 } else {
                                     return true;
@@ -118,22 +118,22 @@ public class DummyGeneratorTile extends TileEntity implements ITickableTileEntit
     }
 
     @Override
-    public void read(BlockState state, CompoundNBT tag) {
+    public void load(BlockState state, CompoundNBT tag) {
         energyStorage.deserializeNBT(tag.getCompound("energy"));
-        super.read(state, tag);
+        super.load(state, tag);
     }
 
     @Override
-    public CompoundNBT write(CompoundNBT tag) {
+    public CompoundNBT save(CompoundNBT tag) {
         tag.put("energy", energyStorage.serializeNBT());
-        return super.write(tag);
+        return super.save(tag);
     }
 
     private OddPowerEnergy createEnergy() {
         return new OddPowerEnergy(CAPACITY, MAX_TRANSFER) {
             @Override
             protected void onEnergyChanged() {
-                markDirty();
+                setChanged();
             }
 
             @Override

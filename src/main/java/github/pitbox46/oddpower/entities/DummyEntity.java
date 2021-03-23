@@ -21,52 +21,52 @@ public class DummyEntity extends MobEntity {
     //Todo: Make sure that this doesn't actually do anything so it can be removed
     public DummyEntity(World worldIn, double posX, double posY, double posZ) {
         this(Registration.DUMMY.get(), worldIn);
-        this.setPosition(posX, posY, posZ);
+        this.setPos(posX, posY, posZ);
     }
 
     public DummyEntity(EntityType<? extends DummyEntity> entityType, World world) {
         super(entityType, world);
-        this.stepHeight = 0.0F;
+        this.maxUpStep = 0.0F;
     }
 
     public static AttributeModifierMap.MutableAttribute registerAttributes() {
-         return LivingEntity.registerAttributes()
-                 .createMutableAttribute(Attributes.MAX_HEALTH, 20.0D)
-                 .createMutableAttribute(Attributes.ATTACK_DAMAGE, 0.0D)
-                 .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.0D)
-                 .createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 1.0D)
-                 .createMutableAttribute(Attributes.FOLLOW_RANGE, 0.0D);
+         return LivingEntity.createLivingAttributes()
+                 .add(Attributes.MAX_HEALTH, 20.0D)
+                 .add(Attributes.ATTACK_DAMAGE, 0.0D)
+                 .add(Attributes.MOVEMENT_SPEED, 0.0D)
+                 .add(Attributes.KNOCKBACK_RESISTANCE, 1.0D)
+                 .add(Attributes.FOLLOW_RANGE, 0.0D);
     }
 
     @Override
-    public boolean isPushedByWater() {
+    public boolean isPushedByFluid() {
         return false;
     }
 
     @Override
-    public boolean canBePushed() {
+    public boolean isPushable() {
         return false;
     }
 
     @Override
-    protected void collideWithEntity(Entity entityIn) {
+    protected void doPush(Entity entityIn) {
         //Do nothing on collision
     }
 
     @Override
-    public void onDeath(DamageSource cause) {
-        TileEntity tileEntity = world.getTileEntity(getPosition().down());
+    public void die(DamageSource cause) {
+        TileEntity tileEntity = level.getBlockEntity(blockPosition().below());
         if(tileEntity instanceof DummyGeneratorTile){
             ((DummyGeneratorTile) tileEntity).generatePower(1000);
         }
-        super.onDeath(cause);
+        super.die(cause);
     }
 
     @Override
-    public ActionResultType applyPlayerInteraction(PlayerEntity player, Vector3d vec, Hand hand) {
-        if(!world.isRemote() && player.isSneaking() && player.getHeldItem(hand) == ItemStack.EMPTY) {
+    public ActionResultType interactAt(PlayerEntity player, Vector3d vec, Hand hand) {
+        if(!level.isClientSide() && player.isShiftKeyDown() && player.getItemInHand(hand) == ItemStack.EMPTY) {
             remove();
-            player.setHeldItem(Hand.MAIN_HAND, new ItemStack(Registration.DUMMY_ITEM.get(), 1));
+            player.setItemInHand(Hand.MAIN_HAND, new ItemStack(Registration.DUMMY_ITEM.get(), 1));
             return ActionResultType.SUCCESS;
         }
         return ActionResultType.PASS;

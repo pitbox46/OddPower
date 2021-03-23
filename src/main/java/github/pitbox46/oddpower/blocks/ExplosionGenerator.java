@@ -9,9 +9,11 @@ import net.minecraft.world.IBlockReader;
 
 import javax.annotation.Nullable;
 
+import net.minecraft.block.AbstractBlock.Properties;
+
 public class ExplosionGenerator extends Block {
     public ExplosionGenerator() {
-        super(Properties.create(Material.IRON).sound(SoundType.METAL).hardnessAndResistance(2.0f));
+        super(Properties.of(Material.METAL).sound(SoundType.METAL).strength(2.0f));
     }
 
     @Override

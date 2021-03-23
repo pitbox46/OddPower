@@ -23,29 +23,29 @@ import java.util.List;
 
 public class DummyItem extends Item {
     public DummyItem() {
-        super(new Item.Properties().group(ItemGroup.COMBAT));
+        super(new Item.Properties().tab(ItemGroup.TAB_COMBAT));
     }
 
     @Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        super.addInformation(stack, worldIn, tooltip, flagIn);
+    public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+        super.appendHoverText(stack, worldIn, tooltip, flagIn);
     }
 
     @Override
-    public ActionResultType onItemUse(ItemUseContext context) {
-        Direction direction = context.getFace();
+    public ActionResultType useOn(ItemUseContext context) {
+        Direction direction = context.getClickedFace();
         if (direction == Direction.DOWN) {
             return ActionResultType.FAIL;
         } else {
-            World world = context.getWorld();
+            World world = context.getLevel();
             BlockItemUseContext blockitemusecontext = new BlockItemUseContext(context);
-            BlockPos blockpos = blockitemusecontext.getPos();
-            ItemStack itemstack = context.getItem();
-            Vector3d vector3d = Vector3d.copyCenteredHorizontally(blockpos);
-            AxisAlignedBB axisalignedbb = Registration.DUMMY.get().getSize().func_242285_a(vector3d.getX(), vector3d.getY(), vector3d.getZ());
-            if (world.hasNoCollisions((Entity)null, axisalignedbb, (entity) -> {
+            BlockPos blockpos = blockitemusecontext.getClickedPos();
+            ItemStack itemstack = context.getItemInHand();
+            Vector3d vector3d = Vector3d.atBottomCenterOf(blockpos);
+            AxisAlignedBB axisalignedbb = Registration.DUMMY.get().getDimensions().makeBoundingBox(vector3d.x(), vector3d.y(), vector3d.z());
+            if (world.noCollision((Entity)null, axisalignedbb, (entity) -> {
                 return true;
-            }) && world.getEntitiesWithinAABBExcludingEntity((Entity)null, axisalignedbb).isEmpty()) {
+            }) && world.getEntities((Entity)null, axisalignedbb).isEmpty()) {
                 if (world instanceof ServerWorld) {
                     ServerWorld serverworld = (ServerWorld)world;
                     DummyEntity dummyEntity = Registration.DUMMY.get().create(serverworld, itemstack.getTag(), null, context.getPlayer(), blockpos, SpawnReason.SPAWN_EGG, true, true);
@@ -53,17 +53,17 @@ public class DummyItem extends Item {
                         return ActionResultType.FAIL;
                     }
 
-                    serverworld.func_242417_l(dummyEntity);
-                    float f = (float)(Math.round(context.getPlacementYaw()/45) * 45 + 180);
-                    dummyEntity.setLocationAndAngles(dummyEntity.getPosX(), dummyEntity.getPosY(), dummyEntity.getPosZ(), f, 0.0F);
-                    dummyEntity.rotationYawHead = dummyEntity.rotationYaw;
-                    dummyEntity.renderYawOffset = dummyEntity.rotationYaw;
+                    serverworld.addFreshEntityWithPassengers(dummyEntity);
+                    float f = (float)(Math.round(context.getRotation()/45) * 45 + 180);
+                    dummyEntity.moveTo(dummyEntity.getX(), dummyEntity.getY(), dummyEntity.getZ(), f, 0.0F);
+                    dummyEntity.yHeadRot = dummyEntity.yRot;
+                    dummyEntity.yBodyRot = dummyEntity.yRot;
                     //world.addEntity(dummyEntity);
-                    world.playSound((PlayerEntity)null, dummyEntity.getPosX(), dummyEntity.getPosY(), dummyEntity.getPosZ(), SoundEvents.ENTITY_ARMOR_STAND_PLACE, SoundCategory.BLOCKS, 0.75F, 0.8F);
+                    world.playSound((PlayerEntity)null, dummyEntity.getX(), dummyEntity.getY(), dummyEntity.getZ(), SoundEvents.ARMOR_STAND_PLACE, SoundCategory.BLOCKS, 0.75F, 0.8F);
                 }
 
                 itemstack.shrink(1);
-                return ActionResultType.func_233537_a_(world.isRemote);
+                return ActionResultType.sidedSuccess(world.isClientSide);
             } else {
                 return ActionResultType.FAIL;
             }

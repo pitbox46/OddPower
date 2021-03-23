@@ -52,18 +52,18 @@ public class Registration {
     //Todo add tooltip for stored energy for item blocks
     public static final RegistryObject<DummyGenerator> DUMMY_GENERATOR = BLOCKS.register("dummy_generator", DummyGenerator::new);
     public static final RegistryObject<TileEntityType<DummyGeneratorTile>> DUMMY_GENERATOR_TILE = TILE_ENTITIES.register("dummy_generator_tile",
-            () -> TileEntityType.Builder.create(DummyGeneratorTile::new, DUMMY_GENERATOR.get()).build(null));
+            () -> TileEntityType.Builder.of(DummyGeneratorTile::new, DUMMY_GENERATOR.get()).build(null));
     public static final RegistryObject<BlockItem> DUMMY_GENERATOR_ITEM = ITEMS.register("dummy_generator",
-            () -> new BlockItem(DUMMY_GENERATOR.get(), new Item.Properties().group(ItemGroup.COMBAT)));
+            () -> new BlockItem(DUMMY_GENERATOR.get(), new Item.Properties().tab(ItemGroup.TAB_COMBAT)));
 
     public static final RegistryObject<ExplosionGenerator> EXPLOSION_GENERATOR = BLOCKS.register("explosion_generator", ExplosionGenerator::new);
     public static final RegistryObject<TileEntityType<ExplosionGeneratorTile>> EXPLOSION_GENERATOR_TILE = TILE_ENTITIES.register("explosion_generator_tile",
-            () -> TileEntityType.Builder.create(ExplosionGeneratorTile::new, EXPLOSION_GENERATOR.get()).build(null));
+            () -> TileEntityType.Builder.of(ExplosionGeneratorTile::new, EXPLOSION_GENERATOR.get()).build(null));
     public static final RegistryObject<BlockItem> EXPLOSION_GENERATOR_ITEM = ITEMS.register("explosion_generator",
-            () -> new BlockItem(EXPLOSION_GENERATOR.get(), new Item.Properties().group(ItemGroup.COMBAT)));
+            () -> new BlockItem(EXPLOSION_GENERATOR.get(), new Item.Properties().tab(ItemGroup.TAB_COMBAT)));
 
     public static final RegistryObject<EntityType<DummyEntity>> DUMMY = ENTITIES.register("dummy",
-            () -> EntityType.Builder.<DummyEntity>create(DummyEntity::new, EntityClassification.MISC)
-                    .size(0.5F, 2.0F).trackingRange(10).build("dummy"));
+            () -> EntityType.Builder.<DummyEntity>of(DummyEntity::new, EntityClassification.MISC)
+                    .sized(0.5F, 2.0F).clientTrackingRange(10).build("dummy"));
     public static final RegistryObject<DummyItem> DUMMY_ITEM = ITEMS.register("dummy", DummyItem::new);
 }
