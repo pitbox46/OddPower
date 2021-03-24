@@ -32,8 +32,8 @@ public class ForgeEventHandlers {
     @SubscribeEvent
     public void onExplosionEvent(ExplosionEvent.Detonate detonateEvent){
         for(BlockPos pos: detonateEvent.getAffectedBlocks()){
-            if(detonateEvent.getWorld().getBlockEntity(pos) instanceof ExplosionGeneratorTile &&
-                    ((ExplosionGeneratorTile) detonateEvent.getWorld().getBlockEntity(pos)).onExplosion(detonateEvent)) {
+            if(detonateEvent.getWorld().getTileEntity(pos) instanceof ExplosionGeneratorTile &&
+                    ((ExplosionGeneratorTile) detonateEvent.getWorld().getTileEntity(pos)).onExplosion(detonateEvent)) {
                 break;
             }
         }

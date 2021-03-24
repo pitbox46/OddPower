@@ -19,7 +19,7 @@ public class DummyRenderer extends BipedRenderer<DummyEntity, DummyModel> {
 
     @Nullable
     @Override
-    public ResourceLocation getTextureLocation(DummyEntity entity) {
+    public ResourceLocation getEntityTexture(DummyEntity entity) {
         return TEXTURE;
     }
 }

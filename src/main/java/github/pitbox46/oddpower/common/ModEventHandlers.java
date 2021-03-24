@@ -12,6 +12,6 @@ public class ModEventHandlers {
 
     @SubscribeEvent
     public void registerEntityAttributes(EntityAttributeCreationEvent event) {
-        event.put(Registration.DUMMY.get(), DummyEntity.registerAttributes().build());
+        event.put(Registration.DUMMY.get(), DummyEntity.registerAttributes().create());
     }
 }
