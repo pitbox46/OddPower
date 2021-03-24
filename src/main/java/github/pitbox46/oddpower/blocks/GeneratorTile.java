@@ -12,6 +12,9 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -19,7 +22,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public abstract class GeneratorTile extends TileEntity implements ITickableTileEntity {
     protected OddPowerEnergy energyStorage = createEnergy();
+    protected ItemStackHandler itemHandler = (ItemStackHandler) createHandler();
+
     protected LazyOptional<IEnergyStorage> energy = LazyOptional.of(() -> energyStorage);
+    protected LazyOptional<IItemHandler> handler = LazyOptional.of(this::createHandler);
 
     public GeneratorTile(TileEntityType<?> tileEntityType) {
         super(tileEntityType);
@@ -79,12 +85,14 @@ public abstract class GeneratorTile extends TileEntity implements ITickableTileE
     @Override
     public void read(BlockState state, CompoundNBT tag) {
         energyStorage.deserializeNBT(tag.getCompound("energy"));
+        itemHandler.deserializeNBT(tag.getCompound("inv"));
         super.read(state, tag);
     }
 
     @Override
     public CompoundNBT write(CompoundNBT tag) {
         tag.put("energy", energyStorage.serializeNBT());
+        tag.put("inv", itemHandler.serializeNBT());
         return super.write(tag);
     }
 
@@ -102,11 +110,23 @@ public abstract class GeneratorTile extends TileEntity implements ITickableTileE
         };
     }
 
+    private IItemHandler createHandler() {
+        return new ItemStackHandler(3) {
+            @Override
+            protected void onContentsChanged(int slot) {
+                markDirty();
+            }
+        };
+    }
+
     @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
         if (cap == CapabilityEnergy.ENERGY) {
             return energy.cast();
+        }
+        if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+            return handler.cast();
         }
         return super.getCapability(cap, side);
     }

@@ -1,10 +1,7 @@
 package github.pitbox46.oddpower.setup;
 
 import github.pitbox46.oddpower.OddPower;
-import github.pitbox46.oddpower.blocks.DummyGenerator;
-import github.pitbox46.oddpower.blocks.DummyGeneratorTile;
-import github.pitbox46.oddpower.blocks.ExplosionGenerator;
-import github.pitbox46.oddpower.blocks.ExplosionGeneratorTile;
+import github.pitbox46.oddpower.blocks.*;
 import github.pitbox46.oddpower.common.DummyItem;
 import github.pitbox46.oddpower.common.ForgeEventHandlers;
 import github.pitbox46.oddpower.common.ModEventHandlers;
@@ -17,7 +14,10 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.extensions.IForgeContainerType;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -48,6 +48,13 @@ public class Registration {
         LOGGER.debug("Hello from OddPower Registration");
     }
     //Todo add tooltip for stored energy for item blocks
+    public static final RegistryObject<ContainerType<GenericGeneratorContainer>> DUMMY_GENERATOR_CONTAINER = CONTAINERS.register("dummy_generator",
+            () -> IForgeContainerType.create((windowID, inv, data) ->
+                    new GenericGeneratorContainer(Registration.DUMMY_GENERATOR_CONTAINER.get(), windowID, data.readBlockPos(), inv, Registration.DUMMY_GENERATOR.get())));
+    public static final RegistryObject<ContainerType<GenericGeneratorContainer>> EXPLOSION_GENERATOR_CONTAINER = CONTAINERS.register("explosion_generator",
+            () -> IForgeContainerType.create((windowID, inv, data) ->
+                    new GenericGeneratorContainer(Registration.EXPLOSION_GENERATOR_CONTAINER.get(), windowID, data.readBlockPos(), inv, Registration.EXPLOSION_GENERATOR.get())));
+
     public static final RegistryObject<DummyGenerator> DUMMY_GENERATOR = BLOCKS.register("dummy_generator", DummyGenerator::new);
     public static final RegistryObject<TileEntityType<DummyGeneratorTile>> DUMMY_GENERATOR_TILE = TILE_ENTITIES.register("dummy_generator_tile",
             () -> TileEntityType.Builder.create(DummyGeneratorTile::new, DUMMY_GENERATOR.get()).build(null));

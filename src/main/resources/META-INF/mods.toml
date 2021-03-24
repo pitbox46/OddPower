@@ -31,7 +31,7 @@ displayURL="https://github.com/pitbox46/OddPower" #optional
 # A text field displayed in the mod UI
 # credits="Thanks for this example mod goes to Java" #optional
 # A text field displayed in the mod UI
-authors="pitbox46" #optional
+authors="pitbox46 (Coding) and frikinjay1 (Artist)" #optional
 # The description text for the mod (multi line!) (#mandatory)
 description='''
 Adds several odd ways to generate power!

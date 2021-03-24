@@ -2,5 +2,7 @@
   "item.oddpower.dummy": "Dummy",
   "entity.oddpower.dummy": "Dummy",
   "block.oddpower.dummy_generator": "Dummy Generator",
-  "block.oddpower.explosion_generator": "Explosion Generator"
+  "block.oddpower.explosion_generator": "Explosion Generator",
+  "screen.oddpower.dummy_generator": "Dummy Generator",
+  "screen.oddpower.explosion_generator": "Explosion Generator"
 }

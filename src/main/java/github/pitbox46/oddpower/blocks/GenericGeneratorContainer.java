@@ -25,12 +25,12 @@ import net.minecraftforge.items.wrapper.InvWrapper;
 
 import javax.annotation.Nullable;
 
-public class GeneratorContainer extends Container {
+public class GenericGeneratorContainer extends Container {
     protected TileEntity tileEntity;
     protected PlayerEntity playerEntity;
     protected IItemHandler playerInventory;
     protected Block block;
-    protected int addedSlots;
+    protected int addedSlots = 3;
 
     /**
      *
@@ -43,18 +43,24 @@ public class GeneratorContainer extends Container {
      * @param block Registration object for associated block
      * @param addedSlots How many slots that should be added besides player inventory
      */
-    protected GeneratorContainer(@Nullable ContainerType<?> type, int id, World world, BlockPos blockPos, PlayerInventory playerInventory, PlayerEntity playerEntity, Block block, int addedSlots) {
+    public GenericGeneratorContainer(@Nullable ContainerType<?> type, int id, BlockPos blockPos, PlayerInventory playerInventory, Block block) {
         super(type, id);
-        this.tileEntity = world.getTileEntity(blockPos);
-        this.playerEntity = playerEntity;
+        this.playerEntity = playerInventory.player;
         this.playerInventory = new InvWrapper(playerInventory);
+        this.tileEntity = playerEntity.getEntityWorld().getTileEntity(blockPos);
         this.block = block;
-        this.addedSlots = addedSlots;
-        layoutPlayerInventorySlots(10, 70);
+        if (tileEntity != null) {
+            tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
+                addSlot(new SlotItemHandler(h, 0, 107, 13));
+                addSlot(new SlotItemHandler(h, 1, 107, 13+18));
+                addSlot(new SlotItemHandler(h, 2, 107, 13+36));
+            });
+        }
+        layoutPlayerInventorySlots(8, 81);
         trackPower();
     }
 
-    // Displays power contained in generator
+    // Gets power contained in generator. Credit to McJty
     private void trackPower() {
         // Unfortunately on a dedicated server ints are actually truncated to short so we need
         // to split our integer here (split our 32 bit integer into two 16 bit integers)
@@ -92,9 +98,55 @@ public class GeneratorContainer extends Container {
         return tileEntity.getCapability(CapabilityEnergy.ENERGY).map(IEnergyStorage::getEnergyStored).orElse(0);
     }
 
+    public int getMaxEnergy() {
+        return tileEntity.getCapability(CapabilityEnergy.ENERGY).map(IEnergyStorage::getMaxEnergyStored).orElse(0);
+    }
+
     @Override
     public boolean canInteractWith(PlayerEntity playerIn) {
         return isWithinUsableDistance(IWorldPosCallable.of(tileEntity.getWorld(), tileEntity.getPos()), playerEntity, block);
+    }
+
+    @Override
+    public ItemStack transferStackInSlot(PlayerEntity playerIn, int index) {
+        ItemStack itemstack = ItemStack.EMPTY;
+        Slot slot = this.inventorySlots.get(index);
+        if (slot != null && slot.getHasStack()) {
+            ItemStack stack = slot.getStack();
+            itemstack = stack.copy();
+            if (index == 0) {
+                if (!this.mergeItemStack(stack, 1, 37, true)) {
+                    return ItemStack.EMPTY;
+                }
+                slot.onSlotChange(stack, itemstack);
+            } else {
+                if (stack.getItem() == Items.DIAMOND) {//Todo: Change this
+                    if (!this.mergeItemStack(stack, 0, 1, false)) {
+                        return ItemStack.EMPTY;
+                    }
+                } else if (index < 28) {
+                    if (!this.mergeItemStack(stack, 28, 37, false)) {
+                        return ItemStack.EMPTY;
+                    }
+                } else if (index < 37 && !this.mergeItemStack(stack, 1, 28, false)) {
+                    return ItemStack.EMPTY;
+                }
+            }
+
+            if (stack.isEmpty()) {
+                slot.putStack(ItemStack.EMPTY);
+            } else {
+                slot.onSlotChanged();
+            }
+
+            if (stack.getCount() == itemstack.getCount()) {
+                return ItemStack.EMPTY;
+            }
+
+            slot.onTake(playerIn, stack);
+        }
+
+        return itemstack;
     }
 
     private int addSlotRange(IItemHandler handler, int index, int x, int y, int amount, int dx) {
