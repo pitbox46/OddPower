@@ -31,9 +31,10 @@ public class GenericGeneratorScreen extends ContainerScreen<GenericGeneratorCont
     @Override
     protected void drawGuiContainerForegroundLayer(MatrixStack matrixStack, int x, int y) {
         int barHeight = Math.floorDiv(container.getEnergy() * 52, container.getMaxEnergy());
-        fill(matrixStack, 53, 65-barHeight, 69, 65, ColorHelper.PackedColor.packColor(255, 232, 72, 72));
+        drawEnergyBar(matrixStack, 53, 13, 69, 65);
+
         int guiX = x - getGuiLeft(), guiY = y - getGuiTop();
-        if(53 <= guiX && guiX <= 69 && 13 <= guiY && guiY <= 65) {
+        if(53 <= guiX && guiX <= 69 && 13 <= guiY && guiY <= 65) {// Tooltip to display specific amount of power when hovering over bar
             renderTooltip(matrixStack, new StringTextComponent(Integer.toString(container.getEnergy()) + " FE"), guiX, guiY);
         }
     }
@@ -47,8 +48,27 @@ public class GenericGeneratorScreen extends ContainerScreen<GenericGeneratorCont
         this.blit(matrixStack, relX, relY, 0, 0, this.xSize, this.ySize);
     }
 
-    @Override
-    protected void renderHoveredTooltip(MatrixStack matrixStack, int x, int y) {
-        super.renderHoveredTooltip(matrixStack, x, y);
+    /**
+     * Draws a two color bar designed for displaying energy
+     */
+    private void drawEnergyBar(MatrixStack matrixStack, int minX, int minY, int maxX, int maxY) {
+        int energyHeight = Math.floorDiv((maxY - minY) * container.getEnergy(), container.getMaxEnergy());
+
+        int color1Amount = 3;
+        int color2Amount = 2;
+        int color1 = ColorHelper.PackedColor.packColor(255, 220, 0, 0);
+        int color2 = ColorHelper.PackedColor.packColor(255, 150, 0, 0);
+
+        int i = 0;
+        boolean primaryColor = true;
+        while(i < energyHeight) {
+            if(i + (primaryColor ? color1Amount : color2Amount) > energyHeight) {
+                fill(matrixStack, minX, maxY - energyHeight, maxX, maxY - i, primaryColor ? color1 : color2);
+                break;
+            }
+            fill(matrixStack, minX, maxY - (i + (primaryColor ? color1Amount : color2Amount)), maxX, maxY - i, primaryColor ? color1 : color2);
+            i += primaryColor ? color1Amount : color2Amount;
+            primaryColor = !primaryColor;
+        }
     }
 }
