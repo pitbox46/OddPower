@@ -14,6 +14,11 @@ public class OddPowerEnergy extends EnergyStorage implements INBTSerializable<Co
 
     }
 
+    public void setMaxEnergyStored(int energy) {
+        this.capacity = energy;
+        onEnergyChanged();
+    }
+
     public void setEnergy(int energy) {
         this.energy = energy;
         onEnergyChanged();

@@ -1,18 +1,14 @@
 package github.pitbox46.oddpower.blocks;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import github.pitbox46.oddpower.OddPower;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
-import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ColorHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
 
 public class GenericGeneratorScreen extends ContainerScreen<GenericGeneratorContainer> {
     private ResourceLocation GUI = new ResourceLocation(OddPower.MOD_ID, "textures/gui/generator_gui.png");

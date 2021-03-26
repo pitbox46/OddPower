@@ -22,6 +22,12 @@ public class ExplosionGeneratorTile extends GeneratorTile {
 
     @Override
     protected int getCapacity() {
+//        int capacityUpgrades = 0;
+//        for(int i = 0; i <= 2; i++) {// Checks for Capacity Upgrades
+//            if(itemHandler.getStackInSlot(i) != ItemStack.EMPTY && itemHandler.getStackInSlot(i).getItem() == Registration.CAPACITY_UPGRADE.get()) {
+//                capacityUpgrades++;
+//            }
+//        }
         return 64000;
     }
 
@@ -53,9 +59,8 @@ public class ExplosionGeneratorTile extends GeneratorTile {
         return false;
     }
 
+    @Override
     public void generatePower(int power){
-        int remainingCapacity = energyStorage.getMaxEnergyStored() - energyStorage.getEnergyStored();
-        energyStorage.addEnergy(Math.min(power, remainingCapacity));
-        LOGGER.debug("{} energy created at ({}, {}, {})", Integer.toString(Math.min(power, remainingCapacity)), Integer.toString(getPos().getX()), Integer.toString(getPos().getY()), Integer.toString(getPos().getZ()));
+        super.generatePower(power);
     }
 }

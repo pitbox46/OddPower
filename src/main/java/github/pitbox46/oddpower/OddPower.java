@@ -3,6 +3,8 @@ package github.pitbox46.oddpower;
 import github.pitbox46.oddpower.setup.ClientSetup;
 import github.pitbox46.oddpower.setup.Registration;
 import net.minecraft.block.Block;
+import net.minecraft.item.ItemGroup;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -23,6 +25,12 @@ public class OddPower
     public static final String MOD_ID = "oddpower";
     // Directly reference a log4j logger.
     private static final Logger LOGGER = LogManager.getLogger();
+
+    public static ItemGroup MOD_TAB = new ItemGroup("oddpower") {
+        public ItemStack createIcon() {
+            return new ItemStack(Registration.DUMMY_ITEM.get());
+        }
+    };
 
     public OddPower() {
         Registration.init();

@@ -1,8 +1,13 @@
 {
+  "itemGroup.oddpower": "Odd Power",
   "item.oddpower.dummy": "Dummy",
   "entity.oddpower.dummy": "Dummy",
   "block.oddpower.dummy_generator": "Dummy Generator",
   "block.oddpower.explosion_generator": "Explosion Generator",
   "screen.oddpower.dummy_generator": "Dummy Generator",
-  "screen.oddpower.explosion_generator": "Explosion Generator"
+  "screen.oddpower.explosion_generator": "Explosion Generator",
+  "item.oddpower.capacity_upgrade": "Capacity Upgrade",
+  "item.oddpower.capacity_upgrade.desc": "Upgrades machine capacity by 2x",
+  "item.oddpower.production_upgrade": "Production Upgrade",
+  "item.oddpower.production_upgrade.desc": "Upgrades machine energy production by 2x"
 }

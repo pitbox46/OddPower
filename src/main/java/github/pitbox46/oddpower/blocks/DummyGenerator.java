@@ -1,7 +1,6 @@
 package github.pitbox46.oddpower.blocks;
 
 import github.pitbox46.oddpower.setup.Registration;
-import jdk.nashorn.internal.ir.annotations.Ignore;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;

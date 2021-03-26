@@ -1,4 +1,4 @@
-package github.pitbox46.oddpower.common;
+package github.pitbox46.oddpower.items;
 
 import github.pitbox46.oddpower.entities.DummyEntity;
 import github.pitbox46.oddpower.setup.Registration;
@@ -6,7 +6,10 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.*;
+import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUseContext;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.SoundCategory;
@@ -22,8 +25,8 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 public class DummyItem extends Item {
-    public DummyItem() {
-        super(new Item.Properties().group(ItemGroup.COMBAT));
+    public DummyItem(Properties properties) {
+        super(properties);
     }
 
     @Override

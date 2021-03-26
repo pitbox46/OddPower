@@ -2,20 +2,18 @@ package github.pitbox46.oddpower.setup;
 
 import github.pitbox46.oddpower.OddPower;
 import github.pitbox46.oddpower.blocks.*;
-import github.pitbox46.oddpower.common.DummyItem;
 import github.pitbox46.oddpower.common.ForgeEventHandlers;
 import github.pitbox46.oddpower.common.ModEventHandlers;
 import github.pitbox46.oddpower.entities.DummyEntity;
+import github.pitbox46.oddpower.items.DummyItem;
+import github.pitbox46.oddpower.items.UpgradeItem;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
 import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.extensions.IForgeContainerType;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -48,27 +46,33 @@ public class Registration {
         LOGGER.debug("Hello from OddPower Registration");
     }
     //Todo add tooltip for stored energy for item blocks
-    public static final RegistryObject<ContainerType<GenericGeneratorContainer>> DUMMY_GENERATOR_CONTAINER = CONTAINERS.register("dummy_generator",
-            () -> IForgeContainerType.create((windowID, inv, data) ->
-                    new GenericGeneratorContainer(Registration.DUMMY_GENERATOR_CONTAINER.get(), windowID, data.readBlockPos(), inv, Registration.DUMMY_GENERATOR.get())));
-    public static final RegistryObject<ContainerType<GenericGeneratorContainer>> EXPLOSION_GENERATOR_CONTAINER = CONTAINERS.register("explosion_generator",
-            () -> IForgeContainerType.create((windowID, inv, data) ->
-                    new GenericGeneratorContainer(Registration.EXPLOSION_GENERATOR_CONTAINER.get(), windowID, data.readBlockPos(), inv, Registration.EXPLOSION_GENERATOR.get())));
-
+    //Dummy Generator
     public static final RegistryObject<DummyGenerator> DUMMY_GENERATOR = BLOCKS.register("dummy_generator", DummyGenerator::new);
     public static final RegistryObject<TileEntityType<DummyGeneratorTile>> DUMMY_GENERATOR_TILE = TILE_ENTITIES.register("dummy_generator_tile",
             () -> TileEntityType.Builder.create(DummyGeneratorTile::new, DUMMY_GENERATOR.get()).build(null));
     public static final RegistryObject<BlockItem> DUMMY_GENERATOR_ITEM = ITEMS.register("dummy_generator",
-            () -> new BlockItem(DUMMY_GENERATOR.get(), new Item.Properties().group(ItemGroup.COMBAT)));
-
+            () -> new BlockItem(DUMMY_GENERATOR.get(), new Item.Properties().group(OddPower.MOD_TAB)));
+    public static final RegistryObject<ContainerType<GenericGeneratorContainer>> DUMMY_GENERATOR_CONTAINER = CONTAINERS.register("dummy_generator",
+            () -> IForgeContainerType.create((windowID, inv, data) ->
+                    new GenericGeneratorContainer(Registration.DUMMY_GENERATOR_CONTAINER.get(), windowID, data.readBlockPos(), inv, Registration.DUMMY_GENERATOR.get())));
+    //Explosion Generator
     public static final RegistryObject<ExplosionGenerator> EXPLOSION_GENERATOR = BLOCKS.register("explosion_generator", ExplosionGenerator::new);
     public static final RegistryObject<TileEntityType<ExplosionGeneratorTile>> EXPLOSION_GENERATOR_TILE = TILE_ENTITIES.register("explosion_generator_tile",
             () -> TileEntityType.Builder.create(ExplosionGeneratorTile::new, EXPLOSION_GENERATOR.get()).build(null));
     public static final RegistryObject<BlockItem> EXPLOSION_GENERATOR_ITEM = ITEMS.register("explosion_generator",
-            () -> new BlockItem(EXPLOSION_GENERATOR.get(), new Item.Properties().group(ItemGroup.COMBAT)));
-
+            () -> new BlockItem(EXPLOSION_GENERATOR.get(), new Item.Properties().group(OddPower.MOD_TAB)));
+    public static final RegistryObject<ContainerType<GenericGeneratorContainer>> EXPLOSION_GENERATOR_CONTAINER = CONTAINERS.register("explosion_generator",
+            () -> IForgeContainerType.create((windowID, inv, data) ->
+                    new GenericGeneratorContainer(Registration.EXPLOSION_GENERATOR_CONTAINER.get(), windowID, data.readBlockPos(), inv, Registration.EXPLOSION_GENERATOR.get())));
+    //Dummy
     public static final RegistryObject<EntityType<DummyEntity>> DUMMY = ENTITIES.register("dummy",
             () -> EntityType.Builder.<DummyEntity>create(DummyEntity::new, EntityClassification.MISC)
                     .size(0.5F, 2.0F).trackingRange(10).build("dummy"));
-    public static final RegistryObject<DummyItem> DUMMY_ITEM = ITEMS.register("dummy", DummyItem::new);
+    public static final RegistryObject<DummyItem> DUMMY_ITEM = ITEMS.register("dummy",
+            () -> new DummyItem(new Item.Properties().group(OddPower.MOD_TAB)));
+    //Upgrade Items
+    public static final RegistryObject<UpgradeItem> CAPACITY_UPGRADE = ITEMS.register("capacity_upgrade",
+            () -> new UpgradeItem(new Item.Properties().group(OddPower.MOD_TAB)));
+    public static final RegistryObject<UpgradeItem> PRODUCTION_UPGRADE = ITEMS.register("production_upgrade",
+            () -> new UpgradeItem(new Item.Properties().group(OddPower.MOD_TAB)));
 }

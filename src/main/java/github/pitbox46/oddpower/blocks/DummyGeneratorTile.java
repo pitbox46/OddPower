@@ -26,6 +26,12 @@ public class DummyGeneratorTile extends GeneratorTile {
 
     @Override
     protected int getCapacity() {
+//        int capacityUpgrades = 0;
+//        for(int i = 0; i <= 2; i++) {// Checks for Capacity Upgrades
+//            if(itemHandler.getStackInSlot(i) != ItemStack.EMPTY && itemHandler.getStackInSlot(i).getItem() == Registration.CAPACITY_UPGRADE.get()) {
+//                capacityUpgrades++;
+//            }
+//        }
         return 64000;
     }
 
@@ -46,16 +52,16 @@ public class DummyGeneratorTile extends GeneratorTile {
         sendOutPower();
     }
 
+    @Override
     public void generatePower(int power){
-        int remainingCapacity = energyStorage.getMaxEnergyStored() - energyStorage.getEnergyStored();
-        energyStorage.addEnergy(Math.min(power, remainingCapacity));
+        super.generatePower(power);
+
         BlockState blockState = world.getBlockState(pos);
         world.setBlockState(pos, blockState.with(BlockStateProperties.POWERED, true),
                 Constants.BlockFlags.NOTIFY_NEIGHBORS + Constants.BlockFlags.BLOCK_UPDATE);
         if(!tickQueue.containsValue('a')) { //Prevents multiple dummies from being queued at once
             tickQueue.put(world.getGameTime() + 20, 'a');
         }
-        LOGGER.debug("{} energy created at ({}, {}, {})", Integer.toString(Math.min(power, remainingCapacity)), Integer.toString(getPos().getX()), Integer.toString(getPos().getY()), Integer.toString(getPos().getZ()));
     }
 
     protected void spawnNewDummy(){

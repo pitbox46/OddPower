@@ -1,21 +1,18 @@
 package github.pitbox46.oddpower.blocks;
 
-import github.pitbox46.oddpower.setup.Registration;
+import github.pitbox46.oddpower.items.UpgradeItem;
 import github.pitbox46.oddpower.tools.OddPowerEnergy;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IWorldPosCallable;
 import net.minecraft.util.IntReferenceHolder;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -30,7 +27,6 @@ public class GenericGeneratorContainer extends Container {
     protected PlayerEntity playerEntity;
     protected IItemHandler playerInventory;
     protected Block block;
-    protected int addedSlots = 3;
 
     /**
      *
@@ -107,6 +103,8 @@ public class GenericGeneratorContainer extends Container {
         return isWithinUsableDistance(IWorldPosCallable.of(tileEntity.getWorld(), tileEntity.getPos()), playerEntity, block);
     }
 
+
+
     @Override
     public ItemStack transferStackInSlot(PlayerEntity playerIn, int index) {
         ItemStack itemstack = ItemStack.EMPTY;
@@ -114,21 +112,21 @@ public class GenericGeneratorContainer extends Container {
         if (slot != null && slot.getHasStack()) {
             ItemStack stack = slot.getStack();
             itemstack = stack.copy();
-            if (index == 0) {
-                if (!this.mergeItemStack(stack, 1, 37, true)) {
+            if (index <= 3) {
+                if (!this.mergeItemStack(stack, 3, 39, true)) {
                     return ItemStack.EMPTY;
                 }
                 slot.onSlotChange(stack, itemstack);
             } else {
-                if (stack.getItem() == Items.DIAMOND) {//Todo: Change this
-                    if (!this.mergeItemStack(stack, 0, 1, false)) {
+                if (stack.getItem() instanceof UpgradeItem) {
+                    if (!this.mergeItemStack(stack, 0, 3, false)) {
                         return ItemStack.EMPTY;
                     }
-                } else if (index < 28) {
-                    if (!this.mergeItemStack(stack, 28, 37, false)) {
+                } else if (index < 30) {
+                    if (!this.mergeItemStack(stack, 30, 39, false)) {
                         return ItemStack.EMPTY;
                     }
-                } else if (index < 37 && !this.mergeItemStack(stack, 1, 28, false)) {
+                } else if (index < 39 && !this.mergeItemStack(stack, 3, 30, false)) {
                     return ItemStack.EMPTY;
                 }
             }
@@ -168,10 +166,10 @@ public class GenericGeneratorContainer extends Container {
 
     private void layoutPlayerInventorySlots(int leftCol, int topRow) {
         // Player inventory
-        addSlotBox(playerInventory, addedSlots + 8, leftCol, topRow, 9, 18, 3, 18);
+        addSlotBox(playerInventory, 9, leftCol, topRow, 9, 18, 3, 18);
 
         // Hotbar
         topRow += 58;
-        addSlotRange(playerInventory, addedSlots - 1, leftCol, topRow, 9, 18);
+        addSlotRange(playerInventory, 0, leftCol, topRow, 9, 18);
     }
 }

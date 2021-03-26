@@ -19,10 +19,10 @@ import net.minecraft.world.World;
 
 public class DummyEntity extends MobEntity {
     //Todo: Make sure that this doesn't actually do anything so it can be removed
-    public DummyEntity(World worldIn, double posX, double posY, double posZ) {
-        this(Registration.DUMMY.get(), worldIn);
-        this.setPosition(posX, posY, posZ);
-    }
+//    public DummyEntity(World worldIn, double posX, double posY, double posZ) {
+//        this(Registration.DUMMY.get(), worldIn);
+//        this.setPosition(posX, posY, posZ);
+//    }
 
     public DummyEntity(EntityType<? extends DummyEntity> entityType, World world) {
         super(entityType, world);

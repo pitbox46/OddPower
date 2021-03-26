@@ -1,8 +1,11 @@
 package github.pitbox46.oddpower.blocks;
 
 import com.google.common.collect.ArrayListMultimap;
+import github.pitbox46.oddpower.items.UpgradeItem;
+import github.pitbox46.oddpower.setup.Registration;
 import github.pitbox46.oddpower.tools.OddPowerEnergy;
 import net.minecraft.block.BlockState;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
@@ -15,17 +18,21 @@ import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public abstract class GeneratorTile extends TileEntity implements ITickableTileEntity {
+    private static final Logger LOGGER = LogManager.getLogger();
+
     protected OddPowerEnergy energyStorage = createEnergy();
     protected ItemStackHandler itemHandler = (ItemStackHandler) createHandler();
 
     protected LazyOptional<IEnergyStorage> energy = LazyOptional.of(() -> energyStorage);
-    protected LazyOptional<IItemHandler> handler = LazyOptional.of(this::createHandler);
+    protected LazyOptional<IItemHandler> handler = LazyOptional.of(() -> itemHandler);
 
     public GeneratorTile(TileEntityType<?> tileEntityType) {
         super(tileEntityType);
@@ -54,8 +61,6 @@ public abstract class GeneratorTile extends TileEntity implements ITickableTileE
         sendOutPower();
     }
 
-    public abstract void generatePower(int power);
-
     protected void sendOutPower() {
         AtomicInteger capacity = new AtomicInteger(energyStorage.getEnergyStored());
         if (capacity.get() > 0) {
@@ -80,6 +85,27 @@ public abstract class GeneratorTile extends TileEntity implements ITickableTileE
                 }
             }
         }
+    }
+
+    public void generatePower(int power){
+        int productionUpgrades = 0;
+        for(int i = 0; i <= 2; i++) {// Checks for Production Upgrades
+            if(itemHandler.getStackInSlot(i).getItem() == Registration.PRODUCTION_UPGRADE.get()) {
+                productionUpgrades++;
+            }
+        }
+        int remainingCapacity = energyStorage.getMaxEnergyStored() - energyStorage.getEnergyStored();
+        int producedPower = Math.min(power + (productionUpgrades * power), remainingCapacity);
+        energyStorage.addEnergy(producedPower);
+        LOGGER.debug("{} energy created at ({}, {}, {})", Integer.toString(producedPower), Integer.toString(getPos().getX()), Integer.toString(getPos().getY()), Integer.toString(getPos().getZ()));
+    }
+
+    @Override
+    public void markDirty() {
+        if (energyStorage.getEnergyStored() > energyStorage.getMaxEnergyStored()){
+            energyStorage.setEnergy(energyStorage.getMaxEnergyStored());
+        }
+        super.markDirty();
     }
 
     @Override
@@ -114,7 +140,25 @@ public abstract class GeneratorTile extends TileEntity implements ITickableTileE
         return new ItemStackHandler(3) {
             @Override
             protected void onContentsChanged(int slot) {
+                int capacityUpgrades = 0;
+                for(int i = 0; i <= 2; i++) {// Checks for Capacity Upgrades
+                    if(itemHandler.getStackInSlot(i) != ItemStack.EMPTY && itemHandler.getStackInSlot(i).getItem() == Registration.CAPACITY_UPGRADE.get()) {
+                        capacityUpgrades++;
+                    }
+                }
+                energyStorage.setMaxEnergyStored(getCapacity() + getCapacity() * capacityUpgrades);
                 markDirty();
+            }
+
+            @Override
+            public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
+                return stack.getItem() instanceof UpgradeItem;
+            }
+
+            @Nonnull
+            @Override
+            public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
+                return stack.getItem() instanceof UpgradeItem ? super.insertItem(slot, stack, simulate) : stack;
             }
         };
     }
