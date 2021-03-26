@@ -23,7 +23,7 @@ repositories {
     }
 }
 
-version = '1.16.5-1.0.2'
+version = '1.16.5-1.0.3'
 group = 'github.pitbox46.oddpower' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'oddpower'
 

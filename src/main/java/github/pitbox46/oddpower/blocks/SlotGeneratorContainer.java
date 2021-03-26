@@ -1,6 +1,7 @@
 package github.pitbox46.oddpower.blocks;
 
 import github.pitbox46.oddpower.items.UpgradeItem;
+import github.pitbox46.oddpower.setup.Registration;
 import github.pitbox46.oddpower.tools.OddPowerEnergy;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
@@ -22,7 +23,7 @@ import net.minecraftforge.items.wrapper.InvWrapper;
 
 import javax.annotation.Nullable;
 
-public class GenericGeneratorContainer extends Container {
+public class SlotGeneratorContainer extends Container {
     protected TileEntity tileEntity;
     protected PlayerEntity playerEntity;
     protected IItemHandler playerInventory;
@@ -35,7 +36,7 @@ public class GenericGeneratorContainer extends Container {
      * @param playerInventory PlayerInventory
      * @param block Registration object for associated block
      */
-    public GenericGeneratorContainer(@Nullable ContainerType<?> type, int id, BlockPos blockPos, PlayerInventory playerInventory, Block block) {
+    public SlotGeneratorContainer(@Nullable ContainerType<?> type, int id, BlockPos blockPos, PlayerInventory playerInventory, Block block) {
         super(type, id);
         this.playerEntity = playerInventory.player;
         this.playerInventory = new InvWrapper(playerInventory);
@@ -46,6 +47,7 @@ public class GenericGeneratorContainer extends Container {
                 addSlot(new SlotItemHandler(h, 0, 107, 13));
                 addSlot(new SlotItemHandler(h, 1, 107, 13+18));
                 addSlot(new SlotItemHandler(h, 2, 107, 13+36));
+                addSlot(new SlotItemHandler(h, 3, 80, 31));
             });
         }
         layoutPlayerInventorySlots(8, 81);
@@ -99,8 +101,6 @@ public class GenericGeneratorContainer extends Container {
         return isWithinUsableDistance(IWorldPosCallable.of(tileEntity.getWorld(), tileEntity.getPos()), playerEntity, block);
     }
 
-
-
     @Override
     public ItemStack transferStackInSlot(PlayerEntity playerIn, int index) {
         ItemStack itemstack = ItemStack.EMPTY;
@@ -108,8 +108,8 @@ public class GenericGeneratorContainer extends Container {
         if (slot != null && slot.getHasStack()) {
             ItemStack stack = slot.getStack();
             itemstack = stack.copy();
-            if (index <= 2) {
-                if (!this.mergeItemStack(stack, 3, 39, true)) {
+            if (index <= 3) {
+                if (!this.mergeItemStack(stack, 4, 40, true)) {
                     return ItemStack.EMPTY;
                 }
                 slot.onSlotChange(stack, itemstack);
@@ -118,11 +118,15 @@ public class GenericGeneratorContainer extends Container {
                     if (!this.mergeItemStack(stack, 0, 3, false)) {
                         return ItemStack.EMPTY;
                     }
-                } else if (index < 30) {
-                    if (!this.mergeItemStack(stack, 30, 39, false)) {
+                } else if (stack.getItem() == Registration.DUMMY_ITEM.get()) {
+                    if (!this.mergeItemStack(stack, 3, 4, false)) {
                         return ItemStack.EMPTY;
                     }
-                } else if (index < 39 && !this.mergeItemStack(stack, 3, 30, false)) {
+                } else if (index < 31) {
+                    if (!this.mergeItemStack(stack, 31, 40, false)) {
+                        return ItemStack.EMPTY;
+                    }
+                } else if (index < 40 && !this.mergeItemStack(stack, 4, 31, false)) {
                     return ItemStack.EMPTY;
                 }
             }

@@ -2,25 +2,22 @@
   "type": "minecraft:crafting_shaped",
   "group": "oddpower",
   "pattern": [
-    "x$x",
-    " # ",
+    "x%x",
+    "%#%",
     "x%x"
   ],
   "key": {
     "x": {
-      "item": "minecraft:stick"
+      "item": "minecraft:diamond"
     },
     "#": {
-      "item": "minecraft:hay_block"
+      "item": "minecraft:sugar"
     },
     "%": {
       "item": "minecraft:iron_ingot"
-    },
-    "$": {
-      "item": "minecraft:string"
     }
   },
   "result": {
-    "item": "oddpower:dummy"
+    "item": "oddpower:production_upgrade"
   }
 }

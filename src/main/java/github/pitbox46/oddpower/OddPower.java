@@ -1,6 +1,7 @@
 package github.pitbox46.oddpower;
 
 import github.pitbox46.oddpower.setup.ClientSetup;
+import github.pitbox46.oddpower.setup.Config;
 import github.pitbox46.oddpower.setup.Registration;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemGroup;
@@ -8,7 +9,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
@@ -33,6 +36,10 @@ public class OddPower
     };
 
     public OddPower() {
+        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, Config.CLIENT_CONFIG);
+        ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, Config.SERVER_CONFIG);
+
+
         Registration.init();
         FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientSetup::init);
         // Register the setup method for modloading

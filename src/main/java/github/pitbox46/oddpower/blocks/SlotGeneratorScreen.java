@@ -10,10 +10,10 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 
-public class GenericGeneratorScreen extends ContainerScreen<GenericGeneratorContainer> {
-    private ResourceLocation GUI = new ResourceLocation(OddPower.MOD_ID, "textures/gui/generator_gui.png");
+public class SlotGeneratorScreen extends ContainerScreen<SlotGeneratorContainer> {
+    private ResourceLocation GUI = new ResourceLocation(OddPower.MOD_ID, "textures/gui/slot_generator_gui.png");
 
-    public GenericGeneratorScreen(GenericGeneratorContainer container, PlayerInventory inv, ITextComponent name) {
+    public SlotGeneratorScreen(SlotGeneratorContainer container, PlayerInventory inv, ITextComponent name) {
         super(container, inv, name);
     }
 

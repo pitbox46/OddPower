@@ -52,9 +52,9 @@ public class Registration {
             () -> TileEntityType.Builder.create(DummyGeneratorTile::new, DUMMY_GENERATOR.get()).build(null));
     public static final RegistryObject<BlockItem> DUMMY_GENERATOR_ITEM = ITEMS.register("dummy_generator",
             () -> new BlockItem(DUMMY_GENERATOR.get(), new Item.Properties().group(OddPower.MOD_TAB)));
-    public static final RegistryObject<ContainerType<GenericGeneratorContainer>> DUMMY_GENERATOR_CONTAINER = CONTAINERS.register("dummy_generator",
+    public static final RegistryObject<ContainerType<SlotGeneratorContainer>> DUMMY_GENERATOR_CONTAINER = CONTAINERS.register("dummy_generator",
             () -> IForgeContainerType.create((windowID, inv, data) ->
-                    new GenericGeneratorContainer(Registration.DUMMY_GENERATOR_CONTAINER.get(), windowID, data.readBlockPos(), inv, Registration.DUMMY_GENERATOR.get())));
+                    new SlotGeneratorContainer(Registration.DUMMY_GENERATOR_CONTAINER.get(), windowID, data.readBlockPos(), inv, Registration.DUMMY_GENERATOR.get())));
     //Explosion Generator
     public static final RegistryObject<ExplosionGenerator> EXPLOSION_GENERATOR = BLOCKS.register("explosion_generator", ExplosionGenerator::new);
     public static final RegistryObject<TileEntityType<ExplosionGeneratorTile>> EXPLOSION_GENERATOR_TILE = TILE_ENTITIES.register("explosion_generator_tile",

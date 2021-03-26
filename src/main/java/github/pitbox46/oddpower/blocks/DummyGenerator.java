@@ -63,7 +63,7 @@ public class DummyGenerator extends Block {
                     @Nullable
                     @Override
                     public Container createMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
-                        return new GenericGeneratorContainer(Registration.DUMMY_GENERATOR_CONTAINER.get(), i, pos, playerInventory, Registration.DUMMY_GENERATOR.get());
+                        return new SlotGeneratorContainer(Registration.DUMMY_GENERATOR_CONTAINER.get(), i, pos, playerInventory, Registration.DUMMY_GENERATOR.get());
                     }
                 };
                 NetworkHooks.openGui((ServerPlayerEntity) player, containerProvider, tileEntity.getPos());

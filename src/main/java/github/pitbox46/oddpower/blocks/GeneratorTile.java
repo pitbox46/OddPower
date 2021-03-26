@@ -11,6 +11,8 @@ import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
@@ -27,6 +29,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public abstract class GeneratorTile extends TileEntity implements ITickableTileEntity {
     private static final Logger LOGGER = LogManager.getLogger();
+    /**
+     * This mutlimap represents an array of actions (Character) that correspond with a given tick (Long).
+     * Allows for easy scheduling based on ticks.
+     */
+    protected ArrayListMultimap<Long, Character> tickQueue = ArrayListMultimap.create();
+    protected long tickCount;
 
     protected OddPowerEnergy energyStorage = createEnergy();
     protected ItemStackHandler itemHandler = (ItemStackHandler) createHandler();
@@ -36,10 +44,12 @@ public abstract class GeneratorTile extends TileEntity implements ITickableTileE
 
     public GeneratorTile(TileEntityType<?> tileEntityType) {
         super(tileEntityType);
+        tickCount = 0;
     }
 
     protected abstract int getMaxTransfer();
     protected abstract int getCapacity();
+    protected abstract IItemHandler createHandler();
 
     @Override
     public void remove() {
@@ -47,11 +57,9 @@ public abstract class GeneratorTile extends TileEntity implements ITickableTileE
         energy.invalidate();
     }
 
-    /**
-     * This mutlimap represents an array of actions (Character) that correspond with a given tick (Long).
-     * Allows for easy scheduling based on ticks.
-     */
-    protected ArrayListMultimap<Long, Character> tickQueue = ArrayListMultimap.create();
+    public long getTickCount() {
+        return tickCount;
+    }
 
     @Override
     public void tick() {
@@ -59,6 +67,7 @@ public abstract class GeneratorTile extends TileEntity implements ITickableTileE
             return;
         }
         sendOutPower();
+        tickCount++;
     }
 
     protected void sendOutPower() {
@@ -132,33 +141,6 @@ public abstract class GeneratorTile extends TileEntity implements ITickableTileE
             @Override
             public boolean canReceive() {
                 return false;
-            }
-        };
-    }
-
-    private IItemHandler createHandler() {
-        return new ItemStackHandler(3) {
-            @Override
-            protected void onContentsChanged(int slot) {
-                int capacityUpgrades = 0;
-                for(int i = 0; i <= 2; i++) {// Checks for Capacity Upgrades
-                    if(itemHandler.getStackInSlot(i) != ItemStack.EMPTY && itemHandler.getStackInSlot(i).getItem() == Registration.CAPACITY_UPGRADE.get()) {
-                        capacityUpgrades++;
-                    }
-                }
-                energyStorage.setMaxEnergyStored(getCapacity() + getCapacity() * capacityUpgrades);
-                markDirty();
-            }
-
-            @Override
-            public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-                return stack.getItem() instanceof UpgradeItem;
-            }
-
-            @Nonnull
-            @Override
-            public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
-                return stack.getItem() instanceof UpgradeItem ? super.insertItem(slot, stack, simulate) : stack;
             }
         };
     }
