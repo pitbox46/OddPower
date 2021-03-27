@@ -1,8 +1,7 @@
-package github.pitbox46.oddpower.blocks;
+package github.pitbox46.oddpower.gui;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
-import github.pitbox46.oddpower.OddPower;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ColorHelper;
@@ -10,11 +9,12 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 
-public class GenericGeneratorScreen extends ContainerScreen<GenericGeneratorContainer> {
-    private ResourceLocation GUI = new ResourceLocation(OddPower.MOD_ID, "textures/gui/generator_gui.png");
+public class GeneratorScreen<T extends AbstractGeneratorContainer> extends ContainerScreen<T> {
+    private final ResourceLocation GUI;
 
-    public GenericGeneratorScreen(GenericGeneratorContainer container, PlayerInventory inv, ITextComponent name) {
+    public GeneratorScreen(T container, PlayerInventory inv, ITextComponent name, ResourceLocation texture) {
         super(container, inv, name);
+        GUI = texture;
     }
 
     @Override
@@ -30,7 +30,7 @@ public class GenericGeneratorScreen extends ContainerScreen<GenericGeneratorCont
 
         int guiX = x - getGuiLeft(), guiY = y - getGuiTop();
         if(53 <= guiX && guiX <= 69 && 13 <= guiY && guiY <= 65) {// Tooltip to display specific amount of power when hovering over bar
-            renderTooltip(matrixStack, new StringTextComponent(Integer.toString(container.getEnergy()) + " FE"), guiX, guiY);
+            renderTooltip(matrixStack, new StringTextComponent(container.getEnergy() + " FE"), guiX, guiY);
         }
     }
 

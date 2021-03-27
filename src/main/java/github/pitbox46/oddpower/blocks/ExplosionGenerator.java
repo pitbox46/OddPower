@@ -1,6 +1,8 @@
 package github.pitbox46.oddpower.blocks;
 
+import github.pitbox46.oddpower.gui.SlotlessGeneratorContainer;
 import github.pitbox46.oddpower.setup.Registration;
+import github.pitbox46.oddpower.tiles.ExplosionGeneratorTile;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
@@ -54,7 +56,7 @@ public class ExplosionGenerator extends Block {
                     @Nullable
                     @Override
                     public Container createMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
-                        return new GenericGeneratorContainer(Registration.EXPLOSION_GENERATOR_CONTAINER.get(), i, pos, playerInventory, Registration.EXPLOSION_GENERATOR.get());
+                        return new SlotlessGeneratorContainer(Registration.EXPLOSION_GENERATOR_CONTAINER.get(), i, pos, playerInventory, Registration.EXPLOSION_GENERATOR.get());
                     }
                 };
                 NetworkHooks.openGui((ServerPlayerEntity) player, containerProvider, tileEntity.getPos());

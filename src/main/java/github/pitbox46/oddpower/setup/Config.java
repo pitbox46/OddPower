@@ -20,6 +20,10 @@ public class Config {
     public static ForgeConfigSpec.IntValue EXPLOSION_GENERATE;
     public static ForgeConfigSpec.IntValue EXPLOSION_TRANSFER;
     public static ForgeConfigSpec.IntValue EXPLOSION_COOLDOWN;
+    public static ForgeConfigSpec.IntValue INCINERATOR_MAXPOWER;
+    public static ForgeConfigSpec.IntValue INCINERATOR_GENERATE;
+    public static ForgeConfigSpec.IntValue INCINERATOR_TRANSFER;
+    public static ForgeConfigSpec.IntValue INCINERATOR_COOLDOWN;
 
     static {
 
@@ -33,6 +37,7 @@ public class Config {
 
         setupDummyGeneratorConfig(SERVER_BUILDER, CLIENT_BUILDER);
         setupExplosionGeneratorConfig(SERVER_BUILDER, CLIENT_BUILDER);
+        setupInceneratorGeneratorConfig(SERVER_BUILDER, CLIENT_BUILDER);
 
         SERVER_BUILDER.pop();
 
@@ -49,7 +54,7 @@ public class Config {
         DUMMY_GENERATE = SERVER_BUILDER.comment("Power generation per kill")
                 .defineInRange("generate", 2000, 0, Integer.MAX_VALUE);
         DUMMY_TRANSFER = SERVER_BUILDER.comment("Power transfer per tick")
-                .defineInRange("transfer", 100, 0, Integer.MAX_VALUE);
+                .defineInRange("transfer", 1000, 0, Integer.MAX_VALUE);
         SERVER_BUILDER.pop();
     }
 
@@ -61,9 +66,23 @@ public class Config {
         EXPLOSION_GENERATE = SERVER_BUILDER.comment("Power generation per block affected in explosion")
                 .defineInRange("generate", 20, 0, Integer.MAX_VALUE);
         EXPLOSION_TRANSFER = SERVER_BUILDER.comment("Power transfer per tick")
-                .defineInRange("transfer", 100, 0, Integer.MAX_VALUE);
+                .defineInRange("transfer", 1000, 0, Integer.MAX_VALUE);
         EXPLOSION_COOLDOWN = SERVER_BUILDER.comment("Cooldown in ticks")
                 .defineInRange("cooldown", 80, 0, Integer.MAX_VALUE);
+        SERVER_BUILDER.pop();
+    }
+
+    private static void setupInceneratorGeneratorConfig(ForgeConfigSpec.Builder SERVER_BUILDER, ForgeConfigSpec.Builder CLIENT_BUILDER) {
+        SERVER_BUILDER.comment("Incinerator Generator Settings").push(SUBCATEGORY_EXPLOSION);
+
+        INCINERATOR_MAXPOWER = SERVER_BUILDER.comment("Base capacity")
+                .defineInRange("maxPower", 64000, 0, Integer.MAX_VALUE);
+        INCINERATOR_GENERATE = SERVER_BUILDER.comment("Power generation per item destroyed")
+                .defineInRange("generate", 400, 0, Integer.MAX_VALUE);
+        INCINERATOR_TRANSFER = SERVER_BUILDER.comment("Power transfer per tick")
+                .defineInRange("transfer", 1000, 0, Integer.MAX_VALUE);
+        INCINERATOR_COOLDOWN = SERVER_BUILDER.comment("Time to incinerate items in ticks")
+                .defineInRange("cooldown", 20, 1, Integer.MAX_VALUE);
         SERVER_BUILDER.pop();
     }
 

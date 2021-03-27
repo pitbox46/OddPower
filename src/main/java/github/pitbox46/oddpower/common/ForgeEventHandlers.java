@@ -1,7 +1,7 @@
 package github.pitbox46.oddpower.common;
 
-import github.pitbox46.oddpower.blocks.ExplosionGeneratorTile;
 import github.pitbox46.oddpower.entities.DummyEntity;
+import github.pitbox46.oddpower.tiles.ExplosionGeneratorTile;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.monster.MonsterEntity;

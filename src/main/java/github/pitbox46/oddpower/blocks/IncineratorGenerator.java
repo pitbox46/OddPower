@@ -1,8 +1,8 @@
 package github.pitbox46.oddpower.blocks;
 
-import github.pitbox46.oddpower.gui.DummyGeneratorContainer;
+import github.pitbox46.oddpower.gui.IncineratorContainer;
 import github.pitbox46.oddpower.setup.Registration;
-import github.pitbox46.oddpower.tiles.DummyGeneratorTile;
+import github.pitbox46.oddpower.tiles.IncineratorGeneratorTile;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
@@ -12,7 +12,6 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
-import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
@@ -26,12 +25,9 @@ import net.minecraftforge.fml.network.NetworkHooks;
 
 import javax.annotation.Nullable;
 
-import static net.minecraft.state.properties.BlockStateProperties.POWERED;
-
-public class DummyGenerator extends Block {
-    public DummyGenerator() {
+public class IncineratorGenerator extends Block {
+    public IncineratorGenerator() {
         super(Properties.create(Material.IRON).sound(SoundType.METAL).hardnessAndResistance(2.0f));
-        this.setDefaultState(this.getStateContainer().getBaseState().with(POWERED, false));
     }
 
     @Override
@@ -42,12 +38,7 @@ public class DummyGenerator extends Block {
     @Nullable
     @Override
     public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-        return new DummyGeneratorTile();
-    }
-
-    @Override
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-        builder.add(POWERED);
+        return new IncineratorGeneratorTile();
     }
 
     @SuppressWarnings("deprecation")
@@ -55,17 +46,17 @@ public class DummyGenerator extends Block {
     public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
         if(!worldIn.isRemote()) {
             TileEntity tileEntity = worldIn.getTileEntity(pos);
-            if(tileEntity instanceof DummyGeneratorTile) {
+            if(tileEntity instanceof IncineratorGeneratorTile) {
                 INamedContainerProvider containerProvider = new INamedContainerProvider() {
                     @Override
                     public ITextComponent getDisplayName() {
-                        return new TranslationTextComponent("screen.oddpower.dummy_generator");
+                        return new TranslationTextComponent("screen.oddpower.incinerator_generator");
                     }
 
                     @Nullable
                     @Override
                     public Container createMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
-                        return new DummyGeneratorContainer(Registration.DUMMY_GENERATOR_CONTAINER.get(), i, pos, playerInventory, Registration.DUMMY_GENERATOR.get());
+                        return new IncineratorContainer(Registration.INCINERATOR_GENERATOR_CONTAINER.get(), i, pos, playerInventory, Registration.INCINERATOR_GENERATOR.get());
                     }
                 };
                 NetworkHooks.openGui((ServerPlayerEntity) player, containerProvider, tileEntity.getPos());

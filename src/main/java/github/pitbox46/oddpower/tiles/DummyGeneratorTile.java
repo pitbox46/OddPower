@@ -1,4 +1,4 @@
-package github.pitbox46.oddpower.blocks;
+package github.pitbox46.oddpower.tiles;
 
 import github.pitbox46.oddpower.entities.DummyEntity;
 import github.pitbox46.oddpower.items.UpgradeItem;
@@ -19,7 +19,7 @@ import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nonnull;
 
-public class DummyGeneratorTile extends GeneratorTile {
+public class DummyGeneratorTile extends AbstractGeneratorTile {
     private static final Logger LOGGER = LogManager.getLogger();
 
     public DummyGeneratorTile() {
@@ -95,8 +95,7 @@ public class DummyGeneratorTile extends GeneratorTile {
 
             @Override
             public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-                if(slot <= 2) return stack.getItem() instanceof UpgradeItem;
-                return stack.getItem() == Registration.DUMMY_ITEM.get();
+                return slot > 2 || stack.getItem() instanceof UpgradeItem;
             }
 
             @Nonnull

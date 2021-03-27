@@ -1,14 +1,11 @@
-package github.pitbox46.oddpower.blocks;
+package github.pitbox46.oddpower.gui;
 
-import github.pitbox46.oddpower.items.UpgradeItem;
-import github.pitbox46.oddpower.setup.Registration;
 import github.pitbox46.oddpower.tools.OddPowerEnergy;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.ContainerType;
-import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IWorldPosCallable;
@@ -16,14 +13,13 @@ import net.minecraft.util.IntReferenceHolder;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 
 import javax.annotation.Nullable;
 
-public class SlotGeneratorContainer extends Container {
+public abstract class AbstractGeneratorContainer extends Container {
     protected TileEntity tileEntity;
     protected PlayerEntity playerEntity;
     protected IItemHandler playerInventory;
@@ -36,21 +32,12 @@ public class SlotGeneratorContainer extends Container {
      * @param playerInventory PlayerInventory
      * @param block Registration object for associated block
      */
-    public SlotGeneratorContainer(@Nullable ContainerType<?> type, int id, BlockPos blockPos, PlayerInventory playerInventory, Block block) {
+    public AbstractGeneratorContainer(@Nullable ContainerType<?> type, int id, BlockPos blockPos, PlayerInventory playerInventory, Block block) {
         super(type, id);
         this.playerEntity = playerInventory.player;
         this.playerInventory = new InvWrapper(playerInventory);
         this.tileEntity = playerEntity.getEntityWorld().getTileEntity(blockPos);
         this.block = block;
-        if (tileEntity != null) {
-            tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
-                addSlot(new SlotItemHandler(h, 0, 107, 13));
-                addSlot(new SlotItemHandler(h, 1, 107, 13+18));
-                addSlot(new SlotItemHandler(h, 2, 107, 13+36));
-                addSlot(new SlotItemHandler(h, 3, 80, 31));
-            });
-        }
-        layoutPlayerInventorySlots(8, 81);
         trackPower();
     }
 
@@ -102,52 +89,9 @@ public class SlotGeneratorContainer extends Container {
     }
 
     @Override
-    public ItemStack transferStackInSlot(PlayerEntity playerIn, int index) {
-        ItemStack itemstack = ItemStack.EMPTY;
-        Slot slot = this.inventorySlots.get(index);
-        if (slot != null && slot.getHasStack()) {
-            ItemStack stack = slot.getStack();
-            itemstack = stack.copy();
-            if (index <= 3) {
-                if (!this.mergeItemStack(stack, 4, 40, true)) {
-                    return ItemStack.EMPTY;
-                }
-                slot.onSlotChange(stack, itemstack);
-            } else {
-                if (stack.getItem() instanceof UpgradeItem) {
-                    if (!this.mergeItemStack(stack, 0, 3, false)) {
-                        return ItemStack.EMPTY;
-                    }
-                } else if (stack.getItem() == Registration.DUMMY_ITEM.get()) {
-                    if (!this.mergeItemStack(stack, 3, 4, false)) {
-                        return ItemStack.EMPTY;
-                    }
-                } else if (index < 31) {
-                    if (!this.mergeItemStack(stack, 31, 40, false)) {
-                        return ItemStack.EMPTY;
-                    }
-                } else if (index < 40 && !this.mergeItemStack(stack, 4, 31, false)) {
-                    return ItemStack.EMPTY;
-                }
-            }
+    public abstract ItemStack transferStackInSlot(PlayerEntity playerIn, int index);
 
-            if (stack.isEmpty()) {
-                slot.putStack(ItemStack.EMPTY);
-            } else {
-                slot.onSlotChanged();
-            }
-
-            if (stack.getCount() == itemstack.getCount()) {
-                return ItemStack.EMPTY;
-            }
-
-            slot.onTake(playerIn, stack);
-        }
-
-        return itemstack;
-    }
-
-    private int addSlotRange(IItemHandler handler, int index, int x, int y, int amount, int dx) {
+    protected int addSlotRange(IItemHandler handler, int index, int x, int y, int amount, int dx) {
         for (int i = 0 ; i < amount ; i++) {
             addSlot(new SlotItemHandler(handler, index, x, y));
             x += dx;
@@ -156,7 +100,7 @@ public class SlotGeneratorContainer extends Container {
         return index;
     }
 
-    private int addSlotBox(IItemHandler handler, int index, int x, int y, int horAmount, int dx, int verAmount, int dy) {
+    protected int addSlotBox(IItemHandler handler, int index, int x, int y, int horAmount, int dx, int verAmount, int dy) {
         for (int j = 0 ; j < verAmount ; j++) {
             index = addSlotRange(handler, index, x, y, horAmount, dx);
             y += dy;
@@ -164,7 +108,7 @@ public class SlotGeneratorContainer extends Container {
         return index;
     }
 
-    private void layoutPlayerInventorySlots(int leftCol, int topRow) {
+    protected void layoutPlayerInventorySlots(int leftCol, int topRow) {
         // Player inventory
         addSlotBox(playerInventory, 9, leftCol, topRow, 9, 18, 3, 18);
 

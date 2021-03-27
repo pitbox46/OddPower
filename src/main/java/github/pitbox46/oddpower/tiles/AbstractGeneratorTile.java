@@ -1,18 +1,14 @@
-package github.pitbox46.oddpower.blocks;
+package github.pitbox46.oddpower.tiles;
 
 import com.google.common.collect.ArrayListMultimap;
-import github.pitbox46.oddpower.items.UpgradeItem;
 import github.pitbox46.oddpower.setup.Registration;
 import github.pitbox46.oddpower.tools.OddPowerEnergy;
 import net.minecraft.block.BlockState;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
@@ -27,7 +23,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public abstract class GeneratorTile extends TileEntity implements ITickableTileEntity {
+public abstract class AbstractGeneratorTile extends TileEntity implements ITickableTileEntity {
     private static final Logger LOGGER = LogManager.getLogger();
     /**
      * This mutlimap represents an array of actions (Character) that correspond with a given tick (Long).
@@ -42,7 +38,7 @@ public abstract class GeneratorTile extends TileEntity implements ITickableTileE
     protected LazyOptional<IEnergyStorage> energy = LazyOptional.of(() -> energyStorage);
     protected LazyOptional<IItemHandler> handler = LazyOptional.of(() -> itemHandler);
 
-    public GeneratorTile(TileEntityType<?> tileEntityType) {
+    public AbstractGeneratorTile(TileEntityType<?> tileEntityType) {
         super(tileEntityType);
         tickCount = 0;
     }

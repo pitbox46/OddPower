@@ -1,4 +1,4 @@
-package github.pitbox46.oddpower.blocks;
+package github.pitbox46.oddpower.tiles;
 
 import github.pitbox46.oddpower.items.UpgradeItem;
 import github.pitbox46.oddpower.setup.Config;
@@ -12,7 +12,7 @@ import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nonnull;
 
-public class ExplosionGeneratorTile extends GeneratorTile {
+public class ExplosionGeneratorTile extends AbstractGeneratorTile {
     private static final Logger LOGGER = LogManager.getLogger();
     private long previousGeneration;
 
@@ -47,15 +47,13 @@ public class ExplosionGeneratorTile extends GeneratorTile {
      * @return Boolean based on if the generator can generate power
      */
     public boolean onExplosion(ExplosionEvent.Detonate detonateEvent) {
-        if(getTickCount() - previousGeneration >= Config.EXPLOSION_COOLDOWN.get()) {
-            int power = detonateEvent.getAffectedBlocks().size() * Config.EXPLOSION_GENERATE.get();
-            generatePower(power);
-            detonateEvent.getAffectedBlocks().clear();
-            detonateEvent.getAffectedEntities().clear();
-            previousGeneration = getTickCount();
-            return true;
-        }
-        return false;
+        if(getTickCount() - previousGeneration < Config.EXPLOSION_COOLDOWN.get()) return false;
+        int power = detonateEvent.getAffectedBlocks().size() * Config.EXPLOSION_GENERATE.get();
+        generatePower(power);
+        detonateEvent.getAffectedBlocks().clear();
+        detonateEvent.getAffectedEntities().clear();
+        previousGeneration = getTickCount();
+        return true;
     }
 
     @Override
