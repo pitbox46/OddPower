@@ -26,6 +26,8 @@ public class ClientSetup {
                 (container, inv, name) -> new GeneratorScreen<>(container, inv, name, new ResourceLocation(OddPower.MOD_ID, "textures/gui/generator_gui.png")));
         ScreenManager.<IncineratorContainer, GeneratorScreen<IncineratorContainer>>registerFactory(Registration.INCINERATOR_GENERATOR_CONTAINER.get(),
                 (container, inv, name) -> new GeneratorScreen<>(container, inv, name, new ResourceLocation(OddPower.MOD_ID, "textures/gui/slot_generator_gui.png")));
+        ScreenManager.<SlotlessGeneratorContainer, GeneratorScreen<SlotlessGeneratorContainer>>registerFactory(Registration.PELTIER_GENERATOR_CONTAINER.get(),
+                (container, inv, name) -> new GeneratorScreen<>(container, inv, name, new ResourceLocation(OddPower.MOD_ID, "textures/gui/generator_gui.png")));
         LOGGER.debug(Registration.EXPLOSION_GENERATOR_CONTAINER.get());
         RenderingRegistry.registerEntityRenderingHandler(Registration.DUMMY.get(), DummyRenderer::new);
     }
