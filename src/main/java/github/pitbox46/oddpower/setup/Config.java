@@ -47,9 +47,13 @@ public class Config {
     public static ForgeConfigSpec.IntValue PELTIER_MAXPOWER;
     public static ForgeConfigSpec.IntValue PELTIER_GENERATE;
     public static ForgeConfigSpec.IntValue PELTIER_TRANSFER;
-    private static ForgeConfigSpec.ConfigValue<ArrayList<String>> TEMP_VALUES;
+    public static ForgeConfigSpec.IntValue GRAVITY_MAXPOWER;
+    public static ForgeConfigSpec.IntValue GRAVITY_GENERATE;
+    public static ForgeConfigSpec.IntValue GRAVITY_TRANSFER;
 
+    private static ForgeConfigSpec.ConfigValue<ArrayList<String>> TEMP_VALUES;
     private static final ArrayList<String> DEFAULT_TEMP_VALUES = new ArrayList<>();
+    @SuppressWarnings("unchecked")
     private static final Predicate<Object> TEMP_VALUES_VALIDATOR = (array) -> {
         if(array instanceof ArrayList<?>) {
             for (String s : (ArrayList<String>) array) {
@@ -78,6 +82,7 @@ public class Config {
         setupInceneratorConfig(SERVER_BUILDER);
         setupPeltierGeneratorConfig(SERVER_BUILDER);
         setupPeltierBlocksConfig(SERVER_BUILDER);
+        setupGravityGeneratorConfig(SERVER_BUILDER);
 
         SERVER_BUILDER.pop();
 
@@ -151,6 +156,18 @@ public class Config {
         DEFAULT_TEMP_VALUES.add("minecraft:blue_ice=-640");
 
         TEMP_VALUES = SERVER_BUILDER.comment("Temperature values. You may add your own entries").define("temp_values", DEFAULT_TEMP_VALUES, TEMP_VALUES_VALIDATOR);
+    }
+
+    private static void setupGravityGeneratorConfig(ForgeConfigSpec.Builder SERVER_BUILDER) {
+        SERVER_BUILDER.comment("Gravity Generator Settings").push(SUBCATEGORY_EXPLOSION);
+
+        GRAVITY_MAXPOWER = SERVER_BUILDER.comment("Base capacity")
+                .defineInRange("maxPower", 64000, 0, Integer.MAX_VALUE);
+        GRAVITY_GENERATE = SERVER_BUILDER.comment("Power generation multiplier")
+                .defineInRange("generate", 10, 0, Integer.MAX_VALUE);
+        GRAVITY_TRANSFER = SERVER_BUILDER.comment("Power transfer per tick")
+                .defineInRange("transfer", 1000, 0, Integer.MAX_VALUE);
+        SERVER_BUILDER.pop();
     }
 
     public static HashMap<Block, Integer> readTempArray() {

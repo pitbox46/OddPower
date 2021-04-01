@@ -1,10 +1,7 @@
 package github.pitbox46.oddpower.setup;
 
 import github.pitbox46.oddpower.OddPower;
-import github.pitbox46.oddpower.blocks.DummyGenerator;
-import github.pitbox46.oddpower.blocks.ExplosionGenerator;
-import github.pitbox46.oddpower.blocks.IncineratorGenerator;
-import github.pitbox46.oddpower.blocks.PeltierGenerator;
+import github.pitbox46.oddpower.blocks.*;
 import github.pitbox46.oddpower.common.ForgeEventHandlers;
 import github.pitbox46.oddpower.common.ModEventHandlers;
 import github.pitbox46.oddpower.entities.DummyEntity;
@@ -13,12 +10,11 @@ import github.pitbox46.oddpower.gui.IncineratorContainer;
 import github.pitbox46.oddpower.gui.SlotlessGeneratorContainer;
 import github.pitbox46.oddpower.items.DummyItem;
 import github.pitbox46.oddpower.items.UpgradeItem;
-import github.pitbox46.oddpower.tiles.DummyGeneratorTile;
-import github.pitbox46.oddpower.tiles.ExplosionGeneratorTile;
-import github.pitbox46.oddpower.tiles.IncineratorGeneratorTile;
-import github.pitbox46.oddpower.tiles.PeltierGeneratorTile;
+import github.pitbox46.oddpower.tiles.*;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.item.FallingBlockEntity;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -29,6 +25,8 @@ import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.rmi.registry.Registry;
 
 public class Registration {
     private static final Logger LOGGER = LogManager.getLogger();
@@ -74,12 +72,20 @@ public class Registration {
     //Peltier Generator
     private static final RegistrationHelper<PeltierGenerator, PeltierGeneratorTile, SlotlessGeneratorContainer> PELTIER_HELPER
             = new RegistrationHelper<>("peltier_generator", PeltierGenerator::new, PeltierGeneratorTile::new,
-        ((windowId, inv, data) -> new SlotlessGeneratorContainer(Registration.PELTIER_GENERATOR_CONTAINER.get(), windowId, data.readBlockPos(), inv, Registration.PELTIER_GENERATOR.get())));
+            ((windowId, inv, data) -> new SlotlessGeneratorContainer(Registration.PELTIER_GENERATOR_CONTAINER.get(), windowId, data.readBlockPos(), inv, Registration.PELTIER_GENERATOR.get())));
     public static final RegistryObject<PeltierGenerator> PELTIER_GENERATOR = PELTIER_HELPER.block;
     public static final RegistryObject<TileEntityType<PeltierGeneratorTile>> PELTIER_GENERATOR_TILE = PELTIER_HELPER.tile;
     public static final RegistryObject<BlockItem> PELTIER_GENERATOR_ITEM = PELTIER_HELPER.blockItem;
     public static final RegistryObject<ContainerType<SlotlessGeneratorContainer>> PELTIER_GENERATOR_CONTAINER = PELTIER_HELPER.container;
-
+    //Gravity Generator
+    private static final RegistrationHelper<GravityGenerator, GravityGeneratorTile, SlotlessGeneratorContainer> GRAVITY_HELPER
+            = new RegistrationHelper<>("gravity_generator", GravityGenerator::new, GravityGeneratorTile::new,
+            ((windowId, inv, data) -> new SlotlessGeneratorContainer(Registration.GRAVITY_GENERATOR_CONTAINER.get(), windowId, data.readBlockPos(), inv, Registration.GRAVITY_GENERATOR.get())));
+    public static final RegistryObject<GravityGenerator> GRAVITY_GENERATOR = GRAVITY_HELPER.block;
+    public static final RegistryObject<TileEntityType<GravityGeneratorTile>> GRAVITY_GENERATOR_TILE = GRAVITY_HELPER.tile;
+    public static final RegistryObject<BlockItem> GRAVITY_GENERATOR_ITEM = GRAVITY_HELPER.blockItem;
+    public static final RegistryObject<ContainerType<SlotlessGeneratorContainer>> GRAVITY_GENERATOR_CONTAINER = GRAVITY_HELPER.container;
+    //Dummy
     public static final RegistryObject<EntityType<DummyEntity>> DUMMY = RegistrationHelper.ENTITIES.register("dummy",
             () -> EntityType.Builder.create(DummyEntity::new, EntityClassification.MISC)
                     .size(0.5F, 2.0F).trackingRange(10).build("dummy"));
