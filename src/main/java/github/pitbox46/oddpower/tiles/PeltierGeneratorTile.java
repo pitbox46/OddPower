@@ -58,7 +58,7 @@ public class PeltierGeneratorTile extends AbstractGeneratorTile {
         if(getTickCount() - previousGeneration < 20) return;
         int northSouth = Math.abs(temperatureMap.getOrDefault(getNorthBlock(), 0) - temperatureMap.getOrDefault(getSouthBlock(), 0));
         int eastWest = Math.abs(temperatureMap.getOrDefault(getEastBlock(), 0) - temperatureMap.getOrDefault(getWestBlock(), 0));
-        super.generatePower(northSouth + eastWest);
+        super.generatePower((int) Math.floor((northSouth + eastWest) * Config.PELTIER_GENERATE.get()));
         previousGeneration = getTickCount();
     }
 

@@ -45,10 +45,10 @@ public class Config {
     public static ForgeConfigSpec.IntValue INCINERATOR_TRANSFER;
     public static ForgeConfigSpec.IntValue INCINERATOR_COOLDOWN;
     public static ForgeConfigSpec.IntValue PELTIER_MAXPOWER;
-    public static ForgeConfigSpec.IntValue PELTIER_GENERATE;
+    public static ForgeConfigSpec.DoubleValue PELTIER_GENERATE;
     public static ForgeConfigSpec.IntValue PELTIER_TRANSFER;
     public static ForgeConfigSpec.IntValue GRAVITY_MAXPOWER;
-    public static ForgeConfigSpec.IntValue GRAVITY_GENERATE;
+    public static ForgeConfigSpec.DoubleValue GRAVITY_GENERATE;
     public static ForgeConfigSpec.IntValue GRAVITY_TRANSFER;
 
     private static ForgeConfigSpec.ConfigValue<ArrayList<String>> TEMP_VALUES;
@@ -136,8 +136,8 @@ public class Config {
 
         PELTIER_MAXPOWER = SERVER_BUILDER.comment("Base capacity")
                 .defineInRange("maxPower", 64000, 0, Integer.MAX_VALUE);
-        PELTIER_GENERATE = SERVER_BUILDER.comment("Power generation multiplier")
-                .defineInRange("generate", 1, 0, Integer.MAX_VALUE);
+        PELTIER_GENERATE = SERVER_BUILDER.comment("Power generation multiplier. Can be decimal")
+                .defineInRange("generate", 1, 0, Double.MAX_VALUE);
         PELTIER_TRANSFER = SERVER_BUILDER.comment("Power transfer per tick")
                 .defineInRange("transfer", 1000, 0, Integer.MAX_VALUE);
         SERVER_BUILDER.pop();
@@ -163,8 +163,8 @@ public class Config {
 
         GRAVITY_MAXPOWER = SERVER_BUILDER.comment("Base capacity")
                 .defineInRange("maxPower", 64000, 0, Integer.MAX_VALUE);
-        GRAVITY_GENERATE = SERVER_BUILDER.comment("Power generation multiplier")
-                .defineInRange("generate", 10, 0, Integer.MAX_VALUE);
+        GRAVITY_GENERATE = SERVER_BUILDER.comment("Power generation multiplier. Can be decimal")
+                .defineInRange("generate", 10, 0, Double.MAX_VALUE);
         GRAVITY_TRANSFER = SERVER_BUILDER.comment("Power transfer per tick")
                 .defineInRange("transfer", 1000, 0, Integer.MAX_VALUE);
         SERVER_BUILDER.pop();
