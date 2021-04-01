@@ -48,7 +48,6 @@ public class GravityGenerator extends FallingBlock {
     //Todo Gives errors, fix immediately
     @Override
     public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
-        TileEntity test = worldIn.getTileEntity(pos);
         if (worldIn.isAirBlock(pos.down()) || canFallThrough(worldIn.getBlockState(pos.down())) && pos.getY() >= 0) {
             FallingBlockEntity fallingblockentity = new FallingBlockEntity(worldIn, (double)pos.getX() + 0.5D, (double)pos.getY(), (double)pos.getZ() + 0.5D, worldIn.getBlockState(pos)) {
                 @Override
@@ -57,7 +56,6 @@ public class GravityGenerator extends FallingBlock {
                     return super.onLivingFall(distance, damageMultiplier);
                 }
             };
-            System.out.println(test.toString());
             this.onStartFalling(fallingblockentity);
             worldIn.addEntity(fallingblockentity);
         }
@@ -90,8 +88,13 @@ public class GravityGenerator extends FallingBlock {
     }
 
     @Override
-    protected void onStartFalling(FallingBlockEntity fallingEntity) {
-        fallingEntity.setHurtEntities(true);
+    protected void onStartFalling(FallingBlockEntity e) {
+        e.setHurtEntities(true);
+        TileEntity te = e.getEntityWorld().getTileEntity(e.getPosition());
+        e.tileEntityData = new CompoundNBT();
+        if(te instanceof GravityGeneratorTile) {
+            te.write(e.tileEntityData);
+        }
     }
 
     @Override

@@ -33,12 +33,6 @@ public class GravityGeneratorTile extends AbstractGeneratorTile {
     }
 
     @Override
-    public void remove() {
-        super.remove();
-        energy.invalidate();
-    }
-
-    @Override
     public void tick() {
         super.tick();
     }
