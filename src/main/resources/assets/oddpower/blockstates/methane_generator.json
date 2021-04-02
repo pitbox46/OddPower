@@ -1,5 +1,6 @@
 {
   "variants": {
-    "": { "model": "oddpower:block/methane_generator" }
+    "lit=false": { "model": "oddpower:block/methane_generator" },
+    "lit=true": { "model": "oddpower:block/methane_generator_on" }
   }
 }

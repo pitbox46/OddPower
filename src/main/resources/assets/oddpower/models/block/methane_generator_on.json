@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "up": "oddpower:block/methane_generator/top",
+    "down": "oddpower:block/methane_generator/bottom",
+    "north": "oddpower:block/methane_generator/side_on",
+    "east": "oddpower:block/methane_generator/side_on",
+    "south": "oddpower:block/methane_generator/side_on",
+    "west": "oddpower:block/methane_generator/side_on",
+    "particle": "oddpower:block/methane_generator/side_on"
+  }
+}

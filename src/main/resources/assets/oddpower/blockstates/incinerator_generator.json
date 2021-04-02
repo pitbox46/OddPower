@@ -1,5 +1,34 @@
 {
   "variants": {
-    "": { "model": "oddpower:block/incinerator_generator" }
+    "lit=false,facing=north": {
+      "model": "oddpower:block/incinerator_generator"
+    },
+    "lit=false,facing=east": {
+      "model": "oddpower:block/incinerator_generator",
+      "y": 90
+    },
+    "lit=false,facing=south": {
+      "model": "oddpower:block/incinerator_generator",
+      "y": 180
+    },
+    "lit=false,facing=west": {
+      "model": "oddpower:block/incinerator_generator",
+      "y": 270
+    },
+    "lit=true,facing=north": {
+      "model": "oddpower:block/incinerator_generator_on"
+    },
+    "lit=true,facing=east": {
+      "model": "oddpower:block/incinerator_generator_on",
+      "y": 90
+    },
+    "lit=true,facing=south": {
+      "model": "oddpower:block/incinerator_generator_on",
+      "y": 180
+    },
+    "lit=true,facing=west": {
+      "model": "oddpower:block/incinerator_generator_on",
+      "y": 270
+    }
   }
 }

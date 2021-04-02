@@ -10,6 +10,7 @@ import net.minecraft.entity.passive.CowEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import org.apache.logging.log4j.LogManager;
@@ -18,9 +19,14 @@ import org.apache.logging.log4j.Logger;
 import javax.annotation.Nonnull;
 import java.util.HashMap;
 
+import static net.minecraft.state.properties.BlockStateProperties.LIT;
+import static net.minecraft.state.properties.BlockStateProperties.POWERED;
+
 public class MethaneGeneratorTile extends AbstractGeneratorTile {
     private static final Logger LOGGER = LogManager.getLogger();
-    private AxisAlignedBB boundingBox;
+    BlockPos blockPos;
+    BlockPos blockPos2;
+    private AxisAlignedBB boundingBox = new AxisAlignedBB(0, 0, 0, 0, 0, 0);
 
     public MethaneGeneratorTile() {
         super(Registration.METHANE_GENERATOR_TILE.get());
@@ -41,7 +47,11 @@ public class MethaneGeneratorTile extends AbstractGeneratorTile {
         if(world.isRemote) {
             return;
         }
-        generatePower((int) Math.floor(this.world.getLoadedEntitiesWithinAABB(CowEntity.class, boundingBox).size() * Config.METHANE_GENERATE.get()));
+        int cowNumber = this.world.getLoadedEntitiesWithinAABB(CowEntity.class, boundingBox).size();
+        if(world.getBlockState(pos).get(LIT) != cowNumber > 0) {
+            world.setBlockState(pos, world.getBlockState(pos).with(LIT, cowNumber > 0), 3);
+        }
+        generatePower((int) Math.floor(cowNumber * Config.METHANE_GENERATE.get()));
         sendOutPower();
         tickCount++;
     }

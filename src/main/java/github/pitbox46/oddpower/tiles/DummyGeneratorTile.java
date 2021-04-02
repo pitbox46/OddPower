@@ -46,8 +46,7 @@ public class DummyGeneratorTile extends AbstractGeneratorTile {
         if(tickQueue.containsEntry(getTickCount(), 'a') && world instanceof ServerWorld) {
             spawnNewDummy();
             tickQueue.remove(getTickCount(), 'a');
-            world.setBlockState(pos, blockState.with(BlockStateProperties.POWERED, false),
-                    Constants.BlockFlags.NOTIFY_NEIGHBORS + Constants.BlockFlags.BLOCK_UPDATE);
+            world.setBlockState(pos, blockState.with(BlockStateProperties.POWERED, false),3);
         }
         sendOutPower();
         tickCount++;

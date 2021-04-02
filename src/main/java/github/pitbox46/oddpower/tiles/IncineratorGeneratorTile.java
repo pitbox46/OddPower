@@ -11,6 +11,8 @@ import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nonnull;
 
+import static net.minecraft.state.properties.BlockStateProperties.LIT;
+
 public class IncineratorGeneratorTile extends AbstractGeneratorTile {
     private static final Logger LOGGER = LogManager.getLogger();
     private long previousGeneration;
@@ -40,11 +42,16 @@ public class IncineratorGeneratorTile extends AbstractGeneratorTile {
     }
 
     public void incinerate() {
-        itemHandler.getStackInSlot(3);
-        if (getTickCount() - previousGeneration >= Config.INCINERATOR_COOLDOWN.get() && !itemHandler.getStackInSlot(3).isEmpty() && !(itemHandler.getStackInSlot(3).getItem() instanceof UpgradeItem)) {
+        //itemHandler.getStackInSlot(3);
+        if(itemHandler.getStackInSlot(3).isEmpty() || itemHandler.getStackInSlot(3).getItem() instanceof UpgradeItem) {
+            world.setBlockState(pos, world.getBlockState(pos).with(LIT, false),3);
+            return;
+        }
+        if (getTickCount() - previousGeneration >= Config.INCINERATOR_COOLDOWN.get()) {
             itemHandler.getStackInSlot(3).shrink(1);
             generatePower(Config.INCINERATOR_GENERATE.get());
             previousGeneration = getTickCount();
+            world.setBlockState(pos, world.getBlockState(pos).with(LIT, true),3);
         }
     }
 

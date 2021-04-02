@@ -12,6 +12,8 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
+import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
@@ -25,9 +27,13 @@ import net.minecraftforge.fml.network.NetworkHooks;
 
 import javax.annotation.Nullable;
 
+import static net.minecraft.state.properties.BlockStateProperties.*;
+
 public class IncineratorGenerator extends Block {
     public IncineratorGenerator() {
-        super(Properties.create(Material.IRON).sound(SoundType.METAL).hardnessAndResistance(2.0f));
+        super(Properties.create(Material.IRON).sound(SoundType.METAL).hardnessAndResistance(2.0f)
+                .setLightLevel((state) -> state.get(LIT) ? 13 : 0));
+        setDefaultState(getStateContainer().getBaseState().with(LIT, false));
     }
 
     @Override
@@ -39,6 +45,19 @@ public class IncineratorGenerator extends Block {
     @Override
     public TileEntity createTileEntity(BlockState state, IBlockReader world) {
         return new IncineratorGeneratorTile();
+    }
+
+    @Override
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+        builder.add(LIT).add(FACING);
+    }
+
+    @Nullable
+    @Override
+    public BlockState getStateForPlacement(BlockItemUseContext context) {
+        BlockState blockState = super.getStateForPlacement(context);
+        assert blockState != null;
+        return blockState.with(FACING, context.getPlacementHorizontalFacing().getOpposite());
     }
 
     @SuppressWarnings("deprecation")

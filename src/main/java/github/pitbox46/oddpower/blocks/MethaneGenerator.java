@@ -13,6 +13,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
+import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
@@ -26,9 +27,14 @@ import net.minecraftforge.fml.network.NetworkHooks;
 
 import javax.annotation.Nullable;
 
+import static net.minecraft.state.properties.BlockStateProperties.LIT;
+import static net.minecraft.state.properties.BlockStateProperties.POWERED;
+
 public class MethaneGenerator extends Block {
     public MethaneGenerator() {
-        super(Properties.create(Material.IRON).sound(SoundType.METAL).hardnessAndResistance(2.0f));
+        super(Properties.create(Material.IRON).sound(SoundType.METAL).hardnessAndResistance(2.0f)
+                .setLightLevel((state) -> state.get(LIT) ? 13 : 0));
+        setDefaultState(getStateContainer().getBaseState().with(LIT, false));
     }
 
     @Override
@@ -40,6 +46,11 @@ public class MethaneGenerator extends Block {
     @Override
     public TileEntity createTileEntity(BlockState state, IBlockReader world) {
         return new MethaneGeneratorTile();
+    }
+
+    @Override
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+        builder.add(LIT);
     }
 
     @SuppressWarnings("deprecation")

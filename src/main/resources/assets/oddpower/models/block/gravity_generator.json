@@ -1,12 +1,12 @@
 {
   "parent": "block/cube",
   "textures": {
-    "up": "oddpower:block/wip",
-    "down": "oddpower:block/wip",
-    "north": "oddpower:block/wip",
-    "east": "oddpower:block/wip",
-    "south": "oddpower:block/wip",
-    "west": "oddpower:block/wip",
-    "particle": "oddpower:block/wip"
+    "up": "oddpower:block/gravity_generator/top",
+    "down": "oddpower:block/gravity_generator/bottom",
+    "north": "oddpower:block/gravity_generator/side",
+    "east": "oddpower:block/gravity_generator/side",
+    "south": "oddpower:block/gravity_generator/side",
+    "west": "oddpower:block/gravity_generator/side",
+    "particle": "oddpower:block/gravity_generator/side"
   }
 }

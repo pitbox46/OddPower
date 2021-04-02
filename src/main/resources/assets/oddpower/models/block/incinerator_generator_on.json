@@ -4,7 +4,7 @@
     "top": "oddpower:block/incinerator_generator/top",
     "bottom": "oddpower:block/incinerator_generator/bottom",
     "side": "oddpower:block/incinerator_generator/side",
-    "front": "oddpower:block/incinerator_generator/front",
+    "front": "oddpower:block/incinerator_generator/front_on",
     "particle": "oddpower:block/incinerator_generator/side"
   }
 }
