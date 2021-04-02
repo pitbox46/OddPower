@@ -85,6 +85,14 @@ public class Registration {
     public static final RegistryObject<TileEntityType<GravityGeneratorTile>> GRAVITY_GENERATOR_TILE = GRAVITY_HELPER.tile;
     public static final RegistryObject<BlockItem> GRAVITY_GENERATOR_ITEM = GRAVITY_HELPER.blockItem;
     public static final RegistryObject<ContainerType<SlotlessGeneratorContainer>> GRAVITY_GENERATOR_CONTAINER = GRAVITY_HELPER.container;
+    //Methane Generator
+    private static final RegistrationHelper<MethaneGenerator, MethaneGeneratorTile, SlotlessGeneratorContainer> METHANE_HELPER
+            = new RegistrationHelper<>("methane_generator", MethaneGenerator::new, MethaneGeneratorTile::new,
+            ((windowId, inv, data) -> new SlotlessGeneratorContainer(Registration.METHANE_GENERATOR_CONTAINER.get(), windowId, data.readBlockPos(), inv, Registration.GRAVITY_GENERATOR.get())));
+    public static final RegistryObject<MethaneGenerator> METHANE_GENERATOR = METHANE_HELPER.block;
+    public static final RegistryObject<TileEntityType<MethaneGeneratorTile>> METHANE_GENERATOR_TILE = METHANE_HELPER.tile;
+    public static final RegistryObject<BlockItem> METHANE_GENERATOR_ITEM = METHANE_HELPER.blockItem;
+    public static final RegistryObject<ContainerType<SlotlessGeneratorContainer>> METHANE_GENERATOR_CONTAINER = METHANE_HELPER.container;
     //Dummy
     public static final RegistryObject<EntityType<DummyEntity>> DUMMY = RegistrationHelper.ENTITIES.register("dummy",
             () -> EntityType.Builder.create(DummyEntity::new, EntityClassification.MISC)

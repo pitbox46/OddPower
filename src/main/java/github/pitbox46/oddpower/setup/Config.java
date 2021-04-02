@@ -17,6 +17,7 @@ import org.apache.logging.log4j.Logger;
 import org.lwjgl.system.CallbackI;
 
 import java.util.*;
+import java.util.concurrent.ForkJoinPool;
 import java.util.function.Predicate;
 
 public class Config {
@@ -28,7 +29,8 @@ public class Config {
     public static final String SUBCATEGORY_EXPLOSION = "explosion_generator";
     public static final String SUBCATEGORY_INCINERATOR = "incinerator";
     public static final String SUBCATEGORY_PELTIER = "peltier_generator";
-    public static final String SUBCATEGORY_BLOCK_TEMPERATURES = "block_temperatures";
+    public static final String SUBCATEGORY_GRAVITY = "gravity_generator";
+    public static final String SUBCATEGORY_METHANE = "methane_generator";
 
     public static ForgeConfigSpec SERVER_CONFIG;
     public static ForgeConfigSpec CLIENT_CONFIG;
@@ -50,6 +52,9 @@ public class Config {
     public static ForgeConfigSpec.IntValue GRAVITY_MAXPOWER;
     public static ForgeConfigSpec.DoubleValue GRAVITY_GENERATE;
     public static ForgeConfigSpec.IntValue GRAVITY_TRANSFER;
+    public static ForgeConfigSpec.IntValue METHANE_MAXPOWER;
+    public static ForgeConfigSpec.DoubleValue METHANE_GENERATE;
+    public static ForgeConfigSpec.IntValue METHANE_TRANSFER;
 
     private static ForgeConfigSpec.ConfigValue<ArrayList<String>> TEMP_VALUES;
     private static final ArrayList<String> DEFAULT_TEMP_VALUES = new ArrayList<>();
@@ -81,11 +86,10 @@ public class Config {
         setupExplosionGeneratorConfig(SERVER_BUILDER);
         setupInceneratorConfig(SERVER_BUILDER);
         setupPeltierGeneratorConfig(SERVER_BUILDER);
-        setupPeltierBlocksConfig(SERVER_BUILDER);
         setupGravityGeneratorConfig(SERVER_BUILDER);
+        setupMethaneGeneratorConfig(SERVER_BUILDER);
 
         SERVER_BUILDER.pop();
-
 
         SERVER_CONFIG = SERVER_BUILDER.build();
         CLIENT_CONFIG = CLIENT_BUILDER.build();
@@ -140,32 +144,40 @@ public class Config {
                 .defineInRange("generate", 1, 0, Double.MAX_VALUE);
         PELTIER_TRANSFER = SERVER_BUILDER.comment("Power transfer per tick")
                 .defineInRange("transfer", 1000, 0, Integer.MAX_VALUE);
-        SERVER_BUILDER.pop();
-    }
-
-    private static void setupPeltierBlocksConfig(ForgeConfigSpec.Builder SERVER_BUILDER) {
-        SERVER_BUILDER.comment("Block Temperature Values for Peltier Generator. Write in any block that you would like").push(SUBCATEGORY_BLOCK_TEMPERATURES);
 
         DEFAULT_TEMP_VALUES.add("minecraft:lava=320");
-        DEFAULT_TEMP_VALUES.add("minecraft:flowing_lava=160");
         DEFAULT_TEMP_VALUES.add("minecraft:fire=20");
         DEFAULT_TEMP_VALUES.add("minecraft:water=-10");
-        DEFAULT_TEMP_VALUES.add("minecraft:flowing_water=-20");
         DEFAULT_TEMP_VALUES.add("minecraft:ice=-40");
         DEFAULT_TEMP_VALUES.add("minecraft:packed_ice=-160");
         DEFAULT_TEMP_VALUES.add("minecraft:blue_ice=-640");
 
-        TEMP_VALUES = SERVER_BUILDER.comment("Temperature values. You may add your own entries").define("temp_values", DEFAULT_TEMP_VALUES, TEMP_VALUES_VALIDATOR);
+        TEMP_VALUES = SERVER_BUILDER.comment("Temperature values. You may add your own entries")
+                .define("temp_values", DEFAULT_TEMP_VALUES, TEMP_VALUES_VALIDATOR);
+
+        SERVER_BUILDER.pop();
     }
 
     private static void setupGravityGeneratorConfig(ForgeConfigSpec.Builder SERVER_BUILDER) {
-        SERVER_BUILDER.comment("Gravity Generator Settings").push(SUBCATEGORY_EXPLOSION);
+        SERVER_BUILDER.comment("Gravity Generator Settings").push(SUBCATEGORY_GRAVITY);
 
         GRAVITY_MAXPOWER = SERVER_BUILDER.comment("Base capacity")
                 .defineInRange("maxPower", 64000, 0, Integer.MAX_VALUE);
         GRAVITY_GENERATE = SERVER_BUILDER.comment("Power generation multiplier. Can be decimal")
                 .defineInRange("generate", 10, 0, Double.MAX_VALUE);
         GRAVITY_TRANSFER = SERVER_BUILDER.comment("Power transfer per tick")
+                .defineInRange("transfer", 1000, 0, Integer.MAX_VALUE);
+        SERVER_BUILDER.pop();
+    }
+
+    private static void setupMethaneGeneratorConfig(ForgeConfigSpec.Builder SERVER_BUILDER) {
+        SERVER_BUILDER.comment("Methane Generator Settings").push(SUBCATEGORY_METHANE);
+
+        METHANE_MAXPOWER = SERVER_BUILDER.comment("Base capacity")
+                .defineInRange("maxPower", 64000, 0, Integer.MAX_VALUE);
+        METHANE_GENERATE = SERVER_BUILDER.comment("Power generation multiplier. Can be decimal")
+                .defineInRange("generate", 1, 0, Double.MAX_VALUE);
+        METHANE_TRANSFER = SERVER_BUILDER.comment("Power transfer per tick")
                 .defineInRange("transfer", 1000, 0, Integer.MAX_VALUE);
         SERVER_BUILDER.pop();
     }

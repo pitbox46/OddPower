@@ -31,12 +31,6 @@ public class ExplosionGeneratorTile extends AbstractGeneratorTile {
     }
 
     @Override
-    public void remove() {
-        super.remove();
-        energy.invalidate();
-    }
-
-    @Override
     public void tick() {
         super.tick();
     }
@@ -54,11 +48,6 @@ public class ExplosionGeneratorTile extends AbstractGeneratorTile {
         detonateEvent.getAffectedEntities().clear();
         previousGeneration = getTickCount();
         return true;
-    }
-
-    @Override
-    public void generatePower(int power){
-        super.generatePower(power);
     }
 
     protected IItemHandler createHandler() {

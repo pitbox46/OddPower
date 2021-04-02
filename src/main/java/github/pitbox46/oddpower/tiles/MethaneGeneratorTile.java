@@ -3,30 +3,37 @@ package github.pitbox46.oddpower.tiles;
 import github.pitbox46.oddpower.items.UpgradeItem;
 import github.pitbox46.oddpower.setup.Config;
 import github.pitbox46.oddpower.setup.Registration;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.passive.CowEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nonnull;
+import java.util.HashMap;
 
-public class IncineratorGeneratorTile extends AbstractGeneratorTile {
+public class MethaneGeneratorTile extends AbstractGeneratorTile {
     private static final Logger LOGGER = LogManager.getLogger();
-    private long previousGeneration;
+    private AxisAlignedBB boundingBox;
 
-    public IncineratorGeneratorTile() {
-        super(Registration.INCINERATOR_GENERATOR_TILE.get());
+    public MethaneGeneratorTile() {
+        super(Registration.METHANE_GENERATOR_TILE.get());
     }
 
     @Override
     protected int getMaxTransfer() {
-        return Config.INCINERATOR_TRANSFER.get();
+        return Config.METHANE_TRANSFER.get();
     }
 
     @Override
     protected int getCapacity() {
-        return Config.INCINERATOR_MAXPOWER.get();
+        return Config.METHANE_MAXPOWER.get();
     }
 
     @Override
@@ -34,23 +41,19 @@ public class IncineratorGeneratorTile extends AbstractGeneratorTile {
         if(world.isRemote) {
             return;
         }
-        incinerate();
+        generatePower((int) Math.floor(this.world.getLoadedEntitiesWithinAABB(CowEntity.class, boundingBox).size() * Config.METHANE_GENERATE.get()));
         sendOutPower();
         tickCount++;
     }
 
-    public void incinerate() {
-        itemHandler.getStackInSlot(3);
-        if (getTickCount() - previousGeneration >= Config.INCINERATOR_COOLDOWN.get() && !itemHandler.getStackInSlot(3).isEmpty() && !(itemHandler.getStackInSlot(3).getItem() instanceof UpgradeItem)) {
-            itemHandler.getStackInSlot(3).shrink(1);
-            generatePower(Config.INCINERATOR_GENERATE.get());
-            previousGeneration = getTickCount();
-        }
+    @Override
+    public void read(BlockState state, CompoundNBT tag) {
+        super.read(state, tag);
+        boundingBox = new AxisAlignedBB(pos.getX()-3,pos.getY()-4,pos.getZ()-3,pos.getX()+3,pos.getY()-1,pos.getZ()+3);
     }
 
-    @Override
     protected IItemHandler createHandler() {
-        return new ItemStackHandler(4) {
+        return new ItemStackHandler(3) {
             @Override
             protected void onContentsChanged(int slot) {
                 int capacityUpgrades = 0;
@@ -65,7 +68,7 @@ public class IncineratorGeneratorTile extends AbstractGeneratorTile {
 
             @Override
             public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-                return (slot < 3 && stack.getItem() instanceof UpgradeItem) || (slot == 3 && !(stack.getItem() instanceof UpgradeItem));
+                return stack.getItem() instanceof UpgradeItem;
             }
 
             @Nonnull

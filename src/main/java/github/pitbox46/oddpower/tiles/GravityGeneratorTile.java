@@ -32,16 +32,6 @@ public class GravityGeneratorTile extends AbstractGeneratorTile {
         return Config.GRAVITY_MAXPOWER.get();
     }
 
-    @Override
-    public void tick() {
-        super.tick();
-    }
-
-    @Override
-    public void generatePower(int power){
-        super.generatePower(power);
-    }
-
     protected IItemHandler createHandler() {
         return new ItemStackHandler(3) {
             @Override
