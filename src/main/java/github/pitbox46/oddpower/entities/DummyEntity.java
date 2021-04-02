@@ -1,8 +1,10 @@
 package github.pitbox46.oddpower.entities;
 
+import github.pitbox46.oddpower.items.DummyItem;
 import github.pitbox46.oddpower.setup.Config;
 import github.pitbox46.oddpower.setup.Registration;
 import github.pitbox46.oddpower.tiles.DummyGeneratorTile;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -59,9 +61,16 @@ public class DummyEntity extends MobEntity {
 
     @Override
     public ActionResultType applyPlayerInteraction(PlayerEntity player, Vector3d vec, Hand hand) {
-        if(!world.isRemote() && player.isSneaking() && player.getHeldItem(hand) == ItemStack.EMPTY) {
+        if(world.isRemote() || !player.isSneaking() || hand != Hand.MAIN_HAND) return ActionResultType.PASS;
+        ItemStack heldItemStack = player.getHeldItem(Hand.MAIN_HAND);
+        if(heldItemStack == ItemStack.EMPTY) {
             remove();
             player.setHeldItem(Hand.MAIN_HAND, new ItemStack(Registration.DUMMY_ITEM.get(), 1));
+            return ActionResultType.SUCCESS;
+        }
+        else if(heldItemStack.getItem().getClass() == DummyItem.class && heldItemStack.getCount() < heldItemStack.getMaxStackSize()) {
+            remove();
+            heldItemStack.grow(1);
             return ActionResultType.SUCCESS;
         }
         return ActionResultType.PASS;
