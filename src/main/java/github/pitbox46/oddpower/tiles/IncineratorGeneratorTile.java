@@ -42,7 +42,7 @@ public class IncineratorGeneratorTile extends AbstractGeneratorTile {
     }
 
     public void incinerate() {
-        //itemHandler.getStackInSlot(3);
+        if(energyStorage.getEnergyStored() == energyStorage.getMaxEnergyStored()) return;
         if(itemHandler.getStackInSlot(3).isEmpty() || itemHandler.getStackInSlot(3).getItem() instanceof UpgradeItem) {
             world.setBlockState(pos, world.getBlockState(pos).with(LIT, false),3);
             return;

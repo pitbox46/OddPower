@@ -31,8 +31,10 @@ import java.util.Objects;
 import java.util.Random;
 
 public class GravityGenerator extends FallingBlock {
+    private boolean isFalling;
+
     public GravityGenerator() {
-        super(Properties.create(Material.IRON).sound(SoundType.METAL).hardnessAndResistance(2.0f));
+        super(Properties.create(Material.IRON).sound(SoundType.GROUND).hardnessAndResistance(2.0f));
     }
     @Override
     public boolean hasTileEntity(BlockState state) {
@@ -45,7 +47,6 @@ public class GravityGenerator extends FallingBlock {
         return new GravityGeneratorTile();
     }
 
-    //Todo Gives errors, fix immediately
     @Override
     public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
         if (worldIn.isAirBlock(pos.down()) || canFallThrough(worldIn.getBlockState(pos.down())) && pos.getY() >= 0) {
@@ -58,12 +59,15 @@ public class GravityGenerator extends FallingBlock {
             };
             this.onStartFalling(fallingblockentity);
             worldIn.addEntity(fallingblockentity);
+            isFalling = true;
         }
+        isFalling = false;
     }
 
     @SuppressWarnings("deprecation")
     @Override
     public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+        if(isFalling) return ActionResultType.PASS;
         if(!worldIn.isRemote()) {
             TileEntity tileEntity = worldIn.getTileEntity(pos);
             if(tileEntity instanceof GravityGeneratorTile) {
