@@ -3,7 +3,6 @@ package github.pitbox46.oddpower.blocks;
 import github.pitbox46.oddpower.gui.SlotlessGeneratorContainer;
 import github.pitbox46.oddpower.setup.Registration;
 import github.pitbox46.oddpower.tiles.MethaneGeneratorTile;
-import github.pitbox46.oddpower.tiles.PeltierGeneratorTile;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
@@ -28,7 +27,6 @@ import net.minecraftforge.fml.network.NetworkHooks;
 import javax.annotation.Nullable;
 
 import static net.minecraft.state.properties.BlockStateProperties.LIT;
-import static net.minecraft.state.properties.BlockStateProperties.POWERED;
 
 public class MethaneGenerator extends Block {
     public MethaneGenerator() {

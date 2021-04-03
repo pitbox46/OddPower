@@ -4,7 +4,6 @@ import github.pitbox46.oddpower.items.DummyItem;
 import github.pitbox46.oddpower.setup.Config;
 import github.pitbox46.oddpower.setup.Registration;
 import github.pitbox46.oddpower.tiles.DummyGeneratorTile;
-import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;

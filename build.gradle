@@ -17,13 +17,16 @@ repositories {
     maven { //JEI
         url = "https://dvs1.progwml6.com/files/maven/"
     }
-    maven { // The One Probe
+    maven { //The One Probe
         name 'tterrag maven'
         url "http://maven.tterrag.com/"
     }
+    maven { //Mekanism
+        url 'https://modmaven.dev/'
+    }
 }
 
-version = '1.16.5-1.1.0'
+version = '1.16.5-1.1.0-SNAPSHOT-2'
 group = 'github.pitbox46.oddpower' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'oddpower'
 
@@ -149,6 +152,14 @@ dependencies {
     compile fg.deobf(project.dependencies.create("mcjty.theoneprobe:TheOneProbe-${top_version}") {
         transitive = false
     })
+
+    compileOnly "mekanism:Mekanism:${mekanism_version}:api"
+
+    // If you want to test/use Mekanism & its modules during `runClient` invocation, use the following
+    runtimeOnly fg.deobf("mekanism:Mekanism:${mekanism_version}")// core
+    runtimeOnly fg.deobf("mekanism:Mekanism:${mekanism_version}:additions")// Mekanism: Additions
+    runtimeOnly fg.deobf("mekanism:Mekanism:${mekanism_version}:generators")// Mekanism: Generators
+    runtimeOnly fg.deobf("mekanism:Mekanism:${mekanism_version}:tools")// Mekanism: Tools
 }
 
 // Example for how to get properties into the manifest for reading by the runtime..

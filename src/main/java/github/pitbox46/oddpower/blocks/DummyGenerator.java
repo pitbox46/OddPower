@@ -26,7 +26,6 @@ import net.minecraftforge.fml.network.NetworkHooks;
 
 import javax.annotation.Nullable;
 
-import static net.minecraft.state.properties.BlockStateProperties.LIT;
 import static net.minecraft.state.properties.BlockStateProperties.POWERED;
 
 public class DummyGenerator extends Block {

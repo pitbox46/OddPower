@@ -8,8 +8,11 @@ import net.minecraft.util.ColorHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class GeneratorScreen<T extends AbstractGeneratorContainer> extends ContainerScreen<T> {
+    private static final Logger LOGGER = LogManager.getLogger();
     private final ResourceLocation GUI;
 
     public GeneratorScreen(T container, PlayerInventory inv, ITextComponent name, ResourceLocation texture) {
@@ -48,7 +51,13 @@ public class GeneratorScreen<T extends AbstractGeneratorContainer> extends Conta
      * Draws a two color bar designed for displaying energy
      */
     private void drawEnergyBar(MatrixStack matrixStack, int minX, int minY, int maxX, int maxY) {
-        int energyHeight = Math.floorDiv((maxY - minY) * container.getEnergy(), container.getMaxEnergy());
+        int energyHeight;
+        try {
+            energyHeight = Math.floorDiv((maxY - minY) * container.getEnergy(), container.getMaxEnergy());
+        } catch(ArithmeticException e) {
+            LOGGER.warn("GUI cannot render because " + e.getMessage());
+            return;
+        }
 
         int color1Amount = 3;
         int color2Amount = 2;

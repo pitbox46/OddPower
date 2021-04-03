@@ -27,7 +27,6 @@ import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 import javax.annotation.Nullable;
-import java.util.Objects;
 import java.util.Random;
 
 public class GravityGenerator extends FallingBlock {

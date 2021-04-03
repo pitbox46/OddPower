@@ -3,24 +3,19 @@ package github.pitbox46.oddpower.tiles;
 import github.pitbox46.oddpower.items.UpgradeItem;
 import github.pitbox46.oddpower.setup.Config;
 import github.pitbox46.oddpower.setup.Registration;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.CowEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nonnull;
-import java.util.HashMap;
 
 import static net.minecraft.state.properties.BlockStateProperties.LIT;
-import static net.minecraft.state.properties.BlockStateProperties.POWERED;
 
 public class MethaneGeneratorTile extends AbstractGeneratorTile {
     private static final Logger LOGGER = LogManager.getLogger();

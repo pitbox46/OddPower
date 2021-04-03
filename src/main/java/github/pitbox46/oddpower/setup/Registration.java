@@ -11,10 +11,8 @@ import github.pitbox46.oddpower.gui.SlotlessGeneratorContainer;
 import github.pitbox46.oddpower.items.DummyItem;
 import github.pitbox46.oddpower.items.UpgradeItem;
 import github.pitbox46.oddpower.tiles.*;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.item.FallingBlockEntity;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -25,8 +23,6 @@ import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.rmi.registry.Registry;
 
 public class Registration {
     private static final Logger LOGGER = LogManager.getLogger();
