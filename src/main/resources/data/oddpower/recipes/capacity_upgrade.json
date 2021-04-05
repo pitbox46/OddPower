@@ -2,18 +2,18 @@
   "type": "minecraft:crafting_shaped",
   "group": "oddpower",
   "pattern": [
-    "x%x",
-    "%#%",
-    "x%x"
+    "DID",
+    "IRI",
+    "DID"
   ],
   "key": {
-    "x": {
+    "D": {
       "item": "minecraft:diamond"
     },
-    "#": {
+    "R": {
       "item": "minecraft:redstone"
     },
-    "%": {
+    "I": {
       "item": "minecraft:iron_ingot"
     }
   },

@@ -3,9 +3,7 @@ package github.pitbox46.oddpower.blocks;
 import github.pitbox46.oddpower.gui.SlotlessGeneratorContainer;
 import github.pitbox46.oddpower.setup.Registration;
 import github.pitbox46.oddpower.tiles.MethaneGeneratorTile;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.SoundType;
+import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -15,9 +13,13 @@ import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
@@ -28,11 +30,36 @@ import javax.annotation.Nullable;
 
 import static net.minecraft.state.properties.BlockStateProperties.LIT;
 
-public class MethaneGenerator extends Block {
+public class MethaneGenerator extends BreakableBlock {
+    public static final VoxelShape BASE = Block.makeCuboidShape(0,0,0,16,5,16);
+    public static final VoxelShape MID = Block.makeCuboidShape(1,5,1,15,8,15);
+    public static final VoxelShape TOP = Block.makeCuboidShape(0,8,0,16,16,16);
+    public static final VoxelShape COMBINED_SHAPE = VoxelShapes.or(BASE, MID, TOP);
+
     public MethaneGenerator() {
         super(Properties.create(Material.IRON).sound(SoundType.METAL).hardnessAndResistance(2.0f)
-                .setLightLevel((state) -> state.get(LIT) ? 13 : 0));
+                .setLightLevel((state) -> state.get(LIT) ? 13 : 0).setBlocksVision((a,b,c) -> false));
         setDefaultState(getStateContainer().getBaseState().with(LIT, false));
+    }
+
+    @Override
+    public VoxelShape getRayTraceShape(BlockState state, IBlockReader reader, BlockPos pos, ISelectionContext context) {
+        return COMBINED_SHAPE;
+    }
+
+    @Override
+    public VoxelShape getRenderShape(BlockState state, IBlockReader worldIn, BlockPos pos) {
+        return COMBINED_SHAPE;
+    }
+
+    @Override
+    public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+        return COMBINED_SHAPE;
+    }
+
+    @Override
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+        return COMBINED_SHAPE;
     }
 
     @Override

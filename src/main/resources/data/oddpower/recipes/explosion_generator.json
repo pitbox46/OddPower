@@ -2,19 +2,22 @@
   "type": "minecraft:crafting_shaped",
   "group": "oddpower",
   "pattern": [
-    "txt",
-    "x#x",
-    "txt"
+    "iNi",
+    "TRT",
+    "iTi"
   ],
   "key": {
-    "x": {
+    "i": {
       "item": "minecraft:iron_ingot"
     },
-    "#": {
+    "N": {
       "item": "minecraft:nether_star"
     },
-    "t": {
+    "T": {
       "item": "minecraft:tnt"
+    },
+    "R": {
+      "item": "minecraft:redstone_block"
     }
   },
   "result": {

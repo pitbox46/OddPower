@@ -49,6 +49,7 @@ public class Config {
     public static ForgeConfigSpec.IntValue METHANE_MAXPOWER;
     public static ForgeConfigSpec.DoubleValue METHANE_GENERATE;
     public static ForgeConfigSpec.IntValue METHANE_TRANSFER;
+    public static ForgeConfigSpec.IntValue METHANE_COOLDOWN;
 
     private static ForgeConfigSpec.ConfigValue<ArrayList<String>> TEMP_VALUES;
     private static final ArrayList<String> DEFAULT_TEMP_VALUES = new ArrayList<>();
@@ -169,10 +170,12 @@ public class Config {
 
         METHANE_MAXPOWER = SERVER_BUILDER.comment("Base capacity")
                 .defineInRange("maxPower", 64000, 0, Integer.MAX_VALUE);
-        METHANE_GENERATE = SERVER_BUILDER.comment("Power generation multiplier. Can be decimal")
-                .defineInRange("generate", 1, 0, Double.MAX_VALUE);
+        METHANE_GENERATE = SERVER_BUILDER.comment("Power generation per cow. Can be decimal, but will be floored before generation")
+                .defineInRange("generate",  40, 0, Double.MAX_VALUE);
         METHANE_TRANSFER = SERVER_BUILDER.comment("Power transfer per tick")
                 .defineInRange("transfer", 1000, 0, Integer.MAX_VALUE);
+        METHANE_COOLDOWN = SERVER_BUILDER.comment("Cooldown between generations in ticks")
+                .defineInRange("cooldown", 20, 1, Integer.MAX_VALUE);
         SERVER_BUILDER.pop();
     }
 

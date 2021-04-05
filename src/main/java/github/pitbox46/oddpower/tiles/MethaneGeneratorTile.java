@@ -19,6 +19,8 @@ import static net.minecraft.state.properties.BlockStateProperties.LIT;
 
 public class MethaneGeneratorTile extends AbstractGeneratorTile {
     private static final Logger LOGGER = LogManager.getLogger();
+    private long previousGeneration;
+    private AxisAlignedBB zeroBox = new AxisAlignedBB(0,0,0,0,0,0);
     private AxisAlignedBB boundingBox = new AxisAlignedBB(0,0,0,0,0,0);
 
     public MethaneGeneratorTile() {
@@ -40,7 +42,14 @@ public class MethaneGeneratorTile extends AbstractGeneratorTile {
         if(world.isRemote) {
             return;
         }
-        if(boundingBox.equals(new AxisAlignedBB(0,0,0,0,0,0))) {
+        generatePower();
+        sendOutPower();
+        tickCount++;
+    }
+
+    private void generatePower() {
+        if(getTickCount() - previousGeneration < Config.METHANE_COOLDOWN.get()) return;
+        if(boundingBox.equals(zeroBox)) {
             boundingBox = new AxisAlignedBB(pos.getX()-3,pos.getY()-4,pos.getZ()-3,pos.getX()+3,pos.getY()-1,pos.getZ()+3);
         }
         int cowNumber = this.world.getLoadedEntitiesWithinAABB(CowEntity.class, boundingBox).size();
@@ -48,8 +57,7 @@ public class MethaneGeneratorTile extends AbstractGeneratorTile {
             world.setBlockState(pos, world.getBlockState(pos).with(LIT, cowNumber > 0), 3);
         }
         generatePower((int) Math.floor(cowNumber * Config.METHANE_GENERATE.get()));
-        sendOutPower();
-        tickCount++;
+        previousGeneration = getTickCount();
     }
 
     @Override

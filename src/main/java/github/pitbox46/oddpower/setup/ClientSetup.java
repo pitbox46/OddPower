@@ -1,12 +1,15 @@
 package github.pitbox46.oddpower.setup;
 
 import github.pitbox46.oddpower.OddPower;
+import github.pitbox46.oddpower.blocks.MethaneGenerator;
 import github.pitbox46.oddpower.entities.DummyRenderer;
 import github.pitbox46.oddpower.gui.DummyGeneratorContainer;
 import github.pitbox46.oddpower.gui.GeneratorScreen;
 import github.pitbox46.oddpower.gui.IncineratorContainer;
 import github.pitbox46.oddpower.gui.SlotlessGeneratorContainer;
 import net.minecraft.client.gui.ScreenManager;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
@@ -33,5 +36,6 @@ public class ClientSetup {
         ScreenManager.<SlotlessGeneratorContainer, GeneratorScreen<SlotlessGeneratorContainer>>registerFactory(Registration.METHANE_GENERATOR_CONTAINER.get(),
                 (container, inv, name) -> new GeneratorScreen<>(container, inv, name, new ResourceLocation(OddPower.MOD_ID, "textures/gui/generator_gui.png")));
         RenderingRegistry.registerEntityRenderingHandler(Registration.DUMMY.get(), DummyRenderer::new);
+        RenderTypeLookup.setRenderLayer(Registration.METHANE_GENERATOR.get(), RenderType.getTranslucent());
     }
 }

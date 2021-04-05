@@ -99,11 +99,4 @@ public class GravityGenerator extends FallingBlock {
             te.write(e.tileEntityData);
         }
     }
-
-    @Override
-    public void onEndFalling(World worldIn, BlockPos pos, BlockState fallingState, BlockState hitState, FallingBlockEntity fallingBlock) {
-        if (!fallingBlock.isSilent()) {
-            worldIn.playEvent(1031, pos, 0);
-        }
-    }
 }
