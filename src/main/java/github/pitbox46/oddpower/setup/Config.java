@@ -49,7 +49,6 @@ public class Config {
     public static ForgeConfigSpec.IntValue METHANE_MAXPOWER;
     public static ForgeConfigSpec.DoubleValue METHANE_GENERATE;
     public static ForgeConfigSpec.IntValue METHANE_TRANSFER;
-    public static ForgeConfigSpec.IntValue METHANE_COOLDOWN;
 
     private static ForgeConfigSpec.ConfigValue<ArrayList<String>> TEMP_VALUES;
     private static final ArrayList<String> DEFAULT_TEMP_VALUES = new ArrayList<>();
@@ -96,7 +95,7 @@ public class Config {
         DUMMY_MAXPOWER = SERVER_BUILDER.comment("Base capacity")
                 .defineInRange("maxPower", 64000, 0, Integer.MAX_VALUE);
         DUMMY_GENERATE = SERVER_BUILDER.comment("Power generation per kill")
-                .defineInRange("generate", 2000, 0, Integer.MAX_VALUE);
+                .defineInRange("generate", 16000, 0, Integer.MAX_VALUE);
         DUMMY_TRANSFER = SERVER_BUILDER.comment("Power transfer per tick")
                 .defineInRange("transfer", 1000, 0, Integer.MAX_VALUE);
         SERVER_BUILDER.pop();
@@ -140,12 +139,12 @@ public class Config {
         PELTIER_TRANSFER = SERVER_BUILDER.comment("Power transfer per tick")
                 .defineInRange("transfer", 1000, 0, Integer.MAX_VALUE);
 
-        DEFAULT_TEMP_VALUES.add("minecraft:lava=320");
-        DEFAULT_TEMP_VALUES.add("minecraft:fire=20");
+        DEFAULT_TEMP_VALUES.add("minecraft:lava=150");
+        DEFAULT_TEMP_VALUES.add("minecraft:fire=100");
         DEFAULT_TEMP_VALUES.add("minecraft:water=-10");
-        DEFAULT_TEMP_VALUES.add("minecraft:ice=-40");
-        DEFAULT_TEMP_VALUES.add("minecraft:packed_ice=-160");
-        DEFAULT_TEMP_VALUES.add("minecraft:blue_ice=-640");
+        DEFAULT_TEMP_VALUES.add("minecraft:ice=-50");
+        DEFAULT_TEMP_VALUES.add("minecraft:packed_ice=-100");
+        DEFAULT_TEMP_VALUES.add("minecraft:blue_ice=-200");
 
         TEMP_VALUES = SERVER_BUILDER.comment("Temperature values. You may add your own entries")
                 .define("temp_values", DEFAULT_TEMP_VALUES, TEMP_VALUES_VALIDATOR);
@@ -174,8 +173,6 @@ public class Config {
                 .defineInRange("generate",  40, 0, Double.MAX_VALUE);
         METHANE_TRANSFER = SERVER_BUILDER.comment("Power transfer per tick")
                 .defineInRange("transfer", 1000, 0, Integer.MAX_VALUE);
-        METHANE_COOLDOWN = SERVER_BUILDER.comment("Cooldown between generations in ticks")
-                .defineInRange("cooldown", 20, 1, Integer.MAX_VALUE);
         SERVER_BUILDER.pop();
     }
 

@@ -48,9 +48,9 @@ public class MethaneGeneratorTile extends AbstractGeneratorTile {
     }
 
     private void generatePower() {
-        if(getTickCount() - previousGeneration < Config.METHANE_COOLDOWN.get()) return;
+        if(getTickCount() - previousGeneration < 20) return;
         if(boundingBox.equals(zeroBox)) {
-            boundingBox = new AxisAlignedBB(pos.getX()-3,pos.getY()-4,pos.getZ()-3,pos.getX()+3,pos.getY()-1,pos.getZ()+3);
+            boundingBox = new AxisAlignedBB(pos.getX()-2,pos.getY()-2,pos.getZ()-2,pos.getX()+3,pos.getY(),pos.getZ()+3);
         }
         int cowNumber = this.world.getLoadedEntitiesWithinAABB(CowEntity.class, boundingBox).size();
         if(world.getBlockState(pos).get(LIT) != cowNumber > 0) {
@@ -63,7 +63,7 @@ public class MethaneGeneratorTile extends AbstractGeneratorTile {
     @Override
     public void read(BlockState state, CompoundNBT tag) {
         super.read(state, tag);
-        boundingBox = new AxisAlignedBB(pos.getX()-3,pos.getY()-4,pos.getZ()-3,pos.getX()+3,pos.getY()-1,pos.getZ()+3);
+        boundingBox = new AxisAlignedBB(pos.getX()-2,pos.getY()-2,pos.getZ()-2,pos.getX()+3,pos.getY(),pos.getZ()+3);
     }
 
     protected IItemHandler createHandler() {
