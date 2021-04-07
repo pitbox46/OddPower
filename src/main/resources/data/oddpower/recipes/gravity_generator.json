@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "iLi",
+    "LRL",
+    "iLi"
+  ],
+  "key": {
+    "i": {
+      "item": "minecraft:iron_ingot"
+    },
+    "L": {
+      "item": "minecraft:light_gray_concrete_powder"
+    },
+    "R": {
+      "item": "minecraft:redstone_block"
+    }
+  },
+  "result": {
+    "item": "oddpower:gravity_generator"
+  },
+  "group": "oddpower"
+}

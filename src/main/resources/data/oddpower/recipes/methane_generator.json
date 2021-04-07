@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "iFi",
+    "GRG",
+    "iSi"
+  ],
+  "key": {
+    "i": {
+      "item": "minecraft:iron_ingot"
+    },
+    "F": {
+      "item": "minecraft:flint_and_steel"
+    },
+    "G": {
+      "item": "minecraft:glass_pane"
+    },
+    "R": {
+      "item": "minecraft:redstone_block"
+    },
+    "S": {
+      "item": "minecraft:soul_campfire"
+    }
+  },
+  "result": {
+    "item": "oddpower:peltier_generator"
+  },
+  "group": "oddpower"
+}
