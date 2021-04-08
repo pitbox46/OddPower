@@ -33,7 +33,7 @@ public class GeneratorScreen<T extends AbstractGeneratorContainer> extends Conta
 
         int guiX = x - getGuiLeft(), guiY = y - getGuiTop();
         if(53 <= guiX && guiX <= 69 && 13 <= guiY && guiY <= 65) {// Tooltip to display specific amount of power when hovering over bar
-            renderTooltip(matrixStack, new StringTextComponent(container.getEnergy() + " / " + container.getMaxEnergy() + " FE"), guiX, guiY);
+            renderTooltip(matrixStack, new StringTextComponent(container.getEnergy() + "/" + container.getMaxEnergy() + " FE"), guiX, guiY);
         }
     }
 
