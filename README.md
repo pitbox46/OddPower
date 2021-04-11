@@ -1,6 +1,7 @@
-# Welcome to the Odd Power Wiki!
-### Here you can find both the implemented and upcoming features of Odd Power
+# Odd Power
 
-[Implemented Features](https://github.com/pitbox46/OddPower/wiki/Implemented-Features)
+Odd power is meant to be a simple mod that adds a handful of non-conventional ways to generate Minecraft power. 
 
-[Upcoming Features](https://github.com/pitbox46/OddPower/wiki/Upcoming-Features)
+[Check out the wiki for planned and upcoming features!](https://github.com/pitbox46/OddPower/wiki)
+
+[Curseforge Page](https://www.curseforge.com/minecraft/mc-mods/odd-power)
