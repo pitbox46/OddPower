@@ -1,5 +1,6 @@
 package github.pitbox46.oddpower.gui;
 
+import github.pitbox46.oddpower.items.DummyItem;
 import github.pitbox46.oddpower.items.UpgradeItem;
 import github.pitbox46.oddpower.setup.Registration;
 import net.minecraft.block.Block;
@@ -52,7 +53,7 @@ public class DummyGeneratorContainer extends AbstractGeneratorContainer{
                     if (!this.mergeItemStack(stack, 0, 3, false)) {
                         return ItemStack.EMPTY;
                     }
-                } else if (stack.getItem() == Registration.DUMMY_ITEM.get()) {
+                } else if (stack.getItem() == Registration.DUMMY.get("spawnegg").get()) {
                     if (!this.mergeItemStack(stack, 3, 4, false)) {
                         return ItemStack.EMPTY;
                     }

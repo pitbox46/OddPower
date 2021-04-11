@@ -5,6 +5,7 @@ import github.pitbox46.oddpower.setup.Config;
 import github.pitbox46.oddpower.setup.Registration;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import org.apache.logging.log4j.LogManager;
@@ -19,7 +20,7 @@ public class PeltierGeneratorTile extends AbstractGeneratorTile {
     private static final HashMap<Block, Integer> temperatureMap = Config.readTempArray();
 
     public PeltierGeneratorTile() {
-        super(Registration.PELTIER_GENERATOR_TILE.get());
+        super((TileEntityType<?>) Registration.PELTIER_GENERATOR.get("tile").get());
     }
 
     @Override

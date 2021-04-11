@@ -2,6 +2,8 @@ package github.pitbox46.oddpower.common;
 
 import github.pitbox46.oddpower.entities.DummyEntity;
 import github.pitbox46.oddpower.setup.Registration;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import org.apache.logging.log4j.LogManager;
@@ -12,6 +14,6 @@ public class ModEventHandlers {
 
     @SubscribeEvent
     public void registerEntityAttributes(EntityAttributeCreationEvent event) {
-        event.put(Registration.DUMMY.get(), DummyEntity.registerAttributes().create());
+        event.put((EntityType<? extends DummyEntity>) Registration.DUMMY.get("entity").get(), DummyEntity.registerAttributes().create());
     }
 }

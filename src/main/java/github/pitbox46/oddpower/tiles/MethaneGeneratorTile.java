@@ -7,6 +7,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.passive.CowEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
@@ -24,7 +25,7 @@ public class MethaneGeneratorTile extends AbstractGeneratorTile {
     private AxisAlignedBB boundingBox = new AxisAlignedBB(0,0,0,0,0,0);
 
     public MethaneGeneratorTile() {
-        super(Registration.METHANE_GENERATOR_TILE.get());
+        super((TileEntityType<?>) Registration.METHANE_GENERATOR.get("tile").get());
     }
 
     @Override

@@ -4,6 +4,7 @@ import github.pitbox46.oddpower.items.UpgradeItem;
 import github.pitbox46.oddpower.setup.Config;
 import github.pitbox46.oddpower.setup.Registration;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraftforge.event.world.ExplosionEvent;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
@@ -17,7 +18,7 @@ public class ExplosionGeneratorTile extends AbstractGeneratorTile {
     private long previousGeneration;
 
     public ExplosionGeneratorTile() {
-        super(Registration.EXPLOSION_GENERATOR_TILE.get());
+        super((TileEntityType<?>) Registration.EXPLOSION_GENERATOR.get("tile").get());
     }
 
     @Override

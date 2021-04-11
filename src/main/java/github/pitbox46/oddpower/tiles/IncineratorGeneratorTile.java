@@ -4,6 +4,7 @@ import github.pitbox46.oddpower.items.UpgradeItem;
 import github.pitbox46.oddpower.setup.Config;
 import github.pitbox46.oddpower.setup.Registration;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import org.apache.logging.log4j.LogManager;
@@ -18,7 +19,7 @@ public class IncineratorGeneratorTile extends AbstractGeneratorTile {
     private long previousGeneration;
 
     public IncineratorGeneratorTile() {
-        super(Registration.INCINERATOR_GENERATOR_TILE.get());
+        super((TileEntityType<?>) Registration.INCINERATOR_GENERATOR.get("tile").get());
     }
 
     @Override
