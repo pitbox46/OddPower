@@ -1,15 +1,6 @@
-# Odd Power
+# Welcome to the Odd Power Wiki!
+### Here you can find both the implemented and upcoming features of Odd Power
 
-Odd power is meant to be a simple mod that adds a handful of non-conventional ways to generate Minecraft power. 
+[Implemented Features](https://github.com/pitbox46/OddPower/wiki/Implemented-Features)
 
-Current features include:
-- Dummy that mobs attack
-- Dummy Generator that creates power every time the dummy above it dies
-- Explosion Generator that creates power when an explosion occurs (has a cooldown)
-- GUI for generator upgrades
-
-[Curseforge Page](https://www.curseforge.com/minecraft/mc-mods/odd-power)
-
-### Planned Features for Next Release
-- Tooltips for generator items that display the amount of power that each one is holding
-- Generator that takes trash and turns it into power (possibly also waste that cannot be used for anything?)
+[Upcoming Features](https://github.com/pitbox46/OddPower/wiki/Upcoming-Features)
