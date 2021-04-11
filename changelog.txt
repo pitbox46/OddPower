@@ -1,0 +1,3 @@
+April 11 2021
+    Added changelog
+    Changed registration to be based on maps rather than instances for cleaner code
