@@ -4,6 +4,7 @@ import github.pitbox46.oddpower.entities.DummyEntity;
 import github.pitbox46.oddpower.setup.Registration;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
@@ -45,13 +46,13 @@ public class DummyItem extends Item {
             BlockPos blockpos = blockitemusecontext.getPos();
             ItemStack itemstack = context.getItem();
             Vector3d vector3d = Vector3d.copyCenteredHorizontally(blockpos);
-            AxisAlignedBB axisalignedbb = Registration.DUMMY.get().getSize().func_242285_a(vector3d.getX(), vector3d.getY(), vector3d.getZ());
+            AxisAlignedBB axisalignedbb = ((EntityType<? extends DummyEntity>) Registration.DUMMY.get("entity").get()).getSize().func_242285_a(vector3d.getX(), vector3d.getY(), vector3d.getZ());
             if (world.hasNoCollisions((Entity)null, axisalignedbb, (entity) -> {
                 return true;
             }) && world.getEntitiesWithinAABBExcludingEntity((Entity)null, axisalignedbb).isEmpty()) {
                 if (world instanceof ServerWorld) {
                     ServerWorld serverworld = (ServerWorld)world;
-                    DummyEntity dummyEntity = Registration.DUMMY.get().create(serverworld, itemstack.getTag(), null, context.getPlayer(), blockpos, SpawnReason.SPAWN_EGG, true, true);
+                    DummyEntity dummyEntity = ((EntityType<? extends DummyEntity>) Registration.DUMMY.get("entity").get()).create(serverworld, itemstack.getTag(), null, context.getPlayer(), blockpos, SpawnReason.SPAWN_EGG, true, true);
                     if (dummyEntity == null) {
                         return ActionResultType.FAIL;
                     }

@@ -3,6 +3,7 @@ package github.pitbox46.oddpower.blocks;
 import github.pitbox46.oddpower.gui.SlotlessGeneratorContainer;
 import github.pitbox46.oddpower.setup.Registration;
 import github.pitbox46.oddpower.tiles.GravityGeneratorTile;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FallingBlock;
 import net.minecraft.block.SoundType;
@@ -12,6 +13,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
@@ -79,7 +81,7 @@ public class GravityGenerator extends FallingBlock {
                     @Nullable
                     @Override
                     public Container createMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
-                        return new SlotlessGeneratorContainer(Registration.GRAVITY_GENERATOR_CONTAINER.get(), i, pos, playerInventory, Registration.GRAVITY_GENERATOR.get());
+                        return new SlotlessGeneratorContainer((ContainerType<?>) Registration.GRAVITY_GENERATOR.get("container").get(), i, pos, playerInventory, (Block) Registration.GRAVITY_GENERATOR.get("block").get());
                     }
                 };
                 NetworkHooks.openGui((ServerPlayerEntity) player, containerProvider, tileEntity.getPos());

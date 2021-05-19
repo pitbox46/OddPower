@@ -9,6 +9,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
@@ -93,7 +94,7 @@ public class MethaneGenerator extends BreakableBlock {
                     @Nullable
                     @Override
                     public Container createMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
-                        return new SlotlessGeneratorContainer(Registration.METHANE_GENERATOR_CONTAINER.get(), i, pos, playerInventory, Registration.METHANE_GENERATOR.get());
+                        return new SlotlessGeneratorContainer((ContainerType<?>) Registration.METHANE_GENERATOR.get("container").get(), i, pos, playerInventory, (Block) Registration.METHANE_GENERATOR.get("block").get());
                     }
                 };
                 NetworkHooks.openGui((ServerPlayerEntity) player, containerProvider, tileEntity.getPos());

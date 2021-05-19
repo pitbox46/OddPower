@@ -16,6 +16,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
+import net.minecraft.util.IItemProvider;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 
@@ -64,7 +65,7 @@ public class DummyEntity extends MobEntity {
         ItemStack heldItemStack = player.getHeldItem(Hand.MAIN_HAND);
         if(heldItemStack == ItemStack.EMPTY) {
             remove();
-            player.setHeldItem(Hand.MAIN_HAND, new ItemStack(Registration.DUMMY_ITEM.get(), 1));
+            player.setHeldItem(Hand.MAIN_HAND, new ItemStack((DummyItem) Registration.DUMMY.get("spawnegg").get(), 1));
             return ActionResultType.SUCCESS;
         }
         else if(heldItemStack.getItem().getClass() == DummyItem.class && heldItemStack.getCount() < heldItemStack.getMaxStackSize()) {

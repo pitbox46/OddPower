@@ -11,6 +11,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
@@ -56,7 +57,7 @@ public class ExplosionGenerator extends Block {
                     @Nullable
                     @Override
                     public Container createMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
-                        return new SlotlessGeneratorContainer(Registration.EXPLOSION_GENERATOR_CONTAINER.get(), i, pos, playerInventory, Registration.EXPLOSION_GENERATOR.get());
+                        return new SlotlessGeneratorContainer((ContainerType<?>) Registration.EXPLOSION_GENERATOR.get("container").get(), i, pos, playerInventory, (Block) Registration.EXPLOSION_GENERATOR.get("block").get());
                     }
                 };
                 NetworkHooks.openGui((ServerPlayerEntity) player, containerProvider, tileEntity.getPos());

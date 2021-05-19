@@ -6,6 +6,7 @@ import github.pitbox46.oddpower.setup.Registration;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import org.apache.logging.log4j.LogManager;
@@ -18,7 +19,7 @@ public class GravityGeneratorTile extends AbstractGeneratorTile {
     private long previousGeneration;
 
     public GravityGeneratorTile() {
-        super(Registration.GRAVITY_GENERATOR_TILE.get());
+        super((TileEntityType<?>) Registration.GRAVITY_GENERATOR.get("tile").get());
     }
 
     @Override

@@ -1,5 +1,6 @@
 package github.pitbox46.oddpower;
 
+import github.pitbox46.oddpower.items.DummyItem;
 import github.pitbox46.oddpower.setup.ClientSetup;
 import github.pitbox46.oddpower.setup.Config;
 import github.pitbox46.oddpower.setup.Registration;
@@ -31,7 +32,7 @@ public class OddPower
 
     public static ItemGroup MOD_TAB = new ItemGroup("oddpower") {
         public ItemStack createIcon() {
-            return new ItemStack(Registration.DUMMY_ITEM.get());
+            return new ItemStack((DummyItem) Registration.DUMMY.get("spawnegg").get());
         }
     };
 

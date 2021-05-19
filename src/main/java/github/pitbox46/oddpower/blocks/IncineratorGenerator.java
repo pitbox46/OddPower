@@ -1,6 +1,7 @@
 package github.pitbox46.oddpower.blocks;
 
 import github.pitbox46.oddpower.gui.IncineratorContainer;
+import github.pitbox46.oddpower.gui.SlotlessGeneratorContainer;
 import github.pitbox46.oddpower.setup.Registration;
 import github.pitbox46.oddpower.tiles.IncineratorGeneratorTile;
 import net.minecraft.block.Block;
@@ -11,6 +12,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.StateContainer;
@@ -76,7 +78,7 @@ public class IncineratorGenerator extends Block {
                     @Nullable
                     @Override
                     public Container createMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
-                        return new IncineratorContainer(Registration.INCINERATOR_GENERATOR_CONTAINER.get(), i, pos, playerInventory, Registration.INCINERATOR_GENERATOR.get());
+                        return new IncineratorContainer((ContainerType<?>) Registration.INCINERATOR_GENERATOR.get("container").get(), i, pos, playerInventory, (Block) Registration.INCINERATOR_GENERATOR.get("block").get());
                     }
                 };
                 NetworkHooks.openGui((ServerPlayerEntity) player, containerProvider, tileEntity.getPos());

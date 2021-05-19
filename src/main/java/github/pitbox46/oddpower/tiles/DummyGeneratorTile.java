@@ -1,13 +1,16 @@
 package github.pitbox46.oddpower.tiles;
 
 import github.pitbox46.oddpower.entities.DummyEntity;
+import github.pitbox46.oddpower.items.DummyItem;
 import github.pitbox46.oddpower.items.UpgradeItem;
 import github.pitbox46.oddpower.setup.Config;
 import github.pitbox46.oddpower.setup.Registration;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.properties.BlockStateProperties;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.world.server.ServerWorld;
@@ -23,7 +26,7 @@ public class DummyGeneratorTile extends AbstractGeneratorTile {
     private static final Logger LOGGER = LogManager.getLogger();
 
     public DummyGeneratorTile() {
-        super(Registration.DUMMY_GENERATOR_TILE.get());
+        super((TileEntityType<?>) Registration.DUMMY_GENERATOR.get("tile").get());
     }
 
     @Override
@@ -65,10 +68,10 @@ public class DummyGeneratorTile extends AbstractGeneratorTile {
     }
 
     protected void spawnNewDummy(){
-        if(itemHandler.getStackInSlot(3).getItem() == Registration.DUMMY_ITEM.get()) {
+        if(itemHandler.getStackInSlot(3).getItem() == Registration.DUMMY.get("spawnegg").get()) {
             itemHandler.getStackInSlot(3).shrink(1);
             ServerWorld serverworld = (ServerWorld) world;
-            DummyEntity dummyEntity = Registration.DUMMY.get().create(serverworld, null, null, null, getPos(), SpawnReason.DISPENSER, true, true);
+            DummyEntity dummyEntity = ((EntityType<? extends DummyEntity>) Registration.DUMMY.get("entity").get()).create(serverworld, null, null, null, getPos(), SpawnReason.DISPENSER, true, true);
             serverworld.func_242417_l(dummyEntity);
             dummyEntity.setLocationAndAngles(dummyEntity.getPosX(), dummyEntity.getPosY(), dummyEntity.getPosZ(), 0.0F, 0.0F);
             dummyEntity.rotationYawHead = dummyEntity.rotationYaw;
