@@ -1,7 +1,6 @@
 package github.pitbox46.oddpower.blocks;
 
 import github.pitbox46.oddpower.gui.IncineratorContainer;
-import github.pitbox46.oddpower.gui.SlotlessGeneratorContainer;
 import github.pitbox46.oddpower.setup.Registration;
 import github.pitbox46.oddpower.tiles.IncineratorGeneratorTile;
 import net.minecraft.block.Block;

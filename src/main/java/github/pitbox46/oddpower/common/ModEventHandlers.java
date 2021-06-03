@@ -3,7 +3,6 @@ package github.pitbox46.oddpower.common;
 import github.pitbox46.oddpower.entities.DummyEntity;
 import github.pitbox46.oddpower.setup.Registration;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import org.apache.logging.log4j.LogManager;

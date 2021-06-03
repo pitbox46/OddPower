@@ -1,7 +1,6 @@
 package github.pitbox46.oddpower.setup;
 
 import github.pitbox46.oddpower.OddPower;
-import github.pitbox46.oddpower.blocks.MethaneGenerator;
 import github.pitbox46.oddpower.entities.DummyEntity;
 import github.pitbox46.oddpower.entities.DummyRenderer;
 import github.pitbox46.oddpower.gui.DummyGeneratorContainer;

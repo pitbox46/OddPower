@@ -1,6 +1,5 @@
 package github.pitbox46.oddpower.gui;
 
-import github.pitbox46.oddpower.items.DummyItem;
 import github.pitbox46.oddpower.items.UpgradeItem;
 import github.pitbox46.oddpower.setup.Registration;
 import net.minecraft.block.Block;

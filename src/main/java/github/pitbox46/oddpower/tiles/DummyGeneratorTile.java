@@ -1,7 +1,6 @@
 package github.pitbox46.oddpower.tiles;
 
 import github.pitbox46.oddpower.entities.DummyEntity;
-import github.pitbox46.oddpower.items.DummyItem;
 import github.pitbox46.oddpower.items.UpgradeItem;
 import github.pitbox46.oddpower.setup.Config;
 import github.pitbox46.oddpower.setup.Registration;

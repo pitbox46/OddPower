@@ -1,0 +1,21 @@
+{
+  "itemGroup.oddpower": "Odd Power",
+  "item.oddpower.dummy": "Пугало",
+  "entity.oddpower.dummy": "Пугало",
+  "block.oddpower.dummy_generator": "Пугало генератор",
+  "block.oddpower.explosion_generator": "Взрывной генератор",
+  "block.oddpower.peltier_generator": "Термический генератор",
+  "block.oddpower.incinerator_generator": "Мусоросжигатель",
+  "block.oddpower.gravity_generator": "Гравитационный генератор",
+  "block.oddpower.methane_generator": "Метановый генератор",
+  "screen.oddpower.dummy_generator": "Пугало генератор",
+  "screen.oddpower.explosion_generator": "взрывной генератор",
+  "screen.oddpower.peltier_generator": "Пельтьевый генератор",
+  "screen.oddpower.incinerator_generator": "Мусоросжигатель",
+  "screen.oddpower.gravity_generator": "Гравитационный генераторr",
+  "screen.oddpower.methane_generator": "Метановый генератор",
+  "item.oddpower.capacity_upgrade": "Улучшение вместительности",
+  "item.oddpower.capacity_upgrade.desc": "Улучшает вместительность машины в 2x",
+  "item.oddpower.production_upgrade": "Улучшение производительности",
+  "item.oddpower.production_upgrade.desc": "Улучшение производительности энергии машины в 2x"
+}

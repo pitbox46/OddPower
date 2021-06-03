@@ -5,6 +5,8 @@ import github.pitbox46.oddpower.setup.Registration;
 import github.pitbox46.oddpower.tools.OddPowerEnergy;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
@@ -103,6 +105,19 @@ public abstract class AbstractGeneratorTile extends TileEntity implements ITicka
         int producedPower = Math.min(power + (productionUpgrades * power), remainingCapacity);
         energyStorage.addEnergy(producedPower);
         LOGGER.debug("{} energy created at ({}, {}, {})", Integer.toString(producedPower), Integer.toString(getPos().getX()), Integer.toString(getPos().getY()), Integer.toString(getPos().getZ()));
+    }
+
+    @Override
+    public SUpdateTileEntityPacket getUpdatePacket(){
+        CompoundNBT nbtTag = new CompoundNBT();
+        nbtTag.putInt("energy", energyStorage.getEnergyStored());
+        return new SUpdateTileEntityPacket(getPos(), -1, nbtTag);
+    }
+
+    @Override
+    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt){
+        CompoundNBT tag = pkt.getNbtCompound();
+        energyStorage.setEnergy(tag.getInt("energy"));
     }
 
     @Override

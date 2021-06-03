@@ -2,12 +2,14 @@ package github.pitbox46.oddpower.setup;
 
 import github.pitbox46.oddpower.OddPower;
 import github.pitbox46.oddpower.blocks.*;
-import github.pitbox46.oddpower.common.*;
+import github.pitbox46.oddpower.common.ForgeEventHandlers;
+import github.pitbox46.oddpower.common.ModEventHandlers;
 import github.pitbox46.oddpower.entities.DummyEntity;
 import github.pitbox46.oddpower.gui.DummyGeneratorContainer;
 import github.pitbox46.oddpower.gui.IncineratorContainer;
 import github.pitbox46.oddpower.gui.SlotlessGeneratorContainer;
-import github.pitbox46.oddpower.items.*;
+import github.pitbox46.oddpower.items.DummyItem;
+import github.pitbox46.oddpower.items.UpgradeItem;
 import github.pitbox46.oddpower.tiles.*;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityClassification;

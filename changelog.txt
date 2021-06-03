@@ -1,3 +1,8 @@
+June 3 2021 pitbox46
+    Added russian localizations (thanks to LockOriginalMods)
+    Fixed bug: Syncing issue where the client doesn't recognize that energy is leaving if an energy extractor tile is placed next to it
+    Cleanup
+
 April 11 2021
     Added changelog
     Changed registration to be based on maps rather than instances for cleaner code
