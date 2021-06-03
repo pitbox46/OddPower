@@ -1,6 +1,8 @@
 package github.pitbox46.oddpower.tiles;
 
 import com.google.common.collect.ArrayListMultimap;
+import github.pitbox46.oddpower.network.EnergySyncPacket;
+import github.pitbox46.oddpower.network.PacketHandler;
 import github.pitbox46.oddpower.setup.Registration;
 import github.pitbox46.oddpower.tools.OddPowerEnergy;
 import net.minecraft.block.BlockState;
@@ -15,6 +17,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
+import net.minecraftforge.fml.network.PacketDistributor;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
@@ -107,17 +110,13 @@ public abstract class AbstractGeneratorTile extends TileEntity implements ITicka
         LOGGER.debug("{} energy created at ({}, {}, {})", Integer.toString(producedPower), Integer.toString(getPos().getX()), Integer.toString(getPos().getY()), Integer.toString(getPos().getZ()));
     }
 
-    @Override
-    public SUpdateTileEntityPacket getUpdatePacket(){
-        CompoundNBT nbtTag = new CompoundNBT();
-        nbtTag.putInt("energy", energyStorage.getEnergyStored());
-        return new SUpdateTileEntityPacket(getPos(), -1, nbtTag);
+    private void syncEnergy() {
+        if(this.world != null && !this.world.isRemote())
+            PacketHandler.CHANNEL.send(PacketDistributor.TRACKING_CHUNK.with(() -> this.world.getChunkAt(this.pos)), new EnergySyncPacket(this.pos, energyStorage.getEnergyStored()));
     }
 
-    @Override
-    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt){
-        CompoundNBT tag = pkt.getNbtCompound();
-        energyStorage.setEnergy(tag.getInt("energy"));
+    public void recieveSyncEnergy(int energy) {
+        energyStorage.setEnergy(energy);
     }
 
     @Override
@@ -125,6 +124,7 @@ public abstract class AbstractGeneratorTile extends TileEntity implements ITicka
         if (energyStorage.getEnergyStored() > energyStorage.getMaxEnergyStored()){
             energyStorage.setEnergy(energyStorage.getMaxEnergyStored());
         }
+        syncEnergy();
         super.markDirty();
     }
 
